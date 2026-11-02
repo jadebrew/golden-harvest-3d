@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
 {
     InputAction moveAction;
     InputAction jumpAction;
+    InputAction menuAction;
     Rigidbody _rigidbody;
     public float _thrust;
     public float _jumpSpeed;
@@ -23,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     public Animator mAnimator;
 
     public GameObject textPanel;
+    public GameObject menuPanel;
 
     [SerializeField]
     public Dictionary<Item,int> _inventory = new Dictionary<Item,int>();
@@ -32,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
         //get the right components from the player object
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
+        menuAction = InputSystem.actions.FindAction("Crouch");
         _rigidbody = GetComponent<Rigidbody>();
     }
 
@@ -83,6 +86,10 @@ public class PlayerMovement : MonoBehaviour
         if(jumpAction.WasPressedThisFrame())
         {
             _showInventory = !_showInventory;
+        }
+        if(menuAction.WasPressedThisFrame())
+        {
+            menuPanel.SetActive(!menuPanel.activeSelf);
         }
 
     }
