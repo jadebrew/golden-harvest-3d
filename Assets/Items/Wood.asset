@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d719fa8a0f1c08c3980228d01800bd6c, type: 3}
   m_Name: Wood
   m_EditorClassIdentifier: Assembly-CSharp::Item
+  itemName: Wood
+  sprite: {fileID: 21300000, guid: ff785d7be7459d9e7bb14aad5de92c71, type: 3}

@@ -9,6 +9,9 @@ public class PlayerMovement : MonoBehaviour
     InputAction moveAction;
     InputAction jumpAction;
     InputAction menuAction;
+    InputAction nextAction;
+    InputAction previousAction;
+
     Rigidbody _rigidbody;
     public float _thrust;
     public float _jumpSpeed;
@@ -19,15 +22,23 @@ public class PlayerMovement : MonoBehaviour
     private NPC _target;
     private Vector3 direction;
 
-    private bool _showInventory;
+    public GameObject itemSlot;
+
+    private bool _showMenu;
 
     public Animator mAnimator;
 
+    public GameObject heldModel;
+
     public GameObject textPanel;
-    public GameObject menuPanel;
+    public List<GameObject> menuTabs;
+    private int tabIndex;
 
     [SerializeField]
     public Dictionary<Item,int> _inventory = new Dictionary<Item,int>();
+
+    public GameObject buttonPrefab;
+    public GameObject inventoryContainer;
 
     private void Start()
     {
@@ -35,7 +46,22 @@ public class PlayerMovement : MonoBehaviour
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
         menuAction = InputSystem.actions.FindAction("Crouch");
+        nextAction = InputSystem.actions.FindAction("Next");
+        previousAction = InputSystem.actions.FindAction("Previous");
         _rigidbody = GetComponent<Rigidbody>();
+
+        closeMenu();
+        Equip();
+    }
+
+    void Equip()
+    {
+        var container = itemSlot;
+        foreach(Transform child in container.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        Instantiate(heldModel,itemSlot.transform);
     }
 
     void FixedUpdate()
@@ -65,33 +91,87 @@ public class PlayerMovement : MonoBehaviour
         if((_target != null) && _target.CanSee())
         {
             textPanel.SetActive(true);
-            _showInventory = false;
         } else {
             textPanel.SetActive(false);
         }
 
-        if(_showInventory)
-        {
-            textPanel.SetActive(true);
-            textPanel.transform.Find("Portrait").GetComponent<Image>().sprite = null;
-            textPanel.transform.Find("Body").GetComponent<TMP_Text>().text = "Wood: " + wood_amount;
-            textPanel.transform.Find("Title").GetComponent<TMP_Text>().text = "Inventory";
-        }
-
-
+        updateInventory();
     }
 
     void Update()
     {
         if(jumpAction.WasPressedThisFrame())
         {
-            _showInventory = !_showInventory;
+             mAnimator.SetTrigger("sweep");
         }
         if(menuAction.WasPressedThisFrame())
         {
-            menuPanel.SetActive(!menuPanel.activeSelf);
+            if (!_showMenu)
+            {
+                showMenu(0);
+                _showMenu = true;
+            } else {
+                closeMenu();
+                _showMenu = false;
+            }
+
+        }
+        if(nextAction.WasPressedThisFrame())
+        {
+            if (_showMenu)
+            {
+                tabIndex++;
+                showMenu(tabIndex);
+            }
+        }
+        if(previousAction.WasPressedThisFrame())
+        {
+            if (_showMenu)
+            {
+                tabIndex--;
+                showMenu(tabIndex);
+            }
         }
 
+    }
+
+    void showMenu(int index)
+    {
+        tabIndex = tabIndex;
+        closeMenu();
+        if (tabIndex>=menuTabs.Count)
+        {
+            tabIndex = 0;
+        } else if (tabIndex < 0)
+        {
+            tabIndex = menuTabs.Count-1;
+        }
+        updateInventory();
+        menuTabs[tabIndex].SetActive(true);
+    }
+
+    void updateInventory()
+    {
+        var container = inventoryContainer;
+        foreach(Transform child in container.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach(KeyValuePair<Item,int> item in _inventory)
+        {
+            var button = Instantiate(buttonPrefab,container.transform);
+            button.transform.Find("Icon").GetComponent<Image>().sprite = item.Key.sprite;
+            button.transform.Find("Label").GetComponent<TMP_Text>().text = item.Value.ToString();
+        }
+    }
+
+    void closeMenu()
+    {
+        foreach (GameObject menu in menuTabs)
+        {
+            menu.SetActive(false);
+        }
     }
 
     public void Give(Item item)
