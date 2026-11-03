@@ -21,4 +21,5 @@ public class Item : ScriptableObject
     public Sprite sprite;
     public ItemType itemType;
     public DamageType damageType;
+    public float damage;
 }

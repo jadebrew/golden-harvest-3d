@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     public int wood_amount = 0;
 
     private NPC _target;
+    private GameObject _targetObject;
     private Vector3 direction;
 
     public GameObject itemSlot;
@@ -29,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     public Animator mAnimator;
 
     public GameObject heldModel;
+    public Item equippedItem;
 
     public GameObject textPanel;
     public List<GameObject> menuTabs;
@@ -39,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
     public GameObject buttonPrefab;
     public GameObject inventoryContainer;
+    private bool faceTarget = false;
 
     private void Start()
     {
@@ -64,6 +68,19 @@ public class PlayerMovement : MonoBehaviour
         Instantiate(heldModel,itemSlot.transform);
     }
 
+    void RotateTowards(Vector3 direction)
+    {
+        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x,0,direction.z));
+
+        var bod = this;
+
+        bod.transform.rotation = Quaternion.RotateTowards(
+            bod.transform.rotation,
+            targetRotation,
+            _rotationSpeed
+        );
+    }
+
     void FixedUpdate()
     {
 
@@ -75,14 +92,8 @@ public class PlayerMovement : MonoBehaviour
             var bod = this;
 
             direction = new Vector3(moveValue.x,0,moveValue.y);
+            RotateTowards(direction);
 
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-            bod.transform.rotation = Quaternion.RotateTowards(
-                bod.transform.rotation,
-                targetRotation,
-                _rotationSpeed
-            );
 
             _rigidbody.AddForce(bod.transform.forward * _thrust);
             mAnimator.SetBool("walking", true);
@@ -95,14 +106,43 @@ public class PlayerMovement : MonoBehaviour
             textPanel.SetActive(false);
         }
 
+        if (faceTarget)
+        {
+            RotateTowards(_targetObject.transform.position - transform.position);
+        }
+
         updateInventory();
+    }
+
+    IEnumerator UseDelay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+
+        var node = _targetObject.GetComponent<Node>();
+        if (node != null)
+        {
+            if (node.vulnerability == equippedItem.damageType)
+            {
+                node.health -= equippedItem.damage;
+                faceTarget = false;
+            }
+        }
     }
 
     void Update()
     {
         if(jumpAction.WasPressedThisFrame())
         {
-             mAnimator.SetTrigger("sweep");
+            if (equippedItem != null)
+            {
+                mAnimator.SetTrigger("sweep");
+                if (_targetObject != null)
+                {
+                    faceTarget = true;
+                    StartCoroutine(UseDelay(0.7f));
+                }
+            }
+
         }
         if(menuAction.WasPressedThisFrame())
         {
@@ -191,5 +231,10 @@ public class PlayerMovement : MonoBehaviour
             textPanel.transform.Find("Portrait").GetComponent<Image>().sprite = npc.person.portrait;
             textPanel.transform.Find("Body").GetComponent<TMP_Text>().text = npc.person.chatter;
             textPanel.transform.Find("Title").GetComponent<TMP_Text>().text = npc.person.longname;
+    }
+
+    public void SetTarget(GameObject target)
+    {
+        _targetObject = target;
     }
 }
