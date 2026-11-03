@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     InputAction menuAction;
     InputAction nextAction;
     InputAction previousAction;
+    InputAction interactAction;
 
     Rigidbody _rigidbody;
     public float _thrust;
@@ -33,12 +34,21 @@ public class PlayerMovement : MonoBehaviour
     public GameObject heldModel;
     public Item equippedItem;
 
+    public Sprite defaultIcon;
+
     public GameObject textPanel;
+    public GameObject craftingContainer;
+    public GameObject craftingPanel;
     public List<GameObject> menuTabs;
     private int tabIndex;
 
+    private Dictionary<AuraType,float> environmentBuffs = new Dictionary<AuraType,float>();
+
     [SerializeField]
     public Dictionary<Item,int> _inventory = new Dictionary<Item,int>();
+
+    public List<Recipe> knownRecipes;
+    private bool inMenu = true;
 
     public GameObject buttonPrefab;
     public GameObject inventoryContainer;
@@ -52,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
         menuAction = InputSystem.actions.FindAction("Crouch");
         nextAction = InputSystem.actions.FindAction("Next");
         previousAction = InputSystem.actions.FindAction("Previous");
+        interactAction = InputSystem.actions.FindAction("Interact");
         _rigidbody = GetComponent<Rigidbody>();
 
         closeMenu();
@@ -121,12 +132,13 @@ public class PlayerMovement : MonoBehaviour
         var node = _targetObject.GetComponent<Node>();
         if (node != null)
         {
-            if (node.vulnerability == equippedItem.damageType)
+            if (node.InRange() && node.vulnerability == equippedItem.damageType)
             {
                 node.health -= equippedItem.damage;
-                faceTarget = false;
+
             }
         }
+        faceTarget = false;
     }
 
     void Update()
@@ -141,6 +153,19 @@ public class PlayerMovement : MonoBehaviour
                     faceTarget = true;
                     StartCoroutine(UseDelay(0.7f));
                 }
+            }
+
+        }
+        if(interactAction.WasPressedThisFrame())
+        {
+            if (!_showMenu)
+            {
+                showCraftMenu();
+            }
+            else
+            {
+                closeMenu();
+                _showMenu = false;
             }
 
         }
@@ -177,7 +202,7 @@ public class PlayerMovement : MonoBehaviour
 
     void showMenu(int index)
     {
-        tabIndex = tabIndex;
+        tabIndex = index;
         closeMenu();
         if (tabIndex>=menuTabs.Count)
         {
@@ -206,22 +231,92 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void showCraftMenu()
+    {
+        craftingPanel.SetActive(true);
+        _showMenu = true;
+
+        var container = craftingContainer;
+        foreach(Transform child in container.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Recipe _recipe in knownRecipes)
+        {
+
+            var text = "";
+            Sprite icon = defaultIcon;
+            bool CanCraft = true;
+            foreach (KeyValuePair<Item,int> _item in _recipe.output)
+            {
+                //text = text + _item.Key.itemName;
+                icon =  _item.Key.sprite;
+
+            }
+            foreach (KeyValuePair<Item,int> _item in _recipe.input)
+            {
+                text = text + _item.Value + "x " + _item.Key.itemName + "\n";
+                if (!_inventory.ContainsKey(_item.Key))
+                {
+                    CanCraft = false;
+                } else {
+                    if(_inventory[_item.Key] < _item.Value)
+                    {
+                        CanCraft = false;
+                    }
+                }
+            }
+            var button = Instantiate(buttonPrefab,container.transform);
+            button.transform.Find("Icon").GetComponent<Image>().sprite = icon;
+            button.transform.Find("Label").GetComponent<TMP_Text>().text = text;
+            button.GetComponent<Button>().onClick.AddListener(() => CraftItem(_recipe));
+            if(!CanCraft)
+            {
+                 button.GetComponent<Button>().interactable = false;
+            }
+        }
+    }
+
+    public void CraftItem(Recipe recipe)
+    {
+        foreach (KeyValuePair<Item,int> _item in recipe.input)
+        {
+           Remove(_item.Key,_item.Value);
+        }
+        foreach (KeyValuePair<Item,int> _item in recipe.output)
+        {
+            Give(_item.Key,_item.Value);
+        }
+        showCraftMenu();
+    }
+
     void closeMenu()
     {
         foreach (GameObject menu in menuTabs)
         {
             menu.SetActive(false);
         }
+        craftingPanel.SetActive(false);
+        _showMenu = false;
     }
 
-    public void Give(Item item)
+    public void Give(Item item, int amount)
     {
         if (!_inventory.ContainsKey(item))
         {
             _inventory.Add(item,0);
         }
-        _inventory[item] += 5;
-        wood_amount = _inventory[item];
+        _inventory[item] += amount;
+    }
+
+    public void Remove(Item item, int amount)
+    {
+        if (!_inventory.ContainsKey(item))
+        {
+            _inventory.Add(item,0);
+        }
+        _inventory[item] -= amount;
     }
 
     public void SetTarget(NPC npc)

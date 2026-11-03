@@ -10,6 +10,13 @@ public enum AiType
     Follow
 }
 
+public enum AuraType
+{
+    None,
+    Cooking,
+    Crafting
+}
+
 [RequireComponent(typeof(NavMeshAgent))]
 public class Node : MonoBehaviour
 {
@@ -18,12 +25,15 @@ public class Node : MonoBehaviour
     public float magnetRange = 0.5f;
     public float health = 100;
     public DamageType vulnerability;
+    public int _dropAmount = 5;
 
     public AiType intelligence;
 
     private float UpdateSpeed = 0.1f;
 
     private bool isWalking = false;
+
+    public AuraType _aura;
 
     private NavMeshAgent _agent;
 
@@ -47,14 +57,18 @@ public class Node : MonoBehaviour
         isWalking = false;
     }
 
+    public bool InRange()
+    {
+        float distance = Vector3.Distance(transform.position, _target.transform.position);
+        return distance < magnetRange;
+    }
+
     void FixedUpdate()
     {
         float distance = Vector3.Distance(transform.position, _target.transform.position);
         if (distance < magnetRange)
         {
             _target.GetComponent<PlayerMovement>().SetTarget(transform.gameObject);
-
-
         }
 
         if ((intelligence == AiType.Follow) && !isWalking)
@@ -70,7 +84,7 @@ public class Node : MonoBehaviour
 
         if (health<0)
         {
-            _target.GetComponent<PlayerMovement>().Give(_spawnable);
+            _target.GetComponent<PlayerMovement>().Give(_spawnable,_dropAmount);
             transform.gameObject.SetActive(false);
         }
     }
@@ -106,9 +120,8 @@ public class Node : MonoBehaviour
             yield return new WaitForSeconds(
                 Random.Range(minWaitTime, maxWaitTime)
             );
+            isWalking = false;
         }
-
-        isWalking = false;
     }
 
 }
