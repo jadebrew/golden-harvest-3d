@@ -102,12 +102,15 @@ public class PlayerMovement : MonoBehaviour
         {
             var bod = this;
 
-            direction = new Vector3(moveValue.x,0,moveValue.y);
-            RotateTowards(direction);
+           // direction = new Vector3(moveValue.x,0,moveValue.y);
+            //RotateTowards(direction);
 
 
-            _rigidbody.AddForce(bod.transform.forward * _thrust);
+            _rigidbody.AddForce(bod.transform.forward * moveValue.y * _thrust);
             mAnimator.SetBool("walking", true);
+            Vector3 _AngleVelocity = new Vector3(0, moveValue.x*45, 0);
+            Quaternion deltaRotation = Quaternion.Euler(_AngleVelocity * Time.fixedDeltaTime);
+            _rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
         }
 
         if((_target != null) && _target.CanSee())

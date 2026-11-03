@@ -608,6 +608,7 @@ Transform:
   - {fileID: 1130547080}
   - {fileID: 2128603583}
   - {fileID: 1979218863}
+  - {fileID: 1055003396}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -194.995, z: 0}
 --- !u!114 &75870410
@@ -1174,7 +1175,6 @@ MonoBehaviour:
   health: 100
   vulnerability: 1
   _dropAmount: 5
-  respawnRate: 0
   model: {fileID: 0}
   intelligence: 1
   _aura: 0
@@ -1828,7 +1828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf1951b932fae1185bed9be7a7dafc5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  offset: {x: 0, y: 1.5, z: -1.5}
+  goal: {fileID: 1055003395}
   target: {fileID: 75870404}
 --- !u!1 &347110872
 GameObject:
@@ -2170,7 +2170,6 @@ MonoBehaviour:
   health: 100
   vulnerability: 1
   _dropAmount: 5
-  respawnRate: 0
   model: {fileID: 7302934476096967059}
   intelligence: 0
   _aura: 0
@@ -2942,7 +2941,6 @@ MonoBehaviour:
   health: 100
   vulnerability: 0
   _dropAmount: 5
-  respawnRate: 0
   model: {fileID: 0}
   intelligence: 0
   _aura: 2
@@ -4738,7 +4736,6 @@ MonoBehaviour:
   health: 100
   vulnerability: 1
   _dropAmount: 5
-  respawnRate: 0
   model: {fileID: 7302934476096967059}
   intelligence: 0
   _aura: 0
@@ -5212,6 +5209,37 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1646476030}
   m_SourcePrefab: {fileID: 100100000, guid: 4a944d6a2d96754c7b06e0dd1fcf6659, type: 3}
+--- !u!1 &1055003395
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1055003396}
+  m_Layer: 0
+  m_Name: CameraGoal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1055003396
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055003395}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.884, z: -2.819}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 75870409}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1064187951
 GameObject:
   m_ObjectHideFlags: 0
@@ -7508,7 +7536,6 @@ MonoBehaviour:
   health: 100
   vulnerability: 1
   _dropAmount: 5
-  respawnRate: 0
   model: {fileID: 0}
   intelligence: 1
   _aura: 0
@@ -7611,7 +7638,6 @@ MonoBehaviour:
   health: 100
   vulnerability: 1
   _dropAmount: 5
-  respawnRate: 0
   model: {fileID: 7302934476096967059}
   intelligence: 0
   _aura: 0
@@ -9779,7 +9805,6 @@ MonoBehaviour:
   health: 100
   vulnerability: 1
   _dropAmount: 5
-  respawnRate: 0
   model: {fileID: 0}
   intelligence: 1
   _aura: 0
@@ -10027,7 +10052,6 @@ MonoBehaviour:
   health: 100
   vulnerability: 1
   _dropAmount: 5
-  respawnRate: 0
   model: {fileID: 0}
   intelligence: 1
   _aura: 0
@@ -10258,7 +10282,6 @@ MonoBehaviour:
   health: 100
   vulnerability: 1
   _dropAmount: 5
-  respawnRate: 0
   model: {fileID: 7302934476096967059}
   intelligence: 0
   _aura: 0
@@ -11240,8 +11263,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 31717504}
   m_HandleRect: {fileID: 31717503}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.8029412
+  m_Value: 1.0000005
+  m_Size: 0.80384296
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11615,7 +11638,6 @@ MonoBehaviour:
   health: 100
   vulnerability: 1
   _dropAmount: 5
-  respawnRate: 0
   model: {fileID: 0}
   intelligence: 1
   _aura: 0
@@ -11939,6 +11961,135 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd116125fb2ac6b7ea6179afe6e2472c, type: 3}
+--- !u!1 &1918215437
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1918215439}
+  - component: {fileID: 1918215438}
+  m_Layer: 0
+  m_Name: Alexander Nakarada - Collection - Celtic & Medieval - 52 Lullaby
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &1918215438
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918215437}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 37e18bb8ee03095ec884ec184dd91e65, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.669
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &1918215439
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918215437}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.34844, y: 1.99596, z: -11.29026}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1929374268
 GameObject:
   m_ObjectHideFlags: 0
@@ -13248,7 +13399,6 @@ MonoBehaviour:
   health: 100
   vulnerability: 1
   _dropAmount: 5
-  respawnRate: 0
   model: {fileID: 7302934476096967059}
   intelligence: 0
   _aura: 0
@@ -13306,3 +13456,4 @@ SceneRoots:
   - {fileID: 1052607053}
   - {fileID: 2086254973}
   - {fileID: 671217352}
+  - {fileID: 1918215439}

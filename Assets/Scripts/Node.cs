@@ -28,7 +28,7 @@ public class Node : MonoBehaviour
     public int _dropAmount = 5;
     private float age = 0;
     private float deathAge;
-    private float respawnRate = 5;
+    private float respawnRate = 30;
     public GameObject model;
     private GameObject modelInstance;
 
@@ -49,6 +49,7 @@ public class Node : MonoBehaviour
         _target = GameObject.Find("Player");
         alive = false;
         age = 0;
+        Respawn();
     }
 
     private IEnumerator FollowTarget(GameObject target)
