@@ -26,12 +26,18 @@ public class Node : MonoBehaviour
     public float health = 100;
     public DamageType vulnerability;
     public int _dropAmount = 5;
+    private float age = 0;
+    private float deathAge;
+    private float respawnRate = 5;
+    public GameObject model;
+    private GameObject modelInstance;
 
     public AiType intelligence;
 
     private float UpdateSpeed = 0.1f;
 
     private bool isWalking = false;
+    private bool alive = true;
 
     public AuraType _aura;
 
@@ -41,6 +47,8 @@ public class Node : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
         _target = GameObject.Find("Player");
+        alive = false;
+        age = 0;
     }
 
     private IEnumerator FollowTarget(GameObject target)
@@ -65,27 +73,53 @@ public class Node : MonoBehaviour
 
     void FixedUpdate()
     {
-        float distance = Vector3.Distance(transform.position, _target.transform.position);
-        if (distance < magnetRange)
+        if (alive)
         {
-            _target.GetComponent<PlayerMovement>().SetTarget(transform.gameObject);
+            float distance = Vector3.Distance(transform.position, _target.transform.position);
+            if (distance < magnetRange)
+            {
+                _target.GetComponent<PlayerMovement>().SetTarget(transform.gameObject);
+            }
+
+            if ((intelligence == AiType.Follow) && !isWalking)
+            {
+                isWalking = true;
+                StartCoroutine(FollowTarget(_target));
+            }
+            else if ((intelligence == AiType.Critter) && !isWalking)
+            {
+                isWalking = true;
+                StartCoroutine(Wander());
+            }
+            if (health<0)
+            {
+                _target.GetComponent<PlayerMovement>().Give(_spawnable,_dropAmount);
+                alive = false;
+                Destroy(modelInstance);
+                age = 0;
+            }
+        } else {
+            if (!alive && age > respawnRate)
+            {
+                Respawn();
+            }
         }
 
-        if ((intelligence == AiType.Follow) && !isWalking)
-        {
-            isWalking = true;
-            StartCoroutine(FollowTarget(_target));
-        }
-        else if ((intelligence == AiType.Critter) && !isWalking)
-        {
-            isWalking = true;
-            StartCoroutine(Wander());
-        }
+    }
 
-        if (health<0)
+    void Update()
+    {
+        age+= Time.deltaTime;
+    }
+
+    void Respawn()
+    {
+        alive = true;
+        health = 100;
+        age = 0;
+        if (_spawnable != null)
         {
-            _target.GetComponent<PlayerMovement>().Give(_spawnable,_dropAmount);
-            transform.gameObject.SetActive(false);
+        modelInstance = Instantiate(_spawnable.model,this.transform);
         }
     }
 

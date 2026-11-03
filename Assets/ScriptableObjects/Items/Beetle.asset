@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Item
   itemName: Beetle
   sprite: {fileID: 7852535482429230554, guid: 86212d424e510940e9c1d5384dac27d8, type: 3}
+  model: {fileID: 8709981425195433284, guid: 75571af736b393ab5a576c21808dec3e, type: 3}
   itemType: 0
   damageType: 0
   damage: 0

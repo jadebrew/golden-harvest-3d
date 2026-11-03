@@ -19,6 +19,7 @@ public class Item : ScriptableObject
     [Header("Item Properties")]
     public string itemName;
     public Sprite sprite;
+    public GameObject model;
     public ItemType itemType;
     public DamageType damageType;
     public float damage;

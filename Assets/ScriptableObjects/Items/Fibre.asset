@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Item
   itemName: Fibre
   sprite: {fileID: 21300000, guid: 54000f86641127b50bf2fb694f489661, type: 3}
+  model: {fileID: 3638145032319568777, guid: 43ef4acc2f34265aeb501871b6e5a090, type: 3}
+  itemType: 0
+  damageType: 0
+  damage: 0
