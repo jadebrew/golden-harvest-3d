@@ -22,7 +22,7 @@ public class Node : MonoBehaviour
 {
     public Item _spawnable;
     public GameObject _target;
-    public float magnetRange = 0.5f;
+    private float magnetRange = 1.5f;
     public float health = 100;
     public DamageType vulnerability;
     public int _dropAmount = 5;
