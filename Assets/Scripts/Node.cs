@@ -7,7 +7,8 @@ public enum AiType
 {
     None,
     Critter,
-    Follow
+    Follow,
+    Humanoid
 }
 
 public enum AuraType
@@ -34,7 +35,10 @@ public class Node : MonoBehaviour
 
     public AiType intelligence;
 
-    private float UpdateSpeed = 0.1f;
+    public float UpdateSpeed = 0.1f;
+
+    public float idleDelay = 5;
+    private float waitTimer = 0;
 
     private bool isWalking = false;
     private bool alive = true;
@@ -43,12 +47,18 @@ public class Node : MonoBehaviour
 
     private NavMeshAgent _agent;
 
+    private Animator _animator;
+
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _target = GameObject.Find("Player");
         alive = false;
         age = 0;
+        if (intelligence == AiType.Humanoid)
+        {
+            _animator = GetComponent<Animator>();
+        }
         Respawn();
     }
 
@@ -63,7 +73,7 @@ public class Node : MonoBehaviour
             yield return wait;
         }
 
-        isWalking = false;
+        StopWalking();
     }
 
     public bool InRange()
@@ -74,18 +84,30 @@ public class Node : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (alive)
+        if (!isWalking)
         {
+            waitTimer+= Time.fixedDeltaTime;
+        }
+        if (alive && waitTimer > idleDelay)
+        {
+
             float distance = Vector3.Distance(transform.position, _target.transform.position);
             if (distance < magnetRange)
             {
                 _target.GetComponent<PlayerMovement>().SetTarget(transform.gameObject);
             }
 
-            if ((intelligence == AiType.Follow) && !isWalking)
+            if ((intelligence == AiType.Follow || intelligence == AiType.Humanoid) && !isWalking)
             {
                 isWalking = true;
-                StartCoroutine(FollowTarget(_target));
+                if (intelligence == AiType.Humanoid)
+                {
+                    StartCoroutine(Wander());
+                    _animator.SetBool("walking",true);
+                } else {
+                    StartCoroutine(FollowTarget(_target));
+                }
+
             }
             else if ((intelligence == AiType.Critter) && !isWalking)
             {
@@ -94,10 +116,13 @@ public class Node : MonoBehaviour
             }
             if (health<0)
             {
-                _target.GetComponent<PlayerMovement>().Give(_spawnable,_dropAmount);
-                alive = false;
-                Destroy(modelInstance);
-                age = 0;
+                if (_spawnable != null)
+                {
+                    _target.GetComponent<PlayerMovement>().Give(_spawnable,_dropAmount);
+                    alive = false;
+                    Destroy(modelInstance);
+                    age = 0;
+                }
             }
         } else {
             if (!alive && age > respawnRate)
@@ -155,8 +180,18 @@ public class Node : MonoBehaviour
             yield return new WaitForSeconds(
                 Random.Range(minWaitTime, maxWaitTime)
             );
-            isWalking = false;
+            StopWalking();
         }
+    }
+
+    void StopWalking()
+    {
+        isWalking = false;
+        if (!isWalking && intelligence == AiType.Humanoid)
+        {
+            _animator.SetBool("walking",false);
+        }
+        waitTimer = 0;
     }
 
 }
