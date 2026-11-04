@@ -6,6 +6,8 @@ public class FollowObject : MonoBehaviour
 
     public GameObject goal;
     public GameObject target;
+    public float cameraSpeed;
+    private float distance;
 
     void Start()
     {
@@ -13,9 +15,16 @@ public class FollowObject : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        this.transform.position = Vector3.Lerp(this.transform.position, goal.transform.position, 0.1f);
-        this.transform.LookAt(target.transform);
+        var distance = Vector3.Distance(this.transform.position, goal.transform.position);
+        if (distance > Time.deltaTime*cameraSpeed)
+        {
+             this.transform.position = Vector3.MoveTowards(this.transform.position,goal.transform.position,Time.fixedDeltaTime*(cameraSpeed*distance));
+        } else {
+            this.transform.position = goal.transform.position;
+        }
+
+        this.transform.LookAt(target.transform.position);
     }
 }

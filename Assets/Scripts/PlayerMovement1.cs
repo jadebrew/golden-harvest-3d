@@ -108,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
 
             _rigidbody.AddForce(bod.transform.forward * moveValue.y * _thrust);
             mAnimator.SetBool("walking", true);
-            Vector3 _AngleVelocity = new Vector3(0, moveValue.x*45, 0);
+            Vector3 _AngleVelocity = new Vector3(0, moveValue.x*_rotationSpeed, 0);
             Quaternion deltaRotation = Quaternion.Euler(_AngleVelocity * Time.fixedDeltaTime);
             _rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
         }
