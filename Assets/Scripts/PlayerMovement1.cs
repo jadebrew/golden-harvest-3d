@@ -54,6 +54,8 @@ public class PlayerMovement : MonoBehaviour
     public GameObject inventoryContainer;
     private bool faceTarget = false;
 
+    public GameObject _cursor;
+
     private void Start()
     {
         //get the right components from the player object
@@ -101,11 +103,6 @@ public class PlayerMovement : MonoBehaviour
         if (moveValue != Vector2.zero)
         {
             var bod = this;
-
-           // direction = new Vector3(moveValue.x,0,moveValue.y);
-            //RotateTowards(direction);
-
-
             _rigidbody.AddForce(bod.transform.forward * moveValue.y * _thrust);
             mAnimator.SetBool("walking", true);
             Vector3 _AngleVelocity = new Vector3(0, moveValue.x*_rotationSpeed, 0);
@@ -113,11 +110,11 @@ public class PlayerMovement : MonoBehaviour
             _rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
         }
 
-        if((_target != null) && _target.CanSee())
+        if (_targetObject != null)
         {
-            textPanel.SetActive(true);
-        } else {
-            textPanel.SetActive(false);
+            _cursor.transform.position = _targetObject.transform.position;
+            _cursor.transform.LookAt(this.transform);
+            _cursor.SetActive(true);
         }
 
         if (faceTarget)
@@ -125,6 +122,11 @@ public class PlayerMovement : MonoBehaviour
             RotateTowards(_targetObject.transform.position - transform.position);
         }
 
+        if (_targetObject != null && !_targetObject.GetComponent<Node>().InRange())
+        {
+            _targetObject = null;
+            _cursor.SetActive(false);
+        }
         updateInventory();
     }
 

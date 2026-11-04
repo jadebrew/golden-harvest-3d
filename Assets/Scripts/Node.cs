@@ -8,7 +8,15 @@ public enum AiType
     None,
     Critter,
     Follow,
-    Humanoid
+    Humanoid,
+}
+
+public enum Race
+{
+    NonHuman,
+    Human,
+    Goblin,
+    Elf,
 }
 
 public enum AuraType
@@ -18,12 +26,12 @@ public enum AuraType
     Crafting
 }
 
-[RequireComponent(typeof(NavMeshAgent))]
+//[RequireComponent(typeof(NavMeshAgent))]
 public class Node : MonoBehaviour
 {
     public Item _spawnable;
     public GameObject _target;
-    private float magnetRange = 1.5f;
+    private float magnetRange = 3f;
     public float health = 100;
     public DamageType vulnerability;
     public int _dropAmount = 5;
@@ -49,6 +57,8 @@ public class Node : MonoBehaviour
 
     private Animator _animator;
 
+    public Race _race;
+
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -58,6 +68,10 @@ public class Node : MonoBehaviour
         if (intelligence == AiType.Humanoid)
         {
             _animator = GetComponent<Animator>();
+            if (_race == Race.Goblin)
+            {
+                _animator.SetBool("mutant",true);
+            }
         }
         Respawn();
     }
@@ -78,8 +92,13 @@ public class Node : MonoBehaviour
 
     public bool InRange()
     {
+
         float distance = Vector3.Distance(transform.position, _target.transform.position);
-        return distance < magnetRange;
+        if (alive)
+        {
+            return distance < magnetRange;
+        }
+        return false;
     }
 
     void FixedUpdate()
@@ -151,8 +170,8 @@ public class Node : MonoBehaviour
 
     private IEnumerator Wander()
     {
-        float minWaitTime = 0.1f;
-        float maxWaitTime = 1;
+        float minWaitTime = 1f;
+        float maxWaitTime = 10;
         float wanderRadius = 5;
 
         while (true)
@@ -175,12 +194,11 @@ public class Node : MonoBehaviour
                 while (_agent.remainingDistance > _agent.stoppingDistance)
                     yield return null;
             }
-
+            StopWalking();
             // Wait before choosing another destination
             yield return new WaitForSeconds(
                 Random.Range(minWaitTime, maxWaitTime)
             );
-            StopWalking();
         }
     }
 
