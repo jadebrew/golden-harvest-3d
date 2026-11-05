@@ -31,7 +31,7 @@ public class Node : MonoBehaviour
 {
     public Item _spawnable;
     public GameObject _target;
-    private float magnetRange = 3;
+    private float magnetRange = 2;
     public float health = 100;
     public DamageType vulnerability;
     public int _dropAmount = 5;
@@ -73,6 +73,14 @@ public class Node : MonoBehaviour
                 _animator.SetBool("mutant",true);
             }
         }
+        else if (intelligence == AiType.None)
+        {
+            if (_agent != null)
+            {
+                _agent.enabled = false;
+            }
+        }
+
         Respawn();
     }
 
@@ -111,7 +119,7 @@ public class Node : MonoBehaviour
         if (alive)
         {
             float distance = Vector3.Distance(transform.position, _target.transform.position);
-            if (distance < 5)
+            if (distance < 10)
             {
                 _target.GetComponent<PlayerMovement>().SetTarget(transform.gameObject);
             }
@@ -170,8 +178,8 @@ public class Node : MonoBehaviour
 
     private IEnumerator Wander()
     {
-        float minWaitTime = 1f;
-        float maxWaitTime = 10;
+        float minWaitTime = idleDelay*0.5f;
+        float maxWaitTime = idleDelay*1.5f;
         float wanderRadius = 5;
 
         while (true)

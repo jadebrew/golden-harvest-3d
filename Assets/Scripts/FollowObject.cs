@@ -8,6 +8,7 @@ public class FollowObject : MonoBehaviour
     public GameObject target;
     public float cameraSpeed;
     private float distance;
+    public float cameraDistance;
 
     void Start()
     {
@@ -18,11 +19,9 @@ public class FollowObject : MonoBehaviour
     void FixedUpdate()
     {
         var distance = Vector3.Distance(this.transform.position, goal.transform.position);
-        if (distance > Time.deltaTime*cameraSpeed)
+        if (distance > cameraDistance)
         {
-             this.transform.position = Vector3.MoveTowards(this.transform.position,goal.transform.position,Time.fixedDeltaTime*(cameraSpeed*distance));
-        } else {
-            this.transform.position = goal.transform.position;
+             this.transform.position = Vector3.Lerp(this.transform.position,goal.transform.position,Time.fixedDeltaTime*cameraSpeed);
         }
 
         this.transform.LookAt(target.transform.position);
