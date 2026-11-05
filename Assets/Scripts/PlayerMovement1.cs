@@ -113,11 +113,11 @@ public class PlayerMovement : MonoBehaviour
         if (_targetObject != null)
         {
             _cursor.transform.position = _targetObject.transform.position;
-            _cursor.transform.LookAt(this.transform);
+            _cursor.transform.LookAt(Camera.main.transform);
             _cursor.SetActive(true);
         }
 
-        if (faceTarget)
+        if (_targetObject != null && faceTarget)
         {
             RotateTowards(_targetObject.transform.position - transform.position);
         }
@@ -132,15 +132,18 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator UseDelay(float delayTime)
     {
+        var node = _targetObject.GetComponent<Node>();
         yield return new WaitForSeconds(delayTime);
 
-        var node = _targetObject.GetComponent<Node>();
         if (node != null)
         {
             if (node.InRange() && node.vulnerability == equippedItem.damageType)
             {
                 node.health -= equippedItem.damage;
 
+            }
+            else {
+                faceTarget = false;
             }
         }
         faceTarget = false;
@@ -335,6 +338,15 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetTarget(GameObject target)
     {
-        _targetObject = target;
+        float distance = Vector3.Distance(this.transform.position,target.transform.position);
+        float previousDistance = 999;
+        if (_targetObject != null)
+        {
+            previousDistance = Vector3.Distance(this.transform.position,_targetObject.transform.position);
+        }
+        if (distance < previousDistance)
+        {
+            _targetObject = target;
+        }
     }
 }

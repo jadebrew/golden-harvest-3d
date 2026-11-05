@@ -31,7 +31,7 @@ public class Node : MonoBehaviour
 {
     public Item _spawnable;
     public GameObject _target;
-    private float magnetRange = 3f;
+    private float magnetRange = 3;
     public float health = 100;
     public DamageType vulnerability;
     public int _dropAmount = 5;
@@ -107,16 +107,16 @@ public class Node : MonoBehaviour
         {
             waitTimer+= Time.fixedDeltaTime;
         }
-        if (alive && waitTimer > idleDelay)
-        {
 
+        if (alive)
+        {
             float distance = Vector3.Distance(transform.position, _target.transform.position);
-            if (distance < magnetRange)
+            if (distance < 5)
             {
                 _target.GetComponent<PlayerMovement>().SetTarget(transform.gameObject);
             }
 
-            if ((intelligence == AiType.Follow || intelligence == AiType.Humanoid) && !isWalking)
+            if ((intelligence == AiType.Follow || intelligence == AiType.Humanoid) && !isWalking && waitTimer > idleDelay)
             {
                 isWalking = true;
                 if (intelligence == AiType.Humanoid)
