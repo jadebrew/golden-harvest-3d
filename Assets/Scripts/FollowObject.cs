@@ -18,12 +18,16 @@ public class FollowObject : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        var distance = Vector3.Distance(this.transform.position, goal.transform.position);
+        if (target == null)
+        {
+            target = GameObject.Find("Player");
+        } else {
+        var distance = Vector3.Distance(this.transform.position, target.transform.position);
         if (distance > cameraDistance)
         {
-             this.transform.position = Vector3.Lerp(this.transform.position,goal.transform.position,Time.fixedDeltaTime*cameraSpeed);
+             this.transform.position = Vector3.Lerp(this.transform.position,target.transform.position,Time.fixedDeltaTime*cameraSpeed);
         }
-
         this.transform.LookAt(target.transform.position);
+    }
     }
 }

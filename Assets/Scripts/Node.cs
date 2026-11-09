@@ -100,11 +100,13 @@ public class Node : MonoBehaviour
 
     public bool InRange()
     {
-
-        float distance = Vector3.Distance(transform.position, _target.transform.position);
-        if (alive)
+        if (_target != null)
         {
-            return distance < magnetRange;
+            float distance = Vector3.Distance(transform.position, _target.transform.position);
+            if (alive)
+            {
+                return distance < magnetRange;
+            }
         }
         return false;
     }
@@ -116,15 +118,15 @@ public class Node : MonoBehaviour
             waitTimer+= Time.fixedDeltaTime;
         }
 
-        if (alive)
+        if (alive && _target != null)
         {
             float distance = Vector3.Distance(transform.position, _target.transform.position);
             if (distance < 10)
             {
-                _target.GetComponent<PlayerMovement>().SetTarget(transform.gameObject);
+                //_target.GetComponent<PlayerMovement>().SetTarget(transform.gameObject);
             }
 
-            if ((intelligence == AiType.Follow || intelligence == AiType.Humanoid) && !isWalking && waitTimer > idleDelay)
+            if (((intelligence == AiType.Follow && _target != null) || intelligence == AiType.Humanoid) && !isWalking && waitTimer > idleDelay)
             {
                 isWalking = true;
                 if (intelligence == AiType.Humanoid)
