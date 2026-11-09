@@ -26,7 +26,8 @@ public enum AuraType
     Crafting
 }
 
-//[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(NavMeshObstacle))]
 public class Node : MonoBehaviour
 {
     public Item _spawnable;
@@ -54,6 +55,7 @@ public class Node : MonoBehaviour
     public AuraType _aura;
 
     private NavMeshAgent _agent;
+    private NavMeshObstacle _obstacle;
 
     private Animator _animator;
 
@@ -62,6 +64,8 @@ public class Node : MonoBehaviour
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
+        _obstacle = GetComponent<NavMeshObstacle>();
+        _obstacle.enabled = false;
         _target = GameObject.Find("Player");
         alive = false;
         age = 0;
@@ -72,12 +76,14 @@ public class Node : MonoBehaviour
             {
                 _animator.SetBool("mutant",true);
             }
+
         }
         else if (intelligence == AiType.None)
         {
             if (_agent != null)
             {
                 _agent.enabled = false;
+                _obstacle.enabled = true;
             }
         }
 

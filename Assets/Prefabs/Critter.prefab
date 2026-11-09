@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7651897452227792738}
   - component: {fileID: 9168830853370350871}
   - component: {fileID: 5087582408091440272}
+  - component: {fileID: 3866077264211294660}
   m_Layer: 0
   m_Name: Critter
   m_TagString: Untagged
@@ -78,3 +79,19 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!208 &3866077264211294660
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8011123760483142881}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
