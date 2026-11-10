@@ -21,7 +21,6 @@ public class PlayerMovement : MonoBehaviour
 
     public int wood_amount = 0;
 
-    private NPC _target;
     private GameObject _targetObject;
     private Vector3 direction;
 
@@ -325,15 +324,6 @@ public class PlayerMovement : MonoBehaviour
             _inventory.Add(item,0);
         }
         _inventory[item] -= amount;
-    }
-
-    public void SetTarget(NPC npc)
-    {
-
-            _target = npc;
-            textPanel.transform.Find("Portrait").GetComponent<Image>().sprite = npc.person.portrait;
-            textPanel.transform.Find("Body").GetComponent<TMP_Text>().text = npc.person.chatter;
-            textPanel.transform.Find("Title").GetComponent<TMP_Text>().text = npc.person.longname;
     }
 
     public void SetTarget(GameObject target)
