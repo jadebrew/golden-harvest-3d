@@ -1336,7 +1336,6 @@ MonoBehaviour:
   equippedItem: {fileID: 11400000, guid: 43f37e1545f57e563bd6ff3f6526afad, type: 2}
   defaultIcon: {fileID: 21300000, guid: 05b08c2c6c51fda41abf553f3d7f1b01, type: 3}
   craftingContainer: {fileID: 0}
-  craftingPanel: {fileID: 0}
   menuTabs:
   - {fileID: 0}
   - {fileID: 0}

@@ -43756,10 +43756,6 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7272100936190790401, guid: ecc64e15cd07a8c3984c04feac472031, type: 3}
-      propertyPath: craftingPanel
-      value: 
-      objectReference: {fileID: 832162638}
-    - target: {fileID: 7272100936190790401, guid: ecc64e15cd07a8c3984c04feac472031, type: 3}
       propertyPath: rotationSpeed
       value: 180
       objectReference: {fileID: 0}

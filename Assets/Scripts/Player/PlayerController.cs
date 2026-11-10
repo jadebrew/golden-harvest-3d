@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour
     [Header("Menu References")]
     [Tooltip("Menu tabs, cycled with Next/Previous. One of them is the crafting panel.")]
     [SerializeField] private List<GameObject> menuTabs;
-    [SerializeField] private GameObject craftingPanel;
     [SerializeField] private GameObject craftingContainer;
     [SerializeField] private GameObject inventoryContainer;
 
@@ -43,7 +42,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Dictionary<Item, int> inventory = new();
     [SerializeField] private List<Recipe> knownRecipes;
 
-    [Header("Prefabs")]
+    [Header("Menu Assets")]
     [Tooltip("Button with 'Icon' and 'Label' children, used for inventory and recipe entries.")]
     [SerializeField] private GameObject buttonPrefab;
     [Tooltip("Icon for recipes whose output has no sprite.")]
@@ -92,7 +91,7 @@ public class PlayerController : MonoBehaviour
 
         CloseMenu();
         SpawnHeldModel();
-        RefreshInventoryUI();
+        RefreshMenuUI();
     }
 
     private void Update()
@@ -226,19 +225,25 @@ public class PlayerController : MonoBehaviour
 
     public void Give(Item item, int amount)
     {
-        inventory[item] = GetAmount(item) + amount;
-        RefreshInventoryUI();
+        ChangeAmount(item, amount);
+        RefreshMenuUI();
     }
 
-    public void Remove(Item item, int amount)
+    private void ChangeAmount(Item item, int delta)
     {
-        inventory[item] = GetAmount(item) - amount;
-        RefreshInventoryUI();
+        inventory[item] = GetAmount(item) + delta;
     }
 
     private int GetAmount(Item item)
     {
         return inventory.TryGetValue(item, out var amount) ? amount : 0;
+    }
+
+    /// <summary>Rebuilds the inventory and recipe lists; call after the inventory changes.</summary>
+    private void RefreshMenuUI()
+    {
+        RefreshInventoryUI();
+        RefreshCraftingUI();
     }
 
     private void RefreshInventoryUI()
@@ -289,15 +294,15 @@ public class PlayerController : MonoBehaviour
     {
         foreach (var (item, amount) in recipe.input)
         {
-            Remove(item, amount);
+            ChangeAmount(item, -amount);
         }
 
         foreach (var (item, amount) in recipe.output)
         {
-            Give(item, amount);
+            ChangeAmount(item, amount);
         }
 
-        RefreshCraftingUI();
+        RefreshMenuUI();
     }
 
     // ---------------------------------------------------------------- Menu
@@ -310,7 +315,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            RefreshCraftingUI();
             ShowMenuTab(0);
         }
     }
@@ -321,7 +325,6 @@ public class PlayerController : MonoBehaviour
 
         // Wrap around in both directions.
         _tabIndex = (index % menuTabs.Count + menuTabs.Count) % menuTabs.Count;
-        RefreshInventoryUI();
         menuTabs[_tabIndex].SetActive(true);
         _isMenuOpen = true;
     }
@@ -333,7 +336,6 @@ public class PlayerController : MonoBehaviour
             tab.SetActive(false);
         }
 
-        craftingPanel.SetActive(false);
         _isMenuOpen = false;
     }
 
