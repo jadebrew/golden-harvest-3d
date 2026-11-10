@@ -19,41 +19,36 @@ public class PlayerMovement : MonoBehaviour
     public float _jumpSpeed;
     public float _rotationSpeed = 10f;
 
-    public int wood_amount = 0;
-
-    private GameObject _targetObject;
-    private Vector3 direction;
-
+    [Header("Default Gear")]
     public GameObject itemSlot;
-
     private bool _showMenu;
-
-    public Animator mAnimator;
-
+    private Animator _animator;
     public GameObject heldModel;
     public Item equippedItem;
 
-    public Sprite defaultIcon;
-
-    public GameObject textPanel;
+    [Header("Menu References")]
     public GameObject craftingContainer;
     public GameObject craftingPanel;
+    public GameObject inventoryContainer;
     public List<GameObject> menuTabs;
     private int tabIndex;
 
-    private Dictionary<AuraType,float> environmentBuffs = new Dictionary<AuraType,float>();
-
+    [Header("Inventory & Recipes")]
     [SerializeField]
     public Dictionary<Item,int> _inventory = new Dictionary<Item,int>();
-
     public List<Recipe> knownRecipes;
     private bool inMenu = true;
 
+    [Header("Prefabs")]
     public GameObject buttonPrefab;
-    public GameObject inventoryContainer;
+    public Sprite defaultIcon;
     private bool faceTarget = false;
 
-    public GameObject _cursor;
+    [Header("Private References")]
+    private GameObject _targetObject;
+    private Vector3 direction;
+    private Dictionary<AuraType,float> environmentBuffs = new Dictionary<AuraType,float>();
+
 
     private void Start()
     {
@@ -65,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
         previousAction = InputSystem.actions.FindAction("Previous");
         interactAction = InputSystem.actions.FindAction("Interact");
         _rigidbody = GetComponent<Rigidbody>();
+        _animator = GetComponent<Animator>();
 
         closeMenu();
         Equip();
@@ -96,35 +92,22 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
 
-        mAnimator.SetBool("walking", false);
+        _animator.SetBool("walking", false);
         //see if moveAction isnt zero and add as force the players rigidbody
         Vector2 moveValue = moveAction.ReadValue<Vector2>();
         if (moveValue != Vector2.zero)
         {
             var bod = this;
             _rigidbody.AddForce(bod.transform.forward * moveValue.y * _thrust);
-            mAnimator.SetBool("walking", true);
+            _animator.SetBool("walking", true);
             Vector3 _AngleVelocity = new Vector3(0, moveValue.x*_rotationSpeed, 0);
             Quaternion deltaRotation = Quaternion.Euler(_AngleVelocity * Time.fixedDeltaTime);
             _rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
         }
 
-        if (_targetObject != null)
-        {
-            _cursor.transform.position = _targetObject.transform.position;
-            _cursor.transform.LookAt(Camera.main.transform);
-            _cursor.SetActive(true);
-        }
-
         if (_targetObject != null && faceTarget)
         {
             RotateTowards(_targetObject.transform.position - transform.position);
-        }
-
-        if (_targetObject != null && !_targetObject.GetComponent<Entity>().InRange())
-        {
-            _targetObject = null;
-            _cursor.SetActive(false);
         }
         updateInventory();
     }
@@ -154,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (equippedItem != null)
             {
-                mAnimator.SetTrigger("sweep");
+                _animator.SetTrigger("sweep");
                 if (_targetObject != null)
                 {
                     faceTarget = true;
