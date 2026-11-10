@@ -43809,7 +43809,7 @@ PrefabInstance:
       objectReference: {fileID: 728030433}
     - target: {fileID: 7272100936190790401, guid: ecc64e15cd07a8c3984c04feac472031, type: 3}
       propertyPath: menuTabs.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7272100936190790401, guid: ecc64e15cd07a8c3984c04feac472031, type: 3}
       propertyPath: 'menuTabs.Array.data[0]'
@@ -43818,7 +43818,7 @@ PrefabInstance:
     - target: {fileID: 7272100936190790401, guid: ecc64e15cd07a8c3984c04feac472031, type: 3}
       propertyPath: 'menuTabs.Array.data[1]'
       value: 
-      objectReference: {fileID: 1091056791}
+      objectReference: {fileID: 832162638}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

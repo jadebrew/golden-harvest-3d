@@ -146,21 +146,11 @@ public class PlayerMovement : MonoBehaviour
             }
 
         }
+
+
         if(interactAction.WasPressedThisFrame())
         {
-            if (!_showMenu)
-            {
-                showCraftMenu();
-            }
-            else
-            {
-                closeMenu();
-                _showMenu = false;
-            }
-
-        }
-        if(menuAction.WasPressedThisFrame())
-        {
+            showCraftMenu();
             if (!_showMenu)
             {
                 showMenu(0);
@@ -223,8 +213,8 @@ public class PlayerMovement : MonoBehaviour
 
     void showCraftMenu()
     {
-        craftingPanel.SetActive(true);
-        _showMenu = true;
+        //craftingPanel.SetActive(true);
+        //_showMenu = true;
 
         var container = craftingContainer;
         foreach(Transform child in container.transform)
