@@ -28,7 +28,7 @@ public enum AuraType
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(NavMeshObstacle))]
-public class Node : MonoBehaviour
+public class Entity : MonoBehaviour
 {
     public Item _spawnable;
     public GameObject _target;

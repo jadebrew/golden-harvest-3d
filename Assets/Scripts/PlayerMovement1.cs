@@ -122,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
             RotateTowards(_targetObject.transform.position - transform.position);
         }
 
-        if (_targetObject != null && !_targetObject.GetComponent<Node>().InRange())
+        if (_targetObject != null && !_targetObject.GetComponent<Entity>().InRange())
         {
             _targetObject = null;
             _cursor.SetActive(false);
@@ -132,14 +132,14 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator UseDelay(float delayTime)
     {
-        var node = _targetObject.GetComponent<Node>();
+        var entity = _targetObject.GetComponent<Entity>();
         yield return new WaitForSeconds(delayTime);
 
-        if (node != null)
+        if (entity != null)
         {
-            if (node.InRange() && node.vulnerability == equippedItem.damageType)
+            if (entity.InRange() && entity.vulnerability == equippedItem.damageType)
             {
-                node.health -= equippedItem.damage;
+                entity.health -= equippedItem.damage;
 
             }
             else {
