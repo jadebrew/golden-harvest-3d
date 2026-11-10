@@ -1,7 +1,8 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections.Generic;
-using System.Collections;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public enum AiType
 {
@@ -26,204 +27,280 @@ public enum AuraType
     Crafting
 }
 
+/// <summary>
+/// Something in the world the player can target and damage: a resource node, a critter or an NPC.
+/// When it dies it gives the player its drop item, then respawns after a delay.
+/// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(NavMeshObstacle))]
 public class Entity : MonoBehaviour
 {
-    public Item _spawnable;
-    public GameObject _target;
-    private float magnetRange = 2;
-    public float health = 100;
+    private static readonly int WalkingParam = Animator.StringToHash("walking");
+    private static readonly int MutantParam = Animator.StringToHash("mutant");
+
+    private const float WanderRadius = 5f;
+    private const float MaxWalkDuration = 10f;
+
+    // ---------------------------------------------------------------- Inspector
+
+    [Header("Identity")]
+    [FormerlySerializedAs("_race")]
+    public Race race;
+    [FormerlySerializedAs("intelligence")]
+    public AiType aiType;
+    [FormerlySerializedAs("_aura")]
+    public AuraType aura;
+
+    [Header("Health")]
+    [FormerlySerializedAs("health")]
+    [SerializeField] private float maxHealth = 100;
     public DamageType vulnerability;
-    public int _dropAmount = 5;
-    private float age = 0;
-    private float deathAge;
-    private float respawnRate = 30;
-    public GameObject model;
-    private GameObject modelInstance;
+    [FormerlySerializedAs("respawnRate"), FormerlySerializedAs("_respawnRate")]
+    [Tooltip("Seconds after death before the entity comes back.")]
+    [SerializeField] private float respawnDelay = 30;
 
-    public AiType intelligence;
+    [Header("Drops")]
+    [FormerlySerializedAs("spawnable"), FormerlySerializedAs("_spawnable")]
+    [Tooltip("Given to the player on death. Its model is shown on the entity while it is alive.")]
+    [SerializeField] private Item dropItem;
+    [FormerlySerializedAs("_dropAmount")]
+    [SerializeField] private int dropAmount = 5;
 
-    public float UpdateSpeed = 0.1f;
+    [Header("Interaction")]
+    [FormerlySerializedAs("magnetRange"), FormerlySerializedAs("_magnetRange")]
+    [Tooltip("How close the player must be to target this entity.")]
+    [SerializeField] private float interactRange = 2;
 
-    public float idleDelay = 5;
-    private float waitTimer = 0;
+    [Header("Movement")]
+    [Tooltip("Seconds before Humanoid/Follow AI starts moving, and the average pause between wander walks.")]
+    [SerializeField] private float idleDelay = 5;
+    [FormerlySerializedAs("updateSpeed"), FormerlySerializedAs("UpdateSpeed")]
+    [Tooltip("Seconds between path updates while following the player.")]
+    [SerializeField] private float followRepathInterval = 0.1f;
 
-    private bool isWalking = false;
-    private bool alive = true;
+    // ---------------------------------------------------------------- Runtime state
 
-    public AuraType _aura;
+    public float Health { get; private set; }
+    public bool IsAlive { get; private set; }
 
     private NavMeshAgent _agent;
     private NavMeshObstacle _obstacle;
-
     private Animator _animator;
+    private PlayerMovement _player;
+    private GameObject _dropModelInstance;
 
-    public Race _race;
+    // ---------------------------------------------------------------- Unity lifecycle
 
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _obstacle = GetComponent<NavMeshObstacle>();
-        _obstacle.enabled = false;
-        _target = GameObject.Find("Player");
-        alive = false;
-        age = 0;
-        if (intelligence == AiType.Humanoid)
+
+        // Entities without AI block the navmesh instead of moving on it.
+        var isStatic = aiType == AiType.None;
+        _agent.enabled = !isStatic;
+        _obstacle.enabled = isStatic;
+
+        if (aiType == AiType.Humanoid)
         {
             _animator = GetComponent<Animator>();
-            if (_race == Race.Goblin)
-            {
-                _animator.SetBool("mutant",true);
-            }
-
+            _animator.SetBool(MutantParam, race == Race.Goblin);
         }
-        else if (intelligence == AiType.None)
+    }
+
+    private void Start()
+    {
+        // Done in Start rather than Awake: Start runs after every Awake,
+        // so PlayerMovement has registered itself by now.
+        _player = PlayerMovement.Instance;
+        if (_player == null)
         {
-            if (_agent != null)
-            {
-                _agent.enabled = false;
-                _obstacle.enabled = true;
-            }
+            Debug.LogError($"{name}: no PlayerMovement found in the scene, disabling Entity.", this);
+            enabled = false;
+            return;
         }
 
         Respawn();
     }
 
-    private IEnumerator FollowTarget(GameObject target)
+    private void FixedUpdate()
     {
-        WaitForSeconds wait = new WaitForSeconds(UpdateSpeed);
-
-        while (enabled && target != null)
+        if (IsInPlayerRange())
         {
-            _agent.SetDestination(target.transform.position);
-
-            yield return wait;
-        }
-
-        StopWalking();
-    }
-
-    public bool InRange()
-    {
-
-        float distance = Vector3.Distance(transform.position, _target.transform.position);
-        if (alive)
-        {
-            return distance < magnetRange;
-        }
-        return false;
-    }
-
-    void FixedUpdate()
-    {
-        if (!isWalking)
-        {
-            waitTimer+= Time.fixedDeltaTime;
-        }
-
-        if (alive)
-        {
-            float distance = Vector3.Distance(transform.position, _target.transform.position);
-            if (distance < 10)
-            {
-                _target.GetComponent<PlayerMovement>().SetTarget(transform.gameObject);
-            }
-
-            if ((intelligence == AiType.Follow || intelligence == AiType.Humanoid) && !isWalking && waitTimer > idleDelay)
-            {
-                isWalking = true;
-                if (intelligence == AiType.Humanoid)
-                {
-                    StartCoroutine(Wander());
-                    _animator.SetBool("walking",true);
-                } else {
-                    StartCoroutine(FollowTarget(_target));
-                }
-
-            }
-            else if ((intelligence == AiType.Critter) && !isWalking)
-            {
-                isWalking = true;
-                StartCoroutine(Wander());
-            }
-            if (health<0)
-            {
-                if (_spawnable != null)
-                {
-                    _target.GetComponent<PlayerMovement>().Give(_spawnable,_dropAmount);
-                    alive = false;
-                    Destroy(modelInstance);
-                    age = 0;
-                }
-            }
-        } else {
-            if (!alive && age > respawnRate)
-            {
-                Respawn();
-            }
-        }
-
-    }
-
-    void Update()
-    {
-        age+= Time.deltaTime;
-    }
-
-    void Respawn()
-    {
-        alive = true;
-        health = 100;
-        age = 0;
-        if (_spawnable != null)
-        {
-        modelInstance = Instantiate(_spawnable.model,this.transform);
+            _player.SetTarget(this);
         }
     }
 
-    private IEnumerator Wander()
+    // ---------------------------------------------------------------- Public API
+
+    public bool IsInPlayerRange()
     {
-        float minWaitTime = idleDelay*0.5f;
-        float maxWaitTime = idleDelay*1.5f;
-        float wanderRadius = 5;
+        if (!IsAlive)
+        {
+            return false;
+        }
+
+        var offset = transform.position - _player.transform.position;
+        return offset.sqrMagnitude < interactRange * interactRange;
+    }
+
+    public void TakeDamage(float amount)
+    {
+        if (!IsAlive)
+        {
+            return;
+        }
+
+        Health -= amount;
+        if (Health <= 0)
+        {
+            Die();
+        }
+    }
+
+    // ---------------------------------------------------------------- Life cycle
+
+    private void Die()
+    {
+        IsAlive = false;
+        StopAllCoroutines();
+        StopMoving();
+
+        if (dropItem != null)
+        {
+            _player.Give(dropItem, dropAmount);
+        }
+
+        if (_dropModelInstance != null)
+        {
+            Destroy(_dropModelInstance);
+        }
+
+        StartCoroutine(RespawnAfterDelay());
+    }
+
+    private IEnumerator RespawnAfterDelay()
+    {
+        yield return new WaitForSeconds(respawnDelay);
+        Respawn();
+    }
+
+    private void Respawn()
+    {
+        Health = maxHealth;
+        IsAlive = true;
+
+        if (dropItem != null)
+        {
+            _dropModelInstance = Instantiate(dropItem.model, transform);
+        }
+
+        StartBehaviour();
+    }
+
+    // ---------------------------------------------------------------- AI
+
+    private void StartBehaviour()
+    {
+        switch (aiType)
+        {
+            case AiType.Critter:
+                StartCoroutine(WanderLoop(initialDelay: 0));
+                break;
+            case AiType.Humanoid:
+                StartCoroutine(WanderLoop(initialDelay: idleDelay));
+                break;
+            case AiType.Follow:
+                StartCoroutine(FollowPlayer(initialDelay: idleDelay));
+                break;
+        }
+    }
+
+    private IEnumerator WanderLoop(float initialDelay)
+    {
+        if (initialDelay > 0)
+        {
+            yield return new WaitForSeconds(initialDelay);
+        }
 
         while (true)
         {
-            Vector3 randomPosition = Random.insideUnitSphere * wanderRadius;
-            randomPosition += transform.position;
-
-            if (NavMesh.SamplePosition(
-                randomPosition,
-                out NavMeshHit hit,
-                wanderRadius,
-                NavMesh.AllAreas))
+            if (TryGetWanderPoint(out var destination))
             {
-                _agent.SetDestination(hit.position);
-
-                // Wait until we reach the destination
-                while (_agent.pathPending)
-                    yield return null;
-
-                while (_agent.remainingDistance > _agent.stoppingDistance)
-                    yield return null;
+                yield return WalkTo(destination);
             }
-            StopWalking();
-            // Wait before choosing another destination
-            yield return new WaitForSeconds(
-                Random.Range(minWaitTime, maxWaitTime)
-            );
+
+            yield return new WaitForSeconds(Random.Range(idleDelay * 0.5f, idleDelay * 1.5f));
         }
     }
 
-    void StopWalking()
+    private IEnumerator FollowPlayer(float initialDelay)
     {
-        isWalking = false;
-        if (!isWalking && intelligence == AiType.Humanoid)
+        yield return new WaitForSeconds(initialDelay);
+
+        var repathWait = new WaitForSeconds(followRepathInterval);
+        while (_player != null)
         {
-            _animator.SetBool("walking",false);
+            _agent.SetDestination(_player.transform.position);
+            yield return repathWait;
         }
-        waitTimer = 0;
+
+        StopMoving();
     }
 
+    private bool TryGetWanderPoint(out Vector3 point)
+    {
+        var candidate = transform.position + Random.insideUnitSphere * WanderRadius;
+        var found = NavMesh.SamplePosition(candidate, out var hit, WanderRadius, NavMesh.AllAreas);
+        point = hit.position;
+        return found;
+    }
+
+    private IEnumerator WalkTo(Vector3 destination)
+    {
+        _agent.SetDestination(destination);
+        SetWalkingAnimation(true);
+
+        // Give up after a while so an unreachable destination can't stall the AI forever.
+        var giveUpTime = Time.time + MaxWalkDuration;
+        while (!HasArrived() && Time.time < giveUpTime)
+        {
+            yield return null;
+        }
+
+        StopMoving();
+    }
+
+    private bool HasArrived()
+    {
+        if (_agent.pathPending)
+        {
+            return false;
+        }
+
+        if (_agent.pathStatus == NavMeshPathStatus.PathInvalid)
+        {
+            return true;
+        }
+
+        return _agent.remainingDistance <= _agent.stoppingDistance;
+    }
+
+    private void StopMoving()
+    {
+        if (_agent.enabled && _agent.isOnNavMesh)
+        {
+            _agent.ResetPath();
+        }
+
+        SetWalkingAnimation(false);
+    }
+
+    private void SetWalkingAnimation(bool isWalking)
+    {
+        if (_animator != null)
+        {
+            _animator.SetBool(WalkingParam, isWalking);
+        }
+    }
 }

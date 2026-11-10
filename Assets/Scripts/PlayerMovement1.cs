@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     public float _jumpSpeed;
     public float _rotationSpeed = 10f;
 
+    public static PlayerMovement Instance { get; private set; }
+
     [Header("Default Gear")]
     public GameObject itemSlot;
     private bool _showMenu;
@@ -45,10 +47,15 @@ public class PlayerMovement : MonoBehaviour
     private bool faceTarget = false;
 
     [Header("Private References")]
-    private GameObject _targetObject;
+    private Entity _target;
     private Vector3 direction;
     private Dictionary<AuraType,float> environmentBuffs = new Dictionary<AuraType,float>();
 
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -105,24 +112,23 @@ public class PlayerMovement : MonoBehaviour
             _rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
         }
 
-        if (_targetObject != null && faceTarget)
+        if (_target != null && faceTarget)
         {
-            RotateTowards(_targetObject.transform.position - transform.position);
+            RotateTowards(_target.transform.position - transform.position);
         }
         updateInventory();
     }
 
     IEnumerator UseDelay(float delayTime)
     {
-        var entity = _targetObject.GetComponent<Entity>();
+        var entity = _target;
         yield return new WaitForSeconds(delayTime);
 
         if (entity != null)
         {
-            if (entity.InRange() && entity.vulnerability == equippedItem.damageType)
+            if (entity.IsInPlayerRange() && entity.vulnerability == equippedItem.damageType)
             {
-                entity.health -= equippedItem.damage;
-
+                entity.TakeDamage(equippedItem.damage);
             }
             else {
                 faceTarget = false;
@@ -138,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
             if (equippedItem != null)
             {
                 _animator.SetTrigger("sweep");
-                if (_targetObject != null)
+                if (_target != null)
                 {
                     faceTarget = true;
                     StartCoroutine(UseDelay(0.7f));
@@ -299,17 +305,21 @@ public class PlayerMovement : MonoBehaviour
         _inventory[item] -= amount;
     }
 
-    public void SetTarget(GameObject target)
+    /// <summary>Called by entities in range; the closest one becomes the target.</summary>
+    public void SetTarget(Entity candidate)
     {
-        float distance = Vector3.Distance(this.transform.position,target.transform.position);
-        float previousDistance = 999;
-        if (_targetObject != null)
+        if (_target == null)
         {
-            previousDistance = Vector3.Distance(this.transform.position,_targetObject.transform.position);
+            _target = candidate;
+            return;
         }
-        if (distance < previousDistance)
+
+        var position = transform.position;
+        var candidateDistance = (candidate.transform.position - position).sqrMagnitude;
+        var currentDistance = (_target.transform.position - position).sqrMagnitude;
+        if (candidateDistance < currentDistance)
         {
-            _targetObject = target;
+            _target = candidate;
         }
     }
 }
