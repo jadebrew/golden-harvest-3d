@@ -5285,10 +5285,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf1951b932fae1185bed9be7a7dafc5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  goal: {fileID: 1055003395}
-  target: {fileID: 1248929177}
-  cameraSpeed: 0.7
-  cameraDistance: 3
+  followPoint: {fileID: 1055003395}
+  lookTarget: {fileID: 1248929177}
+  followSpeed: 0.7
+  deadZone: 3
 --- !u!1 &333780635
 GameObject:
   m_ObjectHideFlags: 0
