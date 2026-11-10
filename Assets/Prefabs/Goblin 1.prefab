@@ -559,6 +559,7 @@ GameObject:
   - component: {fileID: 419656243962459553}
   - component: {fileID: 6829523663059874221}
   - component: {fileID: 4852509122835653536}
+  - component: {fileID: 1719451360837360462}
   m_Layer: 0
   m_Name: Goblin 1
   m_TagString: Untagged
@@ -692,17 +693,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87bbbde7f2f135d41b096932e957b93e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Node
-  _spawnable: {fileID: 0}
-  _target: {fileID: 0}
-  health: 500
+  race: 0
+  aiType: 3
+  aura: 0
+  maxHealth: 500
   vulnerability: 1
-  _dropAmount: 5
-  model: {fileID: 0}
-  intelligence: 3
-  UpdateSpeed: 10
+  respawnDelay: 30
+  dropItem: {fileID: 0}
+  dropAmount: 5
+  interactRange: 2
   idleDelay: 1
-  _aura: 0
-  _race: 2
+  followRepathInterval: 10
+--- !u!208 &1719451360837360462
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3221764719193003931}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &3598086493275178021
 GameObject:
   m_ObjectHideFlags: 0

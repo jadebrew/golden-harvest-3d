@@ -11788,17 +11788,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87bbbde7f2f135d41b096932e957b93e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Node
-  _spawnable: {fileID: 0}
-  _target: {fileID: 0}
-  health: 100
+  race: 0
+  aiType: 0
+  aura: 2
+  maxHealth: 100
   vulnerability: 0
-  _dropAmount: 5
-  model: {fileID: 0}
-  intelligence: 0
-  UpdateSpeed: 0.1
+  respawnDelay: 30
+  dropItem: {fileID: 0}
+  dropAmount: 5
+  interactRange: 2
   idleDelay: 5
-  _aura: 2
-  _race: 0
+  followRepathInterval: 0.1
 --- !u!208 &671217354
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -14521,10 +14521,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 7495842947260845724, guid: 4a944d6a2d96754c7b06e0dd1fcf6659, type: 3}
-      propertyPath: model
-      value: 
-      objectReference: {fileID: 7302934476096967059}
     - target: {fileID: 9130737415469639834, guid: 4a944d6a2d96754c7b06e0dd1fcf6659, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.0424733
@@ -21452,11 +21448,7 @@ PrefabInstance:
       value: Critter (2)
       objectReference: {fileID: 0}
     - target: {fileID: 9168830853370350871, guid: d34b5058d98ac6d5fa8305998f597eaa, type: 3}
-      propertyPath: _target
-      value: 
-      objectReference: {fileID: 75870404}
-    - target: {fileID: 9168830853370350871, guid: d34b5058d98ac6d5fa8305998f597eaa, type: 3}
-      propertyPath: UpdateSpeed
+      propertyPath: followRepathInterval
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -27794,11 +27786,7 @@ PrefabInstance:
       value: Critter (3)
       objectReference: {fileID: 0}
     - target: {fileID: 9168830853370350871, guid: d34b5058d98ac6d5fa8305998f597eaa, type: 3}
-      propertyPath: _target
-      value: 
-      objectReference: {fileID: 75870404}
-    - target: {fileID: 9168830853370350871, guid: d34b5058d98ac6d5fa8305998f597eaa, type: 3}
-      propertyPath: UpdateSpeed
+      propertyPath: followRepathInterval
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -31288,10 +31276,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Critter (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 9168830853370350871, guid: d34b5058d98ac6d5fa8305998f597eaa, type: 3}
-      propertyPath: _target
-      value: 
-      objectReference: {fileID: 75870404}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -36351,7 +36335,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3340677663780892780, guid: dd116125fb2ac6b7ea6179afe6e2472c, type: 3}
-      propertyPath: magnetRange
+      propertyPath: interactRange
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8405394617119819429, guid: dd116125fb2ac6b7ea6179afe6e2472c, type: 3}
@@ -38563,7 +38547,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3340677663780892780, guid: dd116125fb2ac6b7ea6179afe6e2472c, type: 3}
-      propertyPath: magnetRange
+      propertyPath: interactRange
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8405394617119819429, guid: dd116125fb2ac6b7ea6179afe6e2472c, type: 3}
@@ -43316,10 +43300,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3085247453167211437, guid: 90735b9fc74bedf6cb248d8c9aee3e02, type: 3}
-      propertyPath: _target
-      value: 
-      objectReference: {fileID: 75870404}
     - target: {fileID: 3596620603009135923, guid: 90735b9fc74bedf6cb248d8c9aee3e02, type: 3}
       propertyPath: m_Name
       value: Zombie
@@ -43381,10 +43361,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4852509122835653536, guid: 271730112dea5e1428e7ff20a4782465, type: 3}
-      propertyPath: _target
-      value: 
-      objectReference: {fileID: 75870404}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -43607,10 +43583,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Critter
       objectReference: {fileID: 0}
-    - target: {fileID: 9168830853370350871, guid: d34b5058d98ac6d5fa8305998f597eaa, type: 3}
-      propertyPath: _target
-      value: 
-      objectReference: {fileID: 75870404}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -43851,17 +43823,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87bbbde7f2f135d41b096932e957b93e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Node
-  _spawnable: {fileID: 11400000, guid: 98667eefc6fc0e70eb1ae72ec617fb51, type: 2}
-  _target: {fileID: 0}
-  health: 100
+  race: 0
+  aiType: 0
+  aura: 0
+  maxHealth: 100
   vulnerability: 1
-  _dropAmount: 5
-  model: {fileID: 7302934476096967059}
-  intelligence: 0
-  UpdateSpeed: 0.1
+  respawnDelay: 30
+  dropItem: {fileID: 11400000, guid: 98667eefc6fc0e70eb1ae72ec617fb51, type: 2}
+  dropAmount: 5
+  interactRange: 2
   idleDelay: 5
-  _aura: 0
-  _race: 0
+  followRepathInterval: 0.1
 --- !u!195 &9130737414495285106
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public enum AiType
@@ -44,37 +43,28 @@ public class Entity : MonoBehaviour
     // ---------------------------------------------------------------- Inspector
 
     [Header("Identity")]
-    [FormerlySerializedAs("_race")]
     public Race race;
-    [FormerlySerializedAs("intelligence")]
     public AiType aiType;
-    [FormerlySerializedAs("_aura")]
     public AuraType aura;
 
     [Header("Health")]
-    [FormerlySerializedAs("health")]
     [SerializeField] private float maxHealth = 100;
     public DamageType vulnerability;
-    [FormerlySerializedAs("respawnRate"), FormerlySerializedAs("_respawnRate")]
     [Tooltip("Seconds after death before the entity comes back.")]
     [SerializeField] private float respawnDelay = 30;
 
     [Header("Drops")]
-    [FormerlySerializedAs("spawnable"), FormerlySerializedAs("_spawnable")]
     [Tooltip("Given to the player on death. Its model is shown on the entity while it is alive.")]
     [SerializeField] private Item dropItem;
-    [FormerlySerializedAs("_dropAmount")]
     [SerializeField] private int dropAmount = 5;
 
     [Header("Interaction")]
-    [FormerlySerializedAs("magnetRange"), FormerlySerializedAs("_magnetRange")]
     [Tooltip("How close the player must be to target this entity.")]
     [SerializeField] private float interactRange = 2;
 
     [Header("Movement")]
     [Tooltip("Seconds before Humanoid/Follow AI starts moving, and the average pause between wander walks.")]
     [SerializeField] private float idleDelay = 5;
-    [FormerlySerializedAs("updateSpeed"), FormerlySerializedAs("UpdateSpeed")]
     [Tooltip("Seconds between path updates while following the player.")]
     [SerializeField] private float followRepathInterval = 0.1f;
 

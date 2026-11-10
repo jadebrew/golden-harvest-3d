@@ -68,17 +68,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87bbbde7f2f135d41b096932e957b93e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Node
-  _spawnable: {fileID: 11400000, guid: 98667eefc6fc0e70eb1ae72ec617fb51, type: 2}
-  _target: {fileID: 0}
-  health: 100
+  race: 0
+  aiType: 0
+  aura: 0
+  maxHealth: 100
   vulnerability: 1
-  _dropAmount: 5
-  model: {fileID: 0}
-  intelligence: 0
-  UpdateSpeed: 0.1
+  respawnDelay: 30
+  dropItem: {fileID: 11400000, guid: 98667eefc6fc0e70eb1ae72ec617fb51, type: 2}
+  dropAmount: 5
+  interactRange: 2
   idleDelay: 5
-  _aura: 0
-  _race: 0
+  followRepathInterval: 0.1
 --- !u!208 &1197507111486659989
 NavMeshObstacle:
   m_ObjectHideFlags: 0
