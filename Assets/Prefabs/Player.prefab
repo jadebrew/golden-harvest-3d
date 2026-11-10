@@ -1329,22 +1329,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45909f704aaca3aa89bcb017a6d0a01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  _thrust: 10
-  _jumpSpeed: 0
-  _rotationSpeed: 5
-  wood_amount: 0
+  moveForce: 10
+  rotationSpeed: 5
   itemSlot: {fileID: 897593325511001329}
-  mAnimator: {fileID: 8870472738204939957}
   heldModel: {fileID: 7935927174854877580, guid: c9bfd91bdc88eb18d82c5162b5e79f51, type: 3}
   equippedItem: {fileID: 11400000, guid: 43f37e1545f57e563bd6ff3f6526afad, type: 2}
   defaultIcon: {fileID: 21300000, guid: 05b08c2c6c51fda41abf553f3d7f1b01, type: 3}
-  textPanel: {fileID: 0}
   craftingContainer: {fileID: 0}
   craftingPanel: {fileID: 0}
   menuTabs:
   - {fileID: 0}
   - {fileID: 0}
-  _inventory: []
+  inventory: []
   knownRecipes:
   - {fileID: 11400000, guid: 51b45de8c9fe9043ea3dee0a99c94cbd, type: 2}
   - {fileID: 11400000, guid: ea523dd1b258b099f949eb4fbe19fae0, type: 2}

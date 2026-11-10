@@ -76,7 +76,7 @@ public class Entity : MonoBehaviour
     private NavMeshAgent _agent;
     private NavMeshObstacle _obstacle;
     private Animator _animator;
-    private PlayerMovement _player;
+    private PlayerController _player;
     private GameObject _dropModelInstance;
 
     // ---------------------------------------------------------------- Unity lifecycle
@@ -101,11 +101,11 @@ public class Entity : MonoBehaviour
     private void Start()
     {
         // Done in Start rather than Awake: Start runs after every Awake,
-        // so PlayerMovement has registered itself by now.
-        _player = PlayerMovement.Instance;
+        // so PlayerController has registered itself by now.
+        _player = PlayerController.Instance;
         if (_player == null)
         {
-            Debug.LogError($"{name}: no PlayerMovement found in the scene, disabling Entity.", this);
+            Debug.LogError($"{name}: no PlayerController found in the scene, disabling Entity.", this);
             enabled = false;
             return;
         }

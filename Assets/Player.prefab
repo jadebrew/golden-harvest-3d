@@ -207,13 +207,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45909f704aaca3aa89bcb017a6d0a01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  _thrust: 15
-  _jumpSpeed: 3
-  _rotationSpeed: 10
-  wood_amount: 0
-  mAnimator: {fileID: 7615560059126941785}
-  textPanel: {fileID: 0}
-  _inventory: []
+  moveForce: 15
+  rotationSpeed: 10
+  inventory: []
 --- !u!54 &7799934449765812752
 Rigidbody:
   m_ObjectHideFlags: 0
