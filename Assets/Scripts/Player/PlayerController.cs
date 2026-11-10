@@ -121,11 +121,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
-
-        if (_faceTarget && _target != null)
-        {
-            RotateTowards(_target.transform.position - transform.position);
-        }
+        UpdateTarget();
     }
 
     // ---------------------------------------------------------------- Movement
@@ -176,6 +172,20 @@ public class PlayerController : MonoBehaviour
         if (candidateDistance < currentDistance)
         {
             _target = candidate;
+        }
+    }
+
+    private void UpdateTarget()
+    {
+        // Drop targets that died or that we walked away from, so the next entity in range can take over.
+        if (_target != null && !_target.IsInPlayerRange())
+        {
+            _target = null;
+        }
+
+        if (_faceTarget && _target != null)
+        {
+            RotateTowards(_target.transform.position - transform.position);
         }
     }
 
