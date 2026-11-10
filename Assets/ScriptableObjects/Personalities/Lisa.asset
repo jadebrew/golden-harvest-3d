@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 015b1435cec19f7d0a6c1b15a83263cb, type: 3}
   m_Name: Lisa
   m_EditorClassIdentifier: Assembly-CSharp::Personality
-  shortname: Lisa
-  longname: Lisa Lisa
+  shortName: Lisa
+  longName: Lisa Lisa
   chatter: Hi I'm Lisa!
   portrait: {fileID: 1670033796356817766, guid: 0f8e9f5bb1a81e48681647599bc70312, type: 3}

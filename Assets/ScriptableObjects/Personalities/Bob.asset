@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 015b1435cec19f7d0a6c1b15a83263cb, type: 3}
   m_Name: Bob
   m_EditorClassIdentifier: Assembly-CSharp::Personality
-  shortname: Bob
-  longname: Bob Fern
+  shortName: Bob
+  longName: Bob Fern
   chatter: It's lovely outside!
   portrait: {fileID: 5899847947390980637, guid: ad58101590511893ebf8ffdee6f8b88e, type: 3}
