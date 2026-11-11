@@ -28,7 +28,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Default Gear")]
     [SerializeField] private Item equippedItem;
-    [SerializeField] private GameObject heldModel;
     [Tooltip("Parent the held model is spawned under.")]
     [SerializeField] private GameObject itemSlot;
 
@@ -38,15 +37,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject craftingContainer;
     [SerializeField] private GameObject inventoryContainer;
 
+
     [Header("Inventory & Recipes")]
     [SerializeField] private Dictionary<Item, int> inventory = new();
     [SerializeField] private List<Recipe> knownRecipes;
+    private List<Item> indexedItemList = new();
+    private int selectedItemIndex = 0;
 
     [Header("Menu Assets")]
     [Tooltip("Button with 'Icon' and 'Label' children, used for inventory and recipe entries.")]
     [SerializeField] private GameObject buttonPrefab;
     [Tooltip("Icon for recipes whose output has no sprite.")]
     [SerializeField] private Sprite defaultIcon;
+
+    private AuraType _currentAura = AuraType.None;
 
     // ---------------------------------------------------------------- Runtime state
 
@@ -104,16 +108,34 @@ public class PlayerController : MonoBehaviour
         if (_menuAction.WasPressedThisFrame())
         {
             ToggleMenu();
+            RefreshMenuUI();
         }
 
-        if (_isMenuOpen && _nextTabAction.WasPressedThisFrame())
+        if (_nextTabAction.WasPressedThisFrame())
         {
-            ShowMenuTab(_tabIndex + 1);
+            if (_isMenuOpen)
+            {
+                ShowMenuTab(_tabIndex + 1);
+            }
+            else
+            {
+                selectedItemIndex++;
+                RefreshEquipment();
+            }
+
         }
 
-        if (_isMenuOpen && _previousTabAction.WasPressedThisFrame())
+        if (_previousTabAction.WasPressedThisFrame())
         {
-            ShowMenuTab(_tabIndex - 1);
+            if (_isMenuOpen)
+            {
+                ShowMenuTab(_tabIndex - 1);
+            }
+            else
+            {
+                selectedItemIndex--;
+                RefreshEquipment();
+            }
         }
     }
 
@@ -188,6 +210,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void RefreshEquipment()
+    {
+        if (selectedItemIndex<0)
+        {
+            selectedItemIndex = indexedItemList.Count-1;
+        }
+        if (selectedItemIndex>=indexedItemList.Count)
+        {
+            selectedItemIndex = 0;
+        }
+        equippedItem = indexedItemList[selectedItemIndex];
+        SpawnHeldModel();
+    }
+
     private void UseEquippedItem()
     {
         if (equippedItem == null)
@@ -218,7 +254,7 @@ public class PlayerController : MonoBehaviour
     private void SpawnHeldModel()
     {
         ClearChildren(itemSlot.transform);
-        Instantiate(heldModel, itemSlot.transform);
+        Instantiate(equippedItem.model, itemSlot.transform);
     }
 
     // ---------------------------------------------------------------- Inventory
@@ -249,10 +285,14 @@ public class PlayerController : MonoBehaviour
     private void RefreshInventoryUI()
     {
         ClearChildren(inventoryContainer.transform);
+        indexedItemList.Clear();
         foreach (var (item, amount) in inventory)
         {
             CreateButton(inventoryContainer.transform, item.sprite, amount.ToString());
+            indexedItemList.Add(item);
         }
+
+
     }
 
     // ---------------------------------------------------------------- Crafting
@@ -285,9 +325,20 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        var button = CreateButton(craftingContainer.transform, icon, label.ToString()).GetComponent<Button>();
-        button.onClick.AddListener(() => Craft(recipe));
-        button.interactable = canCraft;
+        if (_target == null)
+        {
+            _currentAura = AuraType.None;
+        } else {
+            _currentAura = _target.aura;
+        }
+
+        //only even show recipe when you have required aura
+        if (recipe.requiredAura == _currentAura)
+        {
+            var button = CreateButton(craftingContainer.transform, icon, label.ToString()).GetComponent<Button>();
+            button.onClick.AddListener(() => Craft(recipe));
+            button.interactable = canCraft;
+        }
     }
 
     private void Craft(Recipe recipe)

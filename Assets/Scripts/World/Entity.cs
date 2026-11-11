@@ -129,7 +129,6 @@ public class Entity : MonoBehaviour
         {
             return false;
         }
-
         var offset = transform.position - _player.transform.position;
         return offset.sqrMagnitude < interactRange * interactRange;
     }
