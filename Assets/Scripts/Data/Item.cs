@@ -19,6 +19,13 @@ public enum DamageType
     Bug
 }
 
+public enum AnimationType
+{
+    Pull,
+    Sweep,
+    Consume
+}
+
 [CreateAssetMenu(fileName = "Item", menuName = "Scriptable Objects/Item")]
 public class Item : ScriptableObject
 {
@@ -29,5 +36,6 @@ public class Item : ScriptableObject
     public GameObject worldModel;
     public ItemType itemType;
     public DamageType damageType;
+    public AnimationType animationType;
     public float damage;
 }

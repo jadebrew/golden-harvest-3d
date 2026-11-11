@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private static readonly int WalkingParam = Animator.StringToHash("walking");
     private static readonly int SweepParam = Animator.StringToHash("sweep");
     private static readonly int ConsumeParam = Animator.StringToHash("consume");
+    private static readonly int PullParam = Animator.StringToHash("pull");
 
     // Time between starting the swing animation and the hit landing.
     private static readonly WaitForSeconds HitDelay = new(0.7f);
@@ -248,6 +249,7 @@ public class PlayerController : MonoBehaviour
                     {
                         Instantiate(equippedItem.worldModel, transform.position + new Vector3(1,0,0), Quaternion.identity);
                         ChangeAmount(equippedItem,-1);
+                         _animator.SetTrigger(PullParam);
                     }
                     break;
                 case ItemType.Consumable:
@@ -262,7 +264,18 @@ public class PlayerController : MonoBehaviour
             if (_target != null && doHit)
             {
                 _faceTarget = true;
-                _animator.SetTrigger(SweepParam);
+                switch (equippedItem.animationType)
+                {
+                    case AnimationType.Consume:
+                        _animator.SetTrigger(ConsumeParam);
+                        break;
+                    case AnimationType.Sweep:
+                        _animator.SetTrigger(SweepParam);
+                        break;
+                    case AnimationType.Pull:
+                        _animator.SetTrigger(PullParam);
+                        break;
+                }
                 StartCoroutine(HitAfterDelay(_target));
             }
         }

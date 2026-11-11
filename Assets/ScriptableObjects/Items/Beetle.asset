@@ -18,4 +18,5 @@ MonoBehaviour:
   worldModel: {fileID: 8709981425195433284, guid: 75571af736b393ab5a576c21808dec3e, type: 3}
   itemType: 0
   damageType: 0
+  animationType: 2
   damage: 0
