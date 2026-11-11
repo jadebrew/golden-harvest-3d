@@ -37,6 +37,9 @@ public class Entity : MonoBehaviour
 {
     private static readonly int WalkingParam = Animator.StringToHash("walking");
     private static readonly int MutantParam = Animator.StringToHash("mutant");
+    private static readonly int SweepParam = Animator.StringToHash("sweep");
+    private static readonly int DeathParam = Animator.StringToHash("death");
+    private static readonly int ReviveParam = Animator.StringToHash("revive");
 
     private const float WanderRadius = 5f;
     private const float MaxWalkDuration = 10f;
@@ -166,6 +169,11 @@ public class Entity : MonoBehaviour
             Destroy(_dropModelInstance);
         }
 
+        if (aiType == AiType.Humanoid)
+        {
+            _animator.SetTrigger(DeathParam);
+        }
+
         StartCoroutine(RespawnAfterDelay());
     }
 
@@ -182,7 +190,12 @@ public class Entity : MonoBehaviour
 
         if (dropItem != null)
         {
-            _dropModelInstance = Instantiate(dropItem.model, transform);
+            _dropModelInstance = Instantiate(dropItem.worldModel, transform);
+        }
+
+        if (aiType == AiType.Humanoid)
+        {
+            _animator.SetTrigger(ReviveParam);
         }
 
         StartBehaviour();

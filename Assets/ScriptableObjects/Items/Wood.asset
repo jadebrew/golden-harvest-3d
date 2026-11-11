@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Item
   itemName: Wood
   sprite: {fileID: 21300000, guid: ff785d7be7459d9e7bb14aad5de92c71, type: 3}
-  model: {fileID: 7564642772323922183, guid: 24da5e1c2b1052fcd9b012c2b1b99097, type: 3}
+  model: {fileID: 6838037281231520895, guid: 03fc52c58b06443bf992533121ed4f0a, type: 3}
+  worldModel: {fileID: 7564642772323922183, guid: 24da5e1c2b1052fcd9b012c2b1b99097, type: 3}
   itemType: 0
   damageType: 0
   damage: 0

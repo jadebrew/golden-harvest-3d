@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 51172152932685196}
   - component: {fileID: 457593985865049986}
   m_Layer: 0
-  m_Name: Campfire
+  m_Name: CampfireNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91,9 +91,9 @@ MonoBehaviour:
   aiType: 0
   aura: 1
   maxHealth: 100
-  vulnerability: 1
+  vulnerability: 0
   respawnDelay: 30
-  dropItem: {fileID: 11400000, guid: e3ca8bba071ef977195c45bac946e440, type: 2}
+  dropItem: {fileID: 0}
   dropAmount: 1
   interactRange: 2
   idleDelay: 5

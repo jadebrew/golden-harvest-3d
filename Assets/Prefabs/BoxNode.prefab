@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8011123760483142881
+--- !u!1 &7302934475993060985
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,69 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7651897452227792738}
-  - component: {fileID: 9168830853370350871}
-  - component: {fileID: 5087582408091440272}
-  - component: {fileID: 3866077264211294660}
+  - component: {fileID: 9130737415469639834}
+  - component: {fileID: 3130873551614411160}
+  - component: {fileID: 7495842947260845724}
+  - component: {fileID: 1197507111486659989}
   m_Layer: 0
-  m_Name: Critter
+  m_Name: BoxNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7651897452227792738
+--- !u!4 &9130737415469639834
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8011123760483142881}
+  m_GameObject: {fileID: 7302934475993060985}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.73, y: 1.99597, z: 12.45}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9168830853370350871
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8011123760483142881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87bbbde7f2f135d41b096932e957b93e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Node
-  race: 0
-  aiType: 1
-  aura: 0
-  maxHealth: 100
-  vulnerability: 1
-  respawnDelay: 30
-  dropItem: {fileID: 11400000, guid: 4a8d8a1cd91fe4a50921e230188d0c71, type: 2}
-  dropAmount: 5
-  interactRange: 2
-  idleDelay: 5
-  followRepathInterval: 1
---- !u!195 &5087582408091440272
+--- !u!195 &3130873551614411160
 NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8011123760483142881}
+  m_GameObject: {fileID: 7302934475993060985}
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 2
+  m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 240
+  m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -79,13 +56,36 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!208 &3866077264211294660
+--- !u!114 &7495842947260845724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7302934475993060985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87bbbde7f2f135d41b096932e957b93e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Node
+  race: 0
+  aiType: 0
+  aura: 0
+  maxHealth: 100
+  vulnerability: 1
+  respawnDelay: 30
+  dropItem: {fileID: 11400000, guid: 98667eefc6fc0e70eb1ae72ec617fb51, type: 2}
+  dropAmount: 5
+  interactRange: 2
+  idleDelay: 5
+  followRepathInterval: 0.1
+--- !u!208 &1197507111486659989
 NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8011123760483142881}
+  m_GameObject: {fileID: 7302934475993060985}
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1

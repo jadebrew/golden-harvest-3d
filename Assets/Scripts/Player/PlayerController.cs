@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     [Header("Menu References")]
     [Tooltip("Menu tabs, cycled with Next/Previous. One of them is the crafting panel.")]
     [SerializeField] private List<GameObject> menuTabs;
+    [SerializeField] private GameObject hudContainer;
     [SerializeField] private GameObject craftingContainer;
     [SerializeField] private GameObject inventoryContainer;
 
@@ -222,6 +223,7 @@ public class PlayerController : MonoBehaviour
         }
         equippedItem = indexedItemList[selectedItemIndex];
         SpawnHeldModel();
+        hudContainer.GetComponent<TMP_Text>().text = equippedItem.itemName;
     }
 
     private void UseEquippedItem()

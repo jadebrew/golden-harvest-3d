@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7302934475993060985
+--- !u!1 &8702436354646541357
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,24 +8,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9130737415469639834}
-  - component: {fileID: 3130873551614411160}
-  - component: {fileID: 7495842947260845724}
-  - component: {fileID: 1197507111486659989}
+  - component: {fileID: 1236957329962457333}
+  - component: {fileID: 2032180788128295023}
+  - component: {fileID: 3340677663780892780}
+  - component: {fileID: 8405394617119819429}
   m_Layer: 0
-  m_Name: Box
+  m_Name: FibreNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9130737415469639834
+--- !u!4 &1236957329962457333
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7302934475993060985}
+  m_GameObject: {fileID: 8702436354646541357}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -34,13 +34,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!195 &3130873551614411160
+--- !u!195 &2032180788128295023
 NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7302934475993060985}
+  m_GameObject: {fileID: 8702436354646541357}
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
@@ -56,13 +56,13 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &7495842947260845724
+--- !u!114 &3340677663780892780
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7302934475993060985}
+  m_GameObject: {fileID: 8702436354646541357}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87bbbde7f2f135d41b096932e957b93e, type: 3}
@@ -74,18 +74,18 @@ MonoBehaviour:
   maxHealth: 100
   vulnerability: 1
   respawnDelay: 30
-  dropItem: {fileID: 11400000, guid: 98667eefc6fc0e70eb1ae72ec617fb51, type: 2}
+  dropItem: {fileID: 11400000, guid: 20c0d9fb83994deb9a2e0342e3eeab5f, type: 2}
   dropAmount: 5
   interactRange: 2
   idleDelay: 5
   followRepathInterval: 0.1
---- !u!208 &1197507111486659989
+--- !u!208 &8405394617119819429
 NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7302934475993060985}
+  m_GameObject: {fileID: 8702436354646541357}
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1

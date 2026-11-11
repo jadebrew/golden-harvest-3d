@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Bugfood
   m_EditorClassIdentifier: Assembly-CSharp::Item
   itemName: Bugsnack
-  sprite: {fileID: 7852535482429230554, guid: 86212d424e510940e9c1d5384dac27d8, type: 3}
-  model: {fileID: 8011123760483142881, guid: d34b5058d98ac6d5fa8305998f597eaa, type: 3}
+  sprite: {fileID: 21300000, guid: a79ef81ea5b9de6b6905210f6082ee7a, type: 3}
+  model: {fileID: 6838037281231520895, guid: 03fc52c58b06443bf992533121ed4f0a, type: 3}
+  worldModel: {fileID: 6838037281231520895, guid: 03fc52c58b06443bf992533121ed4f0a, type: 3}
   itemType: 4
   damageType: 0
   damage: 0
