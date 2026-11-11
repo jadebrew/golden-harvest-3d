@@ -4,12 +4,18 @@ public enum ItemType
 {
     Resource,
     Weapon,
-    Tool
+    Tool,
+    Place,
+    Consumable
 }
 
 public enum DamageType
 {
     Normal,
+    Axe,
+    Sword,
+    Pickaxe,
+    Sickle,
     Bug
 }
 
@@ -20,6 +26,7 @@ public class Item : ScriptableObject
     public string itemName;
     public Sprite sprite;
     public GameObject model;
+    public GameObject worldModel;
     public ItemType itemType;
     public DamageType damageType;
     public float damage;

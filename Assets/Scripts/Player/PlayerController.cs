@@ -230,14 +230,31 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+        var doHit = false;
 
-        _animator.SetTrigger(SweepParam);
-        if (_target != null)
-        {
-            _faceTarget = true;
-            StartCoroutine(HitAfterDelay(_target));
+            switch (equippedItem.itemType)
+            {
+                case ItemType.Weapon:
+                    doHit = true;
+                    break;
+                case ItemType.Tool:
+                    doHit = true;
+                    break;
+                case ItemType.Place:
+                    Instantiate(equippedItem.worldModel, transform.position + new Vector3(1,0,0), Quaternion.identity);
+                    break;
+                case ItemType.Consumable:
+
+                    break;
+            }
+
+            if (_target != null && doHit)
+            {
+                _faceTarget = true;
+                _animator.SetTrigger(SweepParam);
+                StartCoroutine(HitAfterDelay(_target));
+            }
         }
-    }
 
     private IEnumerator HitAfterDelay(Entity entity)
     {

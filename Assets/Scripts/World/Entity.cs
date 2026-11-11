@@ -23,7 +23,8 @@ public enum AuraType
 {
     None,
     Cooking,
-    Crafting
+    Crafting,
+    Portal
 }
 
 /// <summary>
