@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 {
     private static readonly int WalkingParam = Animator.StringToHash("walking");
     private static readonly int SweepParam = Animator.StringToHash("sweep");
+    private static readonly int ConsumeParam = Animator.StringToHash("consume");
 
     // Time between starting the swing animation and the hit landing.
     private static readonly WaitForSeconds HitDelay = new(0.7f);
@@ -95,8 +96,8 @@ public class PlayerController : MonoBehaviour
         _animator = GetComponent<Animator>();
 
         CloseMenu();
-        SpawnHeldModel();
         RefreshMenuUI();
+        RefreshEquipment();
     }
 
     private void Update()
@@ -243,10 +244,18 @@ public class PlayerController : MonoBehaviour
                     doHit = true;
                     break;
                 case ItemType.Place:
-                    Instantiate(equippedItem.worldModel, transform.position + new Vector3(1,0,0), Quaternion.identity);
+                    if(inventory[equippedItem]>0)
+                    {
+                        Instantiate(equippedItem.worldModel, transform.position + new Vector3(1,0,0), Quaternion.identity);
+                        ChangeAmount(equippedItem,-1);
+                    }
                     break;
                 case ItemType.Consumable:
-
+                    if(inventory[equippedItem]>0)
+                    {
+                        ChangeAmount(equippedItem,-1);
+                        _animator.SetTrigger(ConsumeParam);
+                    }
                     break;
             }
 
@@ -287,6 +296,7 @@ public class PlayerController : MonoBehaviour
     private void ChangeAmount(Item item, int delta)
     {
         inventory[item] = GetAmount(item) + delta;
+        RefreshMenuUI();
     }
 
     private int GetAmount(Item item)
@@ -305,13 +315,32 @@ public class PlayerController : MonoBehaviour
     {
         ClearChildren(inventoryContainer.transform);
         indexedItemList.Clear();
+        var index = 0;
         foreach (var (item, amount) in inventory)
         {
-            CreateButton(inventoryContainer.transform, item.sprite, amount.ToString());
-            indexedItemList.Add(item);
+            if (amount>0)
+            {
+                var button = CreateButton(inventoryContainer.transform, item.sprite, amount.ToString()).GetComponent<Button>();
+                button.onClick.AddListener(() => SelectItem(item));
+                indexedItemList.Add(item);
+            }
         }
 
 
+    }
+
+    private void SelectItem(Item item)
+    {
+        var index = 0;
+        foreach (var owned in indexedItemList)
+        {
+            if (owned == item)
+            {
+                selectedItemIndex = index;
+            }
+            index++;
+        }
+        RefreshEquipment();
     }
 
     // ---------------------------------------------------------------- Crafting
@@ -335,6 +364,10 @@ public class PlayerController : MonoBehaviour
 
         var label = new StringBuilder();
         var canCraft = true;
+        foreach (var (item, amount) in recipe.output)
+        {
+            label.Append(item.itemName).Append('\n');
+        }
         foreach (var (item, amount) in recipe.input)
         {
             label.Append(amount).Append("x ").Append(item.itemName).Append('\n');

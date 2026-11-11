@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b03b60dc4f155a9fbfc2095a4e3279c, type: 3}
+  m_Name: Workbench
+  m_EditorClassIdentifier: Assembly-CSharp::Recipe
+  input:
+  - key: {fileID: 11400000, guid: 98667eefc6fc0e70eb1ae72ec617fb51, type: 2}
+    value: 6
+  output:
+  - key: {fileID: 11400000, guid: b47021b6a2c2cff169ca2febcbfc1630, type: 2}
+    value: 1
+  requiredAura: 0
