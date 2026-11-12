@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ded2aceb15dc52ab793f2b390e07173d, type: 3}
+  m_Name: EntityRoot
+  m_EditorClassIdentifier: Assembly-CSharp::BehaviorNode
+  _nodes:
+  - {fileID: 11400000, guid: 8000a7cf522167b7aa7fd1ef49222003, type: 2}
+  - {fileID: 11400000, guid: e61c819ad4925197a8869d2e821023f6, type: 2}
+  - {fileID: 11400000, guid: 75abc44f2c16ec65787f9006f32afd4a, type: 2}
+  _nodeName: Entity!
+  _nodeType: 2

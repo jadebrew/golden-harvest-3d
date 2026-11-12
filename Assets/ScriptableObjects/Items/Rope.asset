@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d719fa8a0f1c08c3980228d01800bd6c, type: 3}
   m_Name: Rope
   m_EditorClassIdentifier: Assembly-CSharp::Item
-  itemName: Rope
+  itemName: Fibre Rope
   sprite: {fileID: 21300000, guid: 2b466d4dfd58d1a92af2c3d01cbc3ba0, type: 3}
   model: {fileID: 6838037281231520895, guid: 03fc52c58b06443bf992533121ed4f0a, type: 3}
   worldModel: {fileID: 6838037281231520895, guid: 03fc52c58b06443bf992533121ed4f0a, type: 3}
   itemType: 0
   damageType: 0
   animationType: 2
+  verb: 
   damage: 1

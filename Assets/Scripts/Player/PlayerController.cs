@@ -54,6 +54,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Sprite defaultIcon;
 
     private AuraType _currentAura = AuraType.None;
+    private string[] AuraStrings = {"Improvise", "Cook", "Craft", "Teleport"};
+
+    private string[] ItemTypeVerbs = {"Hold", "Swing", "Use", "Place", "Consume"};
 
     // ---------------------------------------------------------------- Runtime state
 
@@ -140,6 +143,7 @@ public class PlayerController : MonoBehaviour
                 RefreshEquipment();
             }
         }
+        RefreshHud();
     }
 
     private void FixedUpdate()
@@ -225,7 +229,6 @@ public class PlayerController : MonoBehaviour
         }
         equippedItem = indexedItemList[selectedItemIndex];
         SpawnHeldModel();
-        hudContainer.GetComponent<TMP_Text>().text = equippedItem.itemName;
     }
 
     private void UseEquippedItem()
@@ -324,6 +327,13 @@ public class PlayerController : MonoBehaviour
         RefreshCraftingUI();
     }
 
+    private void RefreshHud()
+    {
+        CheckAura();
+        var debugtext = "[F] " + ItemTypeVerbs[(int)equippedItem.itemType] + " " + equippedItem.itemName + "\n[E] " + AuraStrings[(int)_currentAura];
+        hudContainer.GetComponent<TMP_Text>().text = debugtext;
+    }
+
     private void RefreshInventoryUI()
     {
         ClearChildren(inventoryContainer.transform);
@@ -389,20 +399,23 @@ public class PlayerController : MonoBehaviour
                 canCraft = false;
             }
         }
-
-        if (_target == null)
-        {
-            _currentAura = AuraType.None;
-        } else {
-            _currentAura = _target.aura;
-        }
-
+        CheckAura();
         //only even show recipe when you have required aura
         if (recipe.requiredAura == _currentAura)
         {
             var button = CreateButton(craftingContainer.transform, icon, label.ToString()).GetComponent<Button>();
             button.onClick.AddListener(() => Craft(recipe));
             button.interactable = canCraft;
+        }
+    }
+
+    private void CheckAura()
+    {
+        if (_target == null)
+        {
+            _currentAura = AuraType.None;
+        } else {
+            _currentAura = _target.aura;
         }
     }
 

@@ -18,4 +18,6 @@ MonoBehaviour:
   worldModel: {fileID: 0}
   itemType: 2
   damageType: 0
+  animationType: 0
+  verb: Grab
   damage: 100

@@ -24,7 +24,7 @@ public enum AuraType
     None,
     Cooking,
     Crafting,
-    Portal
+    Portal,
 }
 
 /// <summary>

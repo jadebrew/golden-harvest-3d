@@ -18,4 +18,6 @@ MonoBehaviour:
   worldModel: {fileID: 5899617645150641516, guid: e19f6c339a2c99b1196a3ac7c07b97d8, type: 3}
   itemType: 3
   damageType: 0
+  animationType: 0
+  verb: Place
   damage: 1
