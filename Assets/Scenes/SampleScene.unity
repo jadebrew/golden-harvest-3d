@@ -5927,7 +5927,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orbitTilt: 30
   orbitYaw: -37
-  skyGradient: {fileID: 0}
+  skyGradient: {fileID: 2800000, guid: c8bbba0eaa9160c46a2a6458029b5aed, type: 3}
 --- !u!43 &410633083
 Mesh:
   m_ObjectHideFlags: 0

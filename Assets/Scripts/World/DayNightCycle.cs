@@ -19,6 +19,8 @@ public class DayNightCycle : MonoBehaviour
     private Material skybox;
     private Light sun;
 
+    public float timeOffset = 8;
+
     void Start()
     {
         sun = GetComponent<Light>();
@@ -32,7 +34,7 @@ public class DayNightCycle : MonoBehaviour
 
     void Update()
     {
-        var hours = (float)DateTime.Now.TimeOfDay.TotalHours;
+        var hours = (float)DateTime.Now.TimeOfDay.TotalHours + timeOffset;
 
         transform.rotation = SunRotation(hours, orbitTilt, orbitYaw);
 
