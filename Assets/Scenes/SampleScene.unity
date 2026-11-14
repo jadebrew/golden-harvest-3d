@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1.27
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.22801678, g: 0.109803915, b: 0.44313726, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: d940168d788b36acd91520e663133179, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 7343c0a62363a0128ad4808613421332, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -5913,6 +5913,21 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &410087043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410087039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe77389bcb8843c1a2b3de8fff3737a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orbitTilt: 30
+  orbitYaw: -37
+  skyGradient: {fileID: 0}
 --- !u!43 &410633083
 Mesh:
   m_ObjectHideFlags: 0
@@ -42905,17 +42920,3 @@ SceneRoots:
   - {fileID: 1437156681}
   - {fileID: 422720915}
   - {fileID: 612502335}
---- !u!114 &410087043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 410087039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe77389bcb8843c1a2b3de8fff3737a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  orbitTilt: 30
-  orbitYaw: -37
