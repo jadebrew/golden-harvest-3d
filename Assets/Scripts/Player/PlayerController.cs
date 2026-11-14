@@ -116,6 +116,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        Screen.lockCursor = !_isMenuOpen;
         if (_useAction.WasPressedThisFrame())
         {
             UseEquippedItem();
