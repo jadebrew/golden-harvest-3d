@@ -25,8 +25,10 @@ public class PlayerController : MonoBehaviour
     // ---------------------------------------------------------------- Inspector
 
     [Header("Movement")]
-    [SerializeField] private float moveForce;
+    [SerializeField] private float moveForce = 10f;
     [SerializeField] private float rotationSpeed = 10f;
+    [SerializeField] private float _gravity = -30f;
+    public GameObject _lookAt;
 
     [Header("Default Gear")]
     [SerializeField] private Item equippedItem;
@@ -61,17 +63,21 @@ public class PlayerController : MonoBehaviour
     // ---------------------------------------------------------------- Runtime state
 
     private InputAction _moveAction;
+    private InputAction _lookAction;
     private InputAction _useAction;
     private InputAction _menuAction;
     private InputAction _nextTabAction;
     private InputAction _previousTabAction;
 
-    private Rigidbody _rigidbody;
+    private CharacterController _charController;
     private Animator _animator;
     private Entity _target;
     private bool _faceTarget;
     private bool _isMenuOpen;
     private int _tabIndex;
+
+    private float _yrot;
+    private Vector3 _cameraHeight = new Vector3(0,2f,0);
 
     // ---------------------------------------------------------------- Unity lifecycle
 
@@ -92,16 +98,20 @@ public class PlayerController : MonoBehaviour
     {
         // Action names come from the input actions asset.
         _moveAction = InputSystem.actions.FindAction("Move");
-        _useAction = InputSystem.actions.FindAction("Jump");
+        _lookAction = InputSystem.actions.FindAction("Look");
+        _useAction = InputSystem.actions.FindAction("Attack");
         _menuAction = InputSystem.actions.FindAction("Interact");
         _nextTabAction = InputSystem.actions.FindAction("Next");
         _previousTabAction = InputSystem.actions.FindAction("Previous");
-        _rigidbody = GetComponent<Rigidbody>();
+        _charController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
 
         CloseMenu();
         RefreshMenuUI();
         RefreshEquipment();
+
+        Cursor.visible = false;
+        Screen.lockCursor = true;
     }
 
     private void Update()
@@ -163,10 +173,20 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+        var move = _lookAt.transform.forward * input.y + _lookAt.transform.right * input.x;
+        move *= (moveForce * Time.deltaTime);
 
-        _rigidbody.AddForce(transform.forward * (input.y * moveForce));
-        var turn = Quaternion.Euler(0, input.x * rotationSpeed * Time.fixedDeltaTime, 0);
-        _rigidbody.MoveRotation(_rigidbody.rotation * turn);
+        _lookAt.transform.position = transform.position + _cameraHeight;
+
+        var vertical = _gravity * Time.deltaTime;
+
+        _charController.Move(new Vector3(move.x,vertical,move.z));
+
+        var lookInput = _lookAction.ReadValue<Vector2>();
+        _yrot += lookInput.x * rotationSpeed * Time.deltaTime;
+        _lookAt.transform.localRotation = Quaternion.Euler(0,_yrot,0);
+
+        RotateTowards(move);
     }
 
     private void RotateTowards(Vector3 direction)
