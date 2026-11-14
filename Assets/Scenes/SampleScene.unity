@@ -43754,11 +43754,15 @@ PrefabInstance:
       objectReference: {fileID: 858517844}
     - target: {fileID: 7272100936190790401, guid: ecc64e15cd07a8c3984c04feac472031, type: 3}
       propertyPath: _gravity
-      value: -30
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7272100936190790401, guid: ecc64e15cd07a8c3984c04feac472031, type: 3}
+      propertyPath: jumpForce
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 7272100936190790401, guid: ecc64e15cd07a8c3984c04feac472031, type: 3}
       propertyPath: moveForce
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7272100936190790401, guid: ecc64e15cd07a8c3984c04feac472031, type: 3}
       propertyPath: equippedItem

@@ -16,6 +16,10 @@ public class PlayerController : MonoBehaviour
     private static readonly int SweepParam = Animator.StringToHash("sweep");
     private static readonly int ConsumeParam = Animator.StringToHash("consume");
     private static readonly int PullParam = Animator.StringToHash("pull");
+    private static readonly int JumpParam = Animator.StringToHash("jump");
+    private static readonly int FallParam = Animator.StringToHash("fall");
+    private static readonly int HurtParam = Animator.StringToHash("impact");
+    private static readonly int GroundParam = Animator.StringToHash("IsGrounded");
 
     // Time between starting the swing animation and the hit landing.
     private static readonly WaitForSeconds HitDelay = new(0.7f);
@@ -27,7 +31,9 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float moveForce = 10f;
     [SerializeField] private float rotationSpeed = 10f;
-    [SerializeField] private float _gravity = -30f;
+    [SerializeField] private float _gravity = -10f;
+    [SerializeField] private float jumpForce = 5f;
+    private float verticalVelocity;
     public GameObject _lookAt;
 
     [Header("Default Gear")]
@@ -65,6 +71,7 @@ public class PlayerController : MonoBehaviour
     private InputAction _moveAction;
     private InputAction _lookAction;
     private InputAction _useAction;
+    private InputAction _jumpAction;
     private InputAction _menuAction;
     private InputAction _nextTabAction;
     private InputAction _previousTabAction;
@@ -99,6 +106,7 @@ public class PlayerController : MonoBehaviour
         // Action names come from the input actions asset.
         _moveAction = InputSystem.actions.FindAction("Move");
         _lookAction = InputSystem.actions.FindAction("Look");
+        _jumpAction = InputSystem.actions.FindAction("Jump");
         _useAction = InputSystem.actions.FindAction("Attack");
         _menuAction = InputSystem.actions.FindAction("Interact");
         _nextTabAction = InputSystem.actions.FindAction("Next");
@@ -117,6 +125,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         Screen.lockCursor = !_isMenuOpen;
+        _animator.SetBool(GroundParam,_charController.isGrounded);
         if (_useAction.WasPressedThisFrame())
         {
             UseEquippedItem();
@@ -138,6 +147,23 @@ public class PlayerController : MonoBehaviour
             {
                 selectedItemIndex++;
                 RefreshEquipment();
+            }
+
+        }
+
+        if (_jumpAction.WasPressedThisFrame())
+        {
+            if (_isMenuOpen)
+            {
+               // ShowMenuTab(_tabIndex + 1);
+            }
+            else
+            {
+                if (_charController.isGrounded)
+                {
+                    verticalVelocity = jumpForce;
+                    _animator.SetTrigger(JumpParam);
+                }
             }
 
         }
@@ -170,24 +196,23 @@ public class PlayerController : MonoBehaviour
         var input = _moveAction.ReadValue<Vector2>();
         var isMoving = input != Vector2.zero;
         _animator.SetBool(WalkingParam, isMoving);
-        if (!isMoving)
-        {
-            return;
-        }
+
         var move = _lookAt.transform.forward * input.y + _lookAt.transform.right * input.x;
         move *= (moveForce * Time.deltaTime);
 
         _lookAt.transform.position = transform.position + _cameraHeight;
 
-        var vertical = _gravity * Time.deltaTime;
+        verticalVelocity += _gravity * Time.deltaTime;
 
-        _charController.Move(new Vector3(move.x,vertical,move.z));
+        _charController.Move(new Vector3(move.x,verticalVelocity,move.z));
 
         var lookInput = _lookAction.ReadValue<Vector2>();
         _yrot += lookInput.x * rotationSpeed * Time.deltaTime;
-        _lookAt.transform.localRotation = Quaternion.Euler(0,_yrot,0);
+        //_lookAt.transform.localRotation = Quaternion.Euler(0,_yrot,0);
 
         RotateTowards(move);
+
+        _lookAt.transform.rotation = Quaternion.Lerp(_lookAt.transform.rotation,transform.rotation,Time.deltaTime);
     }
 
     private void RotateTowards(Vector3 direction)
