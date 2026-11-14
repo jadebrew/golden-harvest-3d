@@ -1,0 +1,5 @@
+released under CC0
+
+generated with https://github.com/drummyfish/ptdesigner
+
+author: Miloslav Číž

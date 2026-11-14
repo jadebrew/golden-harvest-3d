@@ -19,5 +19,4 @@ MonoBehaviour:
   itemType: 3
   damageType: 0
   animationType: 0
-  verb: Place
   damage: 1
