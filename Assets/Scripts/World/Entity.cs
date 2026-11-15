@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Data;
 using Player;
 using UnityEngine;
@@ -88,6 +89,15 @@ namespace World
         public float Health { get; private set; }
         public bool IsAlive { get; private set; }
 
+        /// <summary>True while the entity is removed from the world, e.g. a villager inside its house.</summary>
+        public bool IsHidden { get; private set; }
+
+        /// <summary>Raised every time the entity (re)spawns, after its default behaviour has started.</summary>
+        public event System.Action Respawned;
+
+        private Coroutine _behaviour;
+        private readonly List<Renderer> _hiddenRenderers = new();
+
         private NavMeshAgent _agent;
         private NavMeshObstacle _obstacle;
         private Animator _animator;
@@ -140,7 +150,7 @@ namespace World
 
         public bool IsInPlayerRange()
         {
-            if (!IsAlive)
+            if (!IsAlive || IsHidden)
             {
                 return false;
             }
@@ -150,7 +160,7 @@ namespace World
 
         public void TakeDamage(float amount)
         {
-            if (indestructible || !IsAlive)
+            if (indestructible || !IsAlive || IsHidden)
             {
                 return;
             }
@@ -168,6 +178,7 @@ namespace World
         {
             IsAlive = false;
             StopAllCoroutines();
+            _behaviour = null;
             StopMoving();
 
             if (dropItem)
@@ -210,23 +221,92 @@ namespace World
             }
 
             StartBehaviour();
+            Respawned?.Invoke();
         }
 
         // ---------------------------------------------------------------- AI
 
         private void StartBehaviour()
         {
+            var routine = DefaultBehaviour();
+            if (routine != null)
+            {
+                SetBehaviour(routine);
+            }
+        }
+
+        /// <summary>The routine this entity runs when nothing else is driving it, or null for static entities.</summary>
+        public IEnumerator DefaultBehaviour()
+        {
             switch (aiType)
             {
                 case AiType.Critter:
-                    StartCoroutine(WanderLoop(initialDelay: 0));
-                    break;
+                    return WanderLoop(initialDelay: 0);
                 case AiType.Humanoid:
-                    StartCoroutine(WanderLoop(initialDelay: idleDelay));
-                    break;
+                    return WanderLoop(initialDelay: idleDelay);
                 case AiType.Follow:
-                    StartCoroutine(FollowPlayer(initialDelay: idleDelay));
-                    break;
+                    return FollowPlayer(initialDelay: idleDelay);
+                default:
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// Replaces whatever the entity is currently doing with <paramref name="routine"/>.
+        /// The routine runs on the entity, so it stops automatically when the entity dies.
+        /// </summary>
+        public void SetBehaviour(IEnumerator routine)
+        {
+            if (_behaviour != null)
+            {
+                StopCoroutine(_behaviour);
+            }
+
+            StopMoving();
+            _behaviour = StartCoroutine(routine);
+        }
+
+        /// <summary>
+        /// Removes the entity from the world (invisible, untargetable, off the navmesh) or brings it back.
+        /// </summary>
+        public void SetHidden(bool hidden)
+        {
+            if (hidden == IsHidden)
+            {
+                return;
+            }
+
+            IsHidden = hidden;
+
+            if (hidden)
+            {
+                // Only remember renderers that were visible, so we don't re-enable ones that started hidden.
+                _hiddenRenderers.Clear();
+                foreach (var r in GetComponentsInChildren<Renderer>())
+                {
+                    if (r.enabled)
+                    {
+                        r.enabled = false;
+                        _hiddenRenderers.Add(r);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var r in _hiddenRenderers)
+                {
+                    if (r)
+                    {
+                        r.enabled = true;
+                    }
+                }
+                _hiddenRenderers.Clear();
+            }
+
+            // Stop other agents from steering around an invisible entity.
+            if (aiType != AiType.None)
+            {
+                _agent.enabled = !hidden;
             }
         }
 
@@ -270,13 +350,14 @@ namespace World
             return found;
         }
 
-        private IEnumerator WalkTo(Vector3 destination)
+        /// <summary>Walks to <paramref name="destination"/>, giving up after <paramref name="timeout"/> seconds.</summary>
+        public IEnumerator WalkTo(Vector3 destination, float timeout = MaxWalkDuration)
         {
             _agent.SetDestination(destination);
             SetWalkingAnimation(true);
 
             // Give up after a while so an unreachable destination can't stall the AI forever.
-            var giveUpTime = Time.time + MaxWalkDuration;
+            var giveUpTime = Time.time + timeout;
             while (!HasArrived() && Time.time < giveUpTime)
             {
                 yield return null;

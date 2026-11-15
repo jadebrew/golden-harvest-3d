@@ -1393,6 +1393,7 @@ GameObject:
   - component: {fileID: 3124642250308356996}
   - component: {fileID: 8343751753144233354}
   - component: {fileID: 6956088880147581125}
+  - component: {fileID: 2873416095172630514}
   m_Layer: 0
   m_Name: Villager
   m_TagString: Untagged
@@ -2015,3 +2016,19 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5073092437093668472, guid: a503428a298c558b6a095efed332ee53, type: 3}
   m_PrefabInstance: {fileID: 66737017109120790}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2873416095172630514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7352544829139927360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cb5dab79123d494c9f25fd60fd47795, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::World.Character
+  home: {fileID: 0}
+  bedtimeHour: 0
+  wakeHour: 8
+  commuteTimeout: 60
