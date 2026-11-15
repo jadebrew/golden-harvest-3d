@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
+using World;
 
 public class DayNightCycleSkyTintTests
 {

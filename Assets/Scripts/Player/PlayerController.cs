@@ -1,289 +1,293 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using World;
 
-/// <summary>
-/// The player character: movement, targeting and hitting entities, the inventory,
-/// crafting and the in-game menu.
-/// </summary>
-public class PlayerController : MonoBehaviour
+namespace Player
 {
-    private static readonly int WalkingParam = Animator.StringToHash("walking");
-    private static readonly int SweepParam = Animator.StringToHash("sweep");
-    private static readonly int ConsumeParam = Animator.StringToHash("consume");
-    private static readonly int PullParam = Animator.StringToHash("pull");
-    private static readonly int JumpParam = Animator.StringToHash("jump");
-    private static readonly int FallParam = Animator.StringToHash("fall");
-    private static readonly int HurtParam = Animator.StringToHash("impact");
-    private static readonly int GroundParam = Animator.StringToHash("IsGrounded");
-
-    // Time between starting the swing animation and the hit landing.
-    private static readonly WaitForSeconds HitDelay = new(0.7f);
-
-    public static PlayerController Instance { get; private set; }
-
-    // ---------------------------------------------------------------- Inspector
-
-    [Header("Movement")]
-    [SerializeField] private float moveForce = 10f;
-    [SerializeField] private float rotationSpeed = 10f;
-    [SerializeField] private float _gravity = -10f;
-    [SerializeField] private float jumpForce = 5f;
-    private float verticalVelocity;
-    public GameObject _lookAt;
-
-    [Header("Default Gear")]
-    [SerializeField] private Item equippedItem;
-    [Tooltip("Parent the held model is spawned under.")]
-    [SerializeField] private GameObject itemSlot;
-
-    [Header("Menu References")]
-    [Tooltip("Menu tabs, cycled with Next/Previous. One of them is the crafting panel.")]
-    [SerializeField] private List<GameObject> menuTabs;
-    [SerializeField] private GameObject hudContainer;
-    [SerializeField] private GameObject craftingContainer;
-    [SerializeField] private GameObject inventoryContainer;
-
-
-    [Header("Inventory & Recipes")]
-    [SerializeField] private Dictionary<Item, int> inventory = new();
-    [SerializeField] private List<Recipe> knownRecipes;
-    private List<Item> indexedItemList = new();
-    private int selectedItemIndex = 0;
-
-    [Header("Menu Assets")]
-    [Tooltip("Button with 'Icon' and 'Label' children, used for inventory and recipe entries.")]
-    [SerializeField] private GameObject buttonPrefab;
-    [Tooltip("Icon for recipes whose output has no sprite.")]
-    [SerializeField] private Sprite defaultIcon;
-
-    private AuraType _currentAura = AuraType.None;
-    private string[] AuraStrings = {"Improvise", "Cook", "Craft", "Teleport"};
-
-    private string[] ItemTypeVerbs = {"Hold", "Swing", "Use", "Place", "Consume"};
-
-    // ---------------------------------------------------------------- Runtime state
-
-    private InputAction _moveAction;
-    private InputAction _lookAction;
-    private InputAction _useAction;
-    private InputAction _jumpAction;
-    private InputAction _menuAction;
-    private InputAction _nextTabAction;
-    private InputAction _previousTabAction;
-
-    private CharacterController _charController;
-    private Animator _animator;
-    private Entity _target;
-    private bool _faceTarget;
-    private bool _isMenuOpen;
-    private int _tabIndex;
-
-    private float _yrot;
-    private Vector3 _cameraHeight = new(0,2f,0);
-
-    // ---------------------------------------------------------------- Unity lifecycle
-
-    private void Awake()
+    /// <summary>
+    /// The player character: movement, targeting and hitting entities, the inventory,
+    /// crafting and the in-game menu.
+    /// </summary>
+    public class PlayerController : MonoBehaviour
     {
-        Instance = this;
-    }
+        private static readonly int WalkingParam = Animator.StringToHash("walking");
+        private static readonly int SweepParam = Animator.StringToHash("sweep");
+        private static readonly int ConsumeParam = Animator.StringToHash("consume");
+        private static readonly int PullParam = Animator.StringToHash("pull");
+        private static readonly int JumpParam = Animator.StringToHash("jump");
+        private static readonly int FallParam = Animator.StringToHash("fall");
+        private static readonly int HurtParam = Animator.StringToHash("impact");
+        private static readonly int GroundParam = Animator.StringToHash("IsGrounded");
 
-    private void OnDestroy()
-    {
-        if (Instance == this)
+        // Time between starting the swing animation and the hit landing.
+        private static readonly WaitForSeconds HitDelay = new(0.7f);
+
+        public static PlayerController Instance { get; private set; }
+
+        // ---------------------------------------------------------------- Inspector
+
+        [Header("Movement")]
+        [SerializeField] private float moveForce = 10f;
+        [SerializeField] private float rotationSpeed = 10f;
+        [SerializeField] private float _gravity = -10f;
+        [SerializeField] private float jumpForce = 5f;
+        private float verticalVelocity;
+        public GameObject _lookAt;
+
+        [Header("Default Gear")]
+        [SerializeField] private Item equippedItem;
+        [Tooltip("Parent the held model is spawned under.")]
+        [SerializeField] private GameObject itemSlot;
+
+        [Header("Menu References")]
+        [Tooltip("Menu tabs, cycled with Next/Previous. One of them is the crafting panel.")]
+        [SerializeField] private List<GameObject> menuTabs;
+        [SerializeField] private GameObject hudContainer;
+        [SerializeField] private GameObject craftingContainer;
+        [SerializeField] private GameObject inventoryContainer;
+
+
+        [Header("Inventory & Recipes")]
+        [SerializeField] private Dictionary<Item, int> inventory = new();
+        [SerializeField] private List<Recipe> knownRecipes;
+        private List<Item> indexedItemList = new();
+        private int selectedItemIndex = 0;
+
+        [Header("Menu Assets")]
+        [Tooltip("Button with 'Icon' and 'Label' children, used for inventory and recipe entries.")]
+        [SerializeField] private GameObject buttonPrefab;
+        [Tooltip("Icon for recipes whose output has no sprite.")]
+        [SerializeField] private Sprite defaultIcon;
+
+        private AuraType _currentAura = AuraType.None;
+        private string[] AuraStrings = {"Improvise", "Cook", "Craft", "Teleport"};
+
+        private string[] ItemTypeVerbs = {"Hold", "Swing", "Use", "Place", "Consume"};
+
+        // ---------------------------------------------------------------- Runtime state
+
+        private InputAction _moveAction;
+        private InputAction _lookAction;
+        private InputAction _useAction;
+        private InputAction _jumpAction;
+        private InputAction _menuAction;
+        private InputAction _nextTabAction;
+        private InputAction _previousTabAction;
+
+        private CharacterController _charController;
+        private Animator _animator;
+        private Entity _target;
+        private bool _faceTarget;
+        private bool _isMenuOpen;
+        private int _tabIndex;
+
+        private float _yrot;
+        private Vector3 _cameraHeight = new(0,2f,0);
+
+        // ---------------------------------------------------------------- Unity lifecycle
+
+        private void Awake()
         {
-            Instance = null;
-        }
-    }
-
-    private void Start()
-    {
-        // Action names come from the input actions asset.
-        _moveAction = InputSystem.actions.FindAction("Move");
-        _lookAction = InputSystem.actions.FindAction("Look");
-        _jumpAction = InputSystem.actions.FindAction("Jump");
-        _useAction = InputSystem.actions.FindAction("Attack");
-        _menuAction = InputSystem.actions.FindAction("Interact");
-        _nextTabAction = InputSystem.actions.FindAction("Next");
-        _previousTabAction = InputSystem.actions.FindAction("Previous");
-        _charController = GetComponent<CharacterController>();
-        _animator = GetComponent<Animator>();
-
-        CloseMenu();
-        RefreshMenuUI();
-        RefreshEquipment();
-
-        Cursor.visible = false;
-        Screen.lockCursor = true;
-    }
-
-    private void Update()
-    {
-        Screen.lockCursor = !_isMenuOpen;
-        _animator.SetBool(GroundParam,_charController.isGrounded);
-        if (_useAction.WasPressedThisFrame())
-        {
-            UseEquippedItem();
+            Instance = this;
         }
 
-        if (_menuAction.WasPressedThisFrame())
+        private void OnDestroy()
         {
-            ToggleMenu();
+            if (Instance == this)
+            {
+                Instance = null;
+            }
+        }
+
+        private void Start()
+        {
+            // Action names come from the input actions asset.
+            _moveAction = InputSystem.actions.FindAction("Move");
+            _lookAction = InputSystem.actions.FindAction("Look");
+            _jumpAction = InputSystem.actions.FindAction("Jump");
+            _useAction = InputSystem.actions.FindAction("Attack");
+            _menuAction = InputSystem.actions.FindAction("Interact");
+            _nextTabAction = InputSystem.actions.FindAction("Next");
+            _previousTabAction = InputSystem.actions.FindAction("Previous");
+            _charController = GetComponent<CharacterController>();
+            _animator = GetComponent<Animator>();
+
+            CloseMenu();
             RefreshMenuUI();
+            RefreshEquipment();
+
+            Cursor.visible = false;
+            Screen.lockCursor = true;
         }
 
-        if (_nextTabAction.WasPressedThisFrame())
+        private void Update()
         {
-            if (_isMenuOpen)
+            Screen.lockCursor = !_isMenuOpen;
+            _animator.SetBool(GroundParam,_charController.isGrounded);
+            if (_useAction.WasPressedThisFrame())
             {
-                ShowMenuTab(_tabIndex + 1);
-            }
-            else
-            {
-                selectedItemIndex++;
-                RefreshEquipment();
+                UseEquippedItem();
             }
 
-        }
-
-        if (_jumpAction.WasPressedThisFrame())
-        {
-            if (_isMenuOpen)
+            if (_menuAction.WasPressedThisFrame())
             {
-               // ShowMenuTab(_tabIndex + 1);
+                ToggleMenu();
+                RefreshMenuUI();
             }
-            else
+
+            if (_nextTabAction.WasPressedThisFrame())
             {
-                if (_charController.isGrounded)
+                if (_isMenuOpen)
                 {
-                    verticalVelocity = jumpForce;
-                    _animator.SetTrigger(JumpParam);
+                    ShowMenuTab(_tabIndex + 1);
+                }
+                else
+                {
+                    selectedItemIndex++;
+                    RefreshEquipment();
+                }
+
+            }
+
+            if (_jumpAction.WasPressedThisFrame())
+            {
+                if (_isMenuOpen)
+                {
+                    // ShowMenuTab(_tabIndex + 1);
+                }
+                else
+                {
+                    if (_charController.isGrounded)
+                    {
+                        verticalVelocity = jumpForce;
+                        _animator.SetTrigger(JumpParam);
+                    }
+                }
+
+            }
+
+            if (_previousTabAction.WasPressedThisFrame())
+            {
+                if (_isMenuOpen)
+                {
+                    ShowMenuTab(_tabIndex - 1);
+                }
+                else
+                {
+                    selectedItemIndex--;
+                    RefreshEquipment();
                 }
             }
-
+            RefreshHud();
         }
 
-        if (_previousTabAction.WasPressedThisFrame())
+        private void FixedUpdate()
         {
-            if (_isMenuOpen)
+            Move();
+            UpdateTarget();
+        }
+
+        // ---------------------------------------------------------------- Movement
+
+        private void Move()
+        {
+            var input = _moveAction.ReadValue<Vector2>();
+            var isMoving = input != Vector2.zero;
+            _animator.SetBool(WalkingParam, isMoving);
+
+            var move = _lookAt.transform.forward * input.y + _lookAt.transform.right * input.x;
+            move *= (moveForce * Time.deltaTime);
+
+            _lookAt.transform.position = transform.position + _cameraHeight;
+
+            verticalVelocity += _gravity * Time.deltaTime;
+
+            _charController.Move(new Vector3(move.x,verticalVelocity,move.z));
+
+            var lookInput = _lookAction.ReadValue<Vector2>();
+            _yrot += lookInput.x * rotationSpeed * Time.deltaTime;
+            //_lookAt.transform.localRotation = Quaternion.Euler(0,_yrot,0);
+
+            RotateTowards(move);
+
+            _lookAt.transform.rotation = Quaternion.Lerp(_lookAt.transform.rotation,transform.rotation,Time.deltaTime);
+        }
+
+        private void RotateTowards(Vector3 direction)
+        {
+            direction.y = 0;
+            if (direction.sqrMagnitude < 0.0001f)
             {
-                ShowMenuTab(_tabIndex - 1);
+                return;
             }
-            else
+
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                Quaternion.LookRotation(direction),
+                rotationSpeed);
+        }
+
+        // ---------------------------------------------------------------- Targeting & combat
+
+        /// <summary>Called by entities in range; the closest one becomes the target.</summary>
+        public void SetTarget(Entity candidate)
+        {
+            if (!_target)
             {
-                selectedItemIndex--;
-                RefreshEquipment();
+                _target = candidate;
+                return;
+            }
+
+            var position = transform.position;
+            var candidateDistance = (candidate.transform.position - position).sqrMagnitude;
+            var currentDistance = (_target.transform.position - position).sqrMagnitude;
+            if (candidateDistance < currentDistance)
+            {
+                _target = candidate;
             }
         }
-        RefreshHud();
-    }
 
-    private void FixedUpdate()
-    {
-        Move();
-        UpdateTarget();
-    }
-
-    // ---------------------------------------------------------------- Movement
-
-    private void Move()
-    {
-        var input = _moveAction.ReadValue<Vector2>();
-        var isMoving = input != Vector2.zero;
-        _animator.SetBool(WalkingParam, isMoving);
-
-        var move = _lookAt.transform.forward * input.y + _lookAt.transform.right * input.x;
-        move *= (moveForce * Time.deltaTime);
-
-        _lookAt.transform.position = transform.position + _cameraHeight;
-
-        verticalVelocity += _gravity * Time.deltaTime;
-
-        _charController.Move(new Vector3(move.x,verticalVelocity,move.z));
-
-        var lookInput = _lookAction.ReadValue<Vector2>();
-        _yrot += lookInput.x * rotationSpeed * Time.deltaTime;
-        //_lookAt.transform.localRotation = Quaternion.Euler(0,_yrot,0);
-
-        RotateTowards(move);
-
-        _lookAt.transform.rotation = Quaternion.Lerp(_lookAt.transform.rotation,transform.rotation,Time.deltaTime);
-    }
-
-    private void RotateTowards(Vector3 direction)
-    {
-        direction.y = 0;
-        if (direction.sqrMagnitude < 0.0001f)
+        private void UpdateTarget()
         {
-            return;
+            // Drop targets that died or that we walked away from, so the next entity in range can take over.
+            if (_target && !_target.IsInPlayerRange())
+            {
+                _target = null;
+            }
+
+            if (_faceTarget && _target)
+            {
+                RotateTowards(_target.transform.position - transform.position);
+            }
         }
 
-        transform.rotation = Quaternion.RotateTowards(
-            transform.rotation,
-            Quaternion.LookRotation(direction),
-            rotationSpeed);
-    }
-
-    // ---------------------------------------------------------------- Targeting & combat
-
-    /// <summary>Called by entities in range; the closest one becomes the target.</summary>
-    public void SetTarget(Entity candidate)
-    {
-        if (!_target)
+        private void RefreshEquipment()
         {
-            _target = candidate;
-            return;
+            if (selectedItemIndex<0)
+            {
+                selectedItemIndex = indexedItemList.Count-1;
+            }
+            if (selectedItemIndex>=indexedItemList.Count)
+            {
+                selectedItemIndex = 0;
+            }
+            equippedItem = indexedItemList[selectedItemIndex];
+            SpawnHeldModel();
         }
 
-        var position = transform.position;
-        var candidateDistance = (candidate.transform.position - position).sqrMagnitude;
-        var currentDistance = (_target.transform.position - position).sqrMagnitude;
-        if (candidateDistance < currentDistance)
+        private void UseEquippedItem()
         {
-            _target = candidate;
-        }
-    }
-
-    private void UpdateTarget()
-    {
-        // Drop targets that died or that we walked away from, so the next entity in range can take over.
-        if (_target && !_target.IsInPlayerRange())
-        {
-            _target = null;
-        }
-
-        if (_faceTarget && _target)
-        {
-            RotateTowards(_target.transform.position - transform.position);
-        }
-    }
-
-    private void RefreshEquipment()
-    {
-        if (selectedItemIndex<0)
-        {
-            selectedItemIndex = indexedItemList.Count-1;
-        }
-        if (selectedItemIndex>=indexedItemList.Count)
-        {
-            selectedItemIndex = 0;
-        }
-        equippedItem = indexedItemList[selectedItemIndex];
-        SpawnHeldModel();
-    }
-
-    private void UseEquippedItem()
-    {
-        if (!equippedItem)
-        {
-            return;
-        }
-        var doHit = false;
+            if (!equippedItem)
+            {
+                return;
+            }
+            var doHit = false;
 
             switch (equippedItem.itemType)
             {
@@ -298,7 +302,7 @@ public class PlayerController : MonoBehaviour
                     {
                         Instantiate(equippedItem.worldModel, transform.position + new Vector3(1,0,0), Quaternion.identity);
                         ChangeAmount(equippedItem,-1);
-                         _animator.SetTrigger(PullParam);
+                        _animator.SetTrigger(PullParam);
                     }
                     break;
                 case ItemType.Consumable:
@@ -326,201 +330,202 @@ public class PlayerController : MonoBehaviour
                     break;
             }
             StartCoroutine(HitAfterDelay(_target));
-    }
-
-    private IEnumerator HitAfterDelay(Entity entity)
-    {
-        yield return HitDelay;
-
-        if (entity && entity.IsInPlayerRange() && entity.vulnerability == equippedItem.damageType)
-        {
-            entity.TakeDamage(equippedItem.damage);
         }
 
-        _faceTarget = false;
-    }
-
-    private void SpawnHeldModel()
-    {
-        ClearChildren(itemSlot.transform);
-        Instantiate(equippedItem.model, itemSlot.transform);
-    }
-
-    // ---------------------------------------------------------------- Inventory
-
-    public void Give(Item item, int amount)
-    {
-        ChangeAmount(item, amount);
-        RefreshMenuUI();
-    }
-
-    private void ChangeAmount(Item item, int delta)
-    {
-        inventory[item] = GetAmount(item) + delta;
-        RefreshMenuUI();
-    }
-
-    private int GetAmount(Item item)
-    {
-        return inventory.TryGetValue(item, out var amount) ? amount : 0;
-    }
-
-    /// <summary>Rebuilds the inventory and recipe lists; call after the inventory changes.</summary>
-    private void RefreshMenuUI()
-    {
-        RefreshInventoryUI();
-        RefreshCraftingUI();
-    }
-
-    private void RefreshHud()
-    {
-        CheckAura();
-        var debugText = "[F] " + ItemTypeVerbs[(int)equippedItem.itemType] + " " + equippedItem.itemName + "\n[E] " + AuraStrings[(int)_currentAura];
-        hudContainer.GetComponent<TMP_Text>().text = debugText;
-    }
-
-    private void RefreshInventoryUI()
-    {
-        ClearChildren(inventoryContainer.transform);
-        indexedItemList.Clear();
-        var index = 0;
-        foreach (var (item, amount) in inventory)
+        private IEnumerator HitAfterDelay(Entity entity)
         {
-            if (amount <= 0) continue;
-            
-            var button = CreateButton(inventoryContainer.transform, item.sprite, amount.ToString()).GetComponent<Button>();
-            button.onClick.AddListener(() => SelectItem(item));
-            indexedItemList.Add(item);
-        }
+            yield return HitDelay;
 
-
-    }
-
-    private void SelectItem(Item item)
-    {
-        var index = 0;
-        foreach (var owned in indexedItemList)
-        {
-            if (owned == item)
+            if (entity && entity.IsInPlayerRange() && entity.vulnerability == equippedItem.damageType)
             {
-                selectedItemIndex = index;
+                entity.TakeDamage(equippedItem.damage);
             }
-            index++;
+
+            _faceTarget = false;
         }
-        RefreshEquipment();
-    }
 
-    // ---------------------------------------------------------------- Crafting
-
-    private void RefreshCraftingUI()
-    {
-        ClearChildren(craftingContainer.transform);
-        foreach (var recipe in knownRecipes)
+        private void SpawnHeldModel()
         {
-            CreateRecipeButton(recipe);
-        }
-    }
-
-    private void CreateRecipeButton(Recipe recipe)
-    {
-        var icon = defaultIcon;
-        foreach (var outputItem in recipe.output.Keys)
-        {
-            icon = outputItem.sprite;
+            ClearChildren(itemSlot.transform);
+            Instantiate(equippedItem.model, itemSlot.transform);
         }
 
-        var label = new StringBuilder();
-        var canCraft = true;
-        foreach (var (item, amount) in recipe.output)
-        {
-            label.Append(item.itemName).Append('\n');
-        }
-        foreach (var (item, amount) in recipe.input)
-        {
-            label.Append(amount).Append("x ").Append(item.itemName).Append('\n');
-            if (GetAmount(item) < amount)
-            {
-                canCraft = false;
-            }
-        }
-        CheckAura();
-        //only even show recipe when you have required aura
-        if (recipe.requiredAura != _currentAura) return;
-        
-        var button = CreateButton(craftingContainer.transform, icon, label.ToString()).GetComponent<Button>();
-        button.onClick.AddListener(() => Craft(recipe));
-        button.interactable = canCraft;
-    }
+        // ---------------------------------------------------------------- Inventory
 
-    private void CheckAura()
-    {
-        _currentAura = !_target ? AuraType.None : _target.aura;
-    }
-
-    private void Craft(Recipe recipe)
-    {
-        foreach (var (item, amount) in recipe.input)
-        {
-            ChangeAmount(item, -amount);
-        }
-
-        foreach (var (item, amount) in recipe.output)
+        public void Give(Item item, int amount)
         {
             ChangeAmount(item, amount);
+            RefreshMenuUI();
         }
 
-        RefreshMenuUI();
-    }
+        private void ChangeAmount(Item item, int delta)
+        {
+            inventory[item] = GetAmount(item) + delta;
+            RefreshMenuUI();
+        }
 
-    // ---------------------------------------------------------------- Menu
+        private int GetAmount(Item item)
+        {
+            return inventory.TryGetValue(item, out var amount) ? amount : 0;
+        }
 
-    private void ToggleMenu()
-    {
-        if (_isMenuOpen)
+        /// <summary>Rebuilds the inventory and recipe lists; call after the inventory changes.</summary>
+        private void RefreshMenuUI()
+        {
+            RefreshInventoryUI();
+            RefreshCraftingUI();
+        }
+
+        private void RefreshHud()
+        {
+            CheckAura();
+            var debugText = "[F] " + ItemTypeVerbs[(int)equippedItem.itemType] + " " + equippedItem.itemName + "\n[E] " + AuraStrings[(int)_currentAura];
+            hudContainer.GetComponent<TMP_Text>().text = debugText;
+        }
+
+        private void RefreshInventoryUI()
+        {
+            ClearChildren(inventoryContainer.transform);
+            indexedItemList.Clear();
+            var index = 0;
+            foreach (var (item, amount) in inventory)
+            {
+                if (amount <= 0) continue;
+            
+                var button = CreateButton(inventoryContainer.transform, item.sprite, amount.ToString()).GetComponent<Button>();
+                button.onClick.AddListener(() => SelectItem(item));
+                indexedItemList.Add(item);
+            }
+
+
+        }
+
+        private void SelectItem(Item item)
+        {
+            var index = 0;
+            foreach (var owned in indexedItemList)
+            {
+                if (owned == item)
+                {
+                    selectedItemIndex = index;
+                }
+                index++;
+            }
+            RefreshEquipment();
+        }
+
+        // ---------------------------------------------------------------- Crafting
+
+        private void RefreshCraftingUI()
+        {
+            ClearChildren(craftingContainer.transform);
+            foreach (var recipe in knownRecipes)
+            {
+                CreateRecipeButton(recipe);
+            }
+        }
+
+        private void CreateRecipeButton(Recipe recipe)
+        {
+            var icon = defaultIcon;
+            foreach (var outputItem in recipe.output.Keys)
+            {
+                icon = outputItem.sprite;
+            }
+
+            var label = new StringBuilder();
+            var canCraft = true;
+            foreach (var (item, amount) in recipe.output)
+            {
+                label.Append(item.itemName).Append('\n');
+            }
+            foreach (var (item, amount) in recipe.input)
+            {
+                label.Append(amount).Append("x ").Append(item.itemName).Append('\n');
+                if (GetAmount(item) < amount)
+                {
+                    canCraft = false;
+                }
+            }
+            CheckAura();
+            //only even show recipe when you have required aura
+            if (recipe.requiredAura != _currentAura) return;
+        
+            var button = CreateButton(craftingContainer.transform, icon, label.ToString()).GetComponent<Button>();
+            button.onClick.AddListener(() => Craft(recipe));
+            button.interactable = canCraft;
+        }
+
+        private void CheckAura()
+        {
+            _currentAura = !_target ? AuraType.None : _target.aura;
+        }
+
+        private void Craft(Recipe recipe)
+        {
+            foreach (var (item, amount) in recipe.input)
+            {
+                ChangeAmount(item, -amount);
+            }
+
+            foreach (var (item, amount) in recipe.output)
+            {
+                ChangeAmount(item, amount);
+            }
+
+            RefreshMenuUI();
+        }
+
+        // ---------------------------------------------------------------- Menu
+
+        private void ToggleMenu()
+        {
+            if (_isMenuOpen)
+            {
+                CloseMenu();
+            }
+            else
+            {
+                ShowMenuTab(0);
+            }
+        }
+
+        private void ShowMenuTab(int index)
         {
             CloseMenu();
-        }
-        else
-        {
-            ShowMenuTab(0);
-        }
-    }
 
-    private void ShowMenuTab(int index)
-    {
-        CloseMenu();
-
-        // Wrap around in both directions.
-        _tabIndex = (index % menuTabs.Count + menuTabs.Count) % menuTabs.Count;
-        menuTabs[_tabIndex].SetActive(true);
-        _isMenuOpen = true;
-    }
-
-    private void CloseMenu()
-    {
-        foreach (var tab in menuTabs)
-        {
-            tab.SetActive(false);
+            // Wrap around in both directions.
+            _tabIndex = (index % menuTabs.Count + menuTabs.Count) % menuTabs.Count;
+            menuTabs[_tabIndex].SetActive(true);
+            _isMenuOpen = true;
         }
 
-        _isMenuOpen = false;
-    }
-
-    // ---------------------------------------------------------------- UI helpers
-
-    private GameObject CreateButton(Transform parent, Sprite icon, string label)
-    {
-        var button = Instantiate(buttonPrefab, parent);
-        button.transform.Find("Icon").GetComponent<Image>().sprite = icon;
-        button.transform.Find("Label").GetComponent<TMP_Text>().text = label;
-        return button;
-    }
-
-    private static void ClearChildren(Transform parent)
-    {
-        foreach (Transform child in parent)
+        private void CloseMenu()
         {
-            Destroy(child.gameObject);
+            foreach (var tab in menuTabs)
+            {
+                tab.SetActive(false);
+            }
+
+            _isMenuOpen = false;
+        }
+
+        // ---------------------------------------------------------------- UI helpers
+
+        private GameObject CreateButton(Transform parent, Sprite icon, string label)
+        {
+            var button = Instantiate(buttonPrefab, parent);
+            button.transform.Find("Icon").GetComponent<Image>().sprite = icon;
+            button.transform.Find("Label").GetComponent<TMP_Text>().text = label;
+            return button;
+        }
+
+        private static void ClearChildren(Transform parent)
+        {
+            foreach (Transform child in parent)
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
 }
