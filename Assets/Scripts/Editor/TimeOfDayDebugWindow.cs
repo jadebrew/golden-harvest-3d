@@ -27,7 +27,7 @@ namespace Editor
                 return;
             }
 
-            var cycle = FindAnyObjectByType<DayNightCycle>();
+            var cycle = DayNightCycle.Instance;
             if (!cycle)
             {
                 EditorGUILayout.HelpBox("No DayNightCycle found in the scene.", MessageType.Warning);

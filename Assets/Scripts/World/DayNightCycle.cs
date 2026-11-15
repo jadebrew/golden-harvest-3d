@@ -28,6 +28,31 @@ namespace World
         public float CurrentHour =>
             Mathf.Repeat(ClockHours ?? ((float)DateTime.Now.TimeOfDay.TotalHours), 24f);
 
+        /// <summary>The cycle in the current scene, or null if there is none.</summary>
+        public static DayNightCycle Instance { get; private set; }
+
+        void Awake()
+        {
+            Instance = this;
+        }
+
+        void OnDestroy()
+        {
+            if (Instance == this) Instance = null;
+        }
+
+        /// <summary>
+        /// True if <paramref name="hour"/> lies in [start, end). Ranges that cross midnight
+        /// (e.g. 22 -> 6) wrap around; start == end is an empty range.
+        /// </summary>
+        public static bool IsWithinHours(float hour, float start, float end)
+        {
+            hour = Mathf.Repeat(hour, 24f);
+            return start <= end
+                ? hour >= start && hour < end
+                : hour >= start || hour < end;
+        }
+
         void Start()
         {
             _sun = GetComponent<Light>();
