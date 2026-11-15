@@ -42,6 +42,7 @@ namespace World
     {
         private static readonly int WalkingParam = Animator.StringToHash("walking");
         private static readonly int MutantParam = Animator.StringToHash("mutant");
+        private static readonly int GroundedParam = Animator.StringToHash("IsGrounded");
         private static readonly int SweepParam = Animator.StringToHash("sweep");
         private static readonly int DeathParam = Animator.StringToHash("death");
         private static readonly int ReviveParam = Animator.StringToHash("revive");
@@ -120,6 +121,9 @@ namespace World
             {
                 _animator = GetComponent<Animator>();
                 _animator.SetBool(MutantParam, race == Race.Goblin);
+                // The controller is shared with the player, whose idle drops into "fall" when not grounded.
+                // NPCs walk on the navmesh and never leave the ground, so pin this to true.
+                _animator.SetBool(GroundedParam, true);
             }
         }
 
