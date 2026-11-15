@@ -25,8 +25,6 @@ namespace World
         [Tooltip("Hour of day the character leaves home and returns to its spawn spot.")]
         [Range(0f, 24f)]
         [SerializeField] private float wakeHour = 8f;
-        [Tooltip("Seconds to keep walking home or back to spawn before giving up.")]
-        [SerializeField] private float commuteTimeout = 60f;
 
         private Entity _entity;
         private Vector3 _spawnPosition;
@@ -82,14 +80,15 @@ namespace World
                 ? hit.position
                 : target;
 
-            yield return _entity.WalkTo(destination, commuteTimeout);
+            // No timeout: only go inside once actually at the entrance.
+            yield return _entity.WalkTo(destination, float.PositiveInfinity);
             _entity.SetHidden(true);
         }
 
         private IEnumerator LeaveHome()
         {
             _entity.SetHidden(false);
-            yield return _entity.WalkTo(_spawnPosition, commuteTimeout);
+            yield return _entity.WalkTo(_spawnPosition, float.PositiveInfinity);
             yield return _entity.DefaultBehaviour();
         }
     }
