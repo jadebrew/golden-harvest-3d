@@ -28,6 +28,7 @@ namespace World
         Cooking,
         Crafting,
         Portal,
+        Housing,
     }
 
     /// <summary>
@@ -60,6 +61,8 @@ namespace World
         public AuraType aura;
 
         [Header("Health")]
+        [Tooltip("Ignores all damage, e.g. buildings. The entity can still be targeted for its aura.")]
+        [SerializeField] private bool indestructible;
         [SerializeField] private float maxHealth = 100;
         public DamageType vulnerability;
         [Tooltip("Seconds after death before the entity comes back.")]
@@ -147,7 +150,7 @@ namespace World
 
         public void TakeDamage(float amount)
         {
-            if (!IsAlive)
+            if (indestructible || !IsAlive)
             {
                 return;
             }
