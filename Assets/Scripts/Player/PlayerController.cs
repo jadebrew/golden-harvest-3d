@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
     private int _tabIndex;
 
     private float _yrot;
-    private Vector3 _cameraHeight = new Vector3(0,2f,0);
+    private Vector3 _cameraHeight = new(0,2f,0);
 
     // ---------------------------------------------------------------- Unity lifecycle
 
@@ -234,7 +234,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>Called by entities in range; the closest one becomes the target.</summary>
     public void SetTarget(Entity candidate)
     {
-        if (_target == null)
+        if (!_target)
         {
             _target = candidate;
             return;
@@ -252,12 +252,12 @@ public class PlayerController : MonoBehaviour
     private void UpdateTarget()
     {
         // Drop targets that died or that we walked away from, so the next entity in range can take over.
-        if (_target != null && !_target.IsInPlayerRange())
+        if (_target && !_target.IsInPlayerRange())
         {
             _target = null;
         }
 
-        if (_faceTarget && _target != null)
+        if (_faceTarget && _target)
         {
             RotateTowards(_target.transform.position - transform.position);
         }
@@ -279,7 +279,7 @@ public class PlayerController : MonoBehaviour
 
     private void UseEquippedItem()
     {
-        if (equippedItem == null)
+        if (!equippedItem)
         {
             return;
         }
@@ -310,30 +310,29 @@ public class PlayerController : MonoBehaviour
                     break;
             }
 
-            if (_target != null && doHit)
+            if (!_target || !doHit) return;
+            
+            _faceTarget = true;
+            switch (equippedItem.animationType)
             {
-                _faceTarget = true;
-                switch (equippedItem.animationType)
-                {
-                    case AnimationType.Consume:
-                        _animator.SetTrigger(ConsumeParam);
-                        break;
-                    case AnimationType.Sweep:
-                        _animator.SetTrigger(SweepParam);
-                        break;
-                    case AnimationType.Pull:
-                        _animator.SetTrigger(PullParam);
-                        break;
-                }
-                StartCoroutine(HitAfterDelay(_target));
+                case AnimationType.Consume:
+                    _animator.SetTrigger(ConsumeParam);
+                    break;
+                case AnimationType.Sweep:
+                    _animator.SetTrigger(SweepParam);
+                    break;
+                case AnimationType.Pull:
+                    _animator.SetTrigger(PullParam);
+                    break;
             }
-        }
+            StartCoroutine(HitAfterDelay(_target));
+    }
 
     private IEnumerator HitAfterDelay(Entity entity)
     {
         yield return HitDelay;
 
-        if (entity != null && entity.IsInPlayerRange() && entity.vulnerability == equippedItem.damageType)
+        if (entity && entity.IsInPlayerRange() && entity.vulnerability == equippedItem.damageType)
         {
             entity.TakeDamage(equippedItem.damage);
         }
@@ -376,8 +375,8 @@ public class PlayerController : MonoBehaviour
     private void RefreshHud()
     {
         CheckAura();
-        var debugtext = "[F] " + ItemTypeVerbs[(int)equippedItem.itemType] + " " + equippedItem.itemName + "\n[E] " + AuraStrings[(int)_currentAura];
-        hudContainer.GetComponent<TMP_Text>().text = debugtext;
+        var debugText = "[F] " + ItemTypeVerbs[(int)equippedItem.itemType] + " " + equippedItem.itemName + "\n[E] " + AuraStrings[(int)_currentAura];
+        hudContainer.GetComponent<TMP_Text>().text = debugText;
     }
 
     private void RefreshInventoryUI()
@@ -387,12 +386,11 @@ public class PlayerController : MonoBehaviour
         var index = 0;
         foreach (var (item, amount) in inventory)
         {
-            if (amount>0)
-            {
-                var button = CreateButton(inventoryContainer.transform, item.sprite, amount.ToString()).GetComponent<Button>();
-                button.onClick.AddListener(() => SelectItem(item));
-                indexedItemList.Add(item);
-            }
+            if (amount <= 0) continue;
+            
+            var button = CreateButton(inventoryContainer.transform, item.sprite, amount.ToString()).GetComponent<Button>();
+            button.onClick.AddListener(() => SelectItem(item));
+            indexedItemList.Add(item);
         }
 
 

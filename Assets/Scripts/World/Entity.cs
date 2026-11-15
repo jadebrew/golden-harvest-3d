@@ -159,12 +159,12 @@ public class Entity : MonoBehaviour
         StopAllCoroutines();
         StopMoving();
 
-        if (dropItem != null)
+        if (dropItem)
         {
             _player.Give(dropItem, dropAmount);
         }
 
-        if (_dropModelInstance != null)
+        if (_dropModelInstance)
         {
             Destroy(_dropModelInstance);
         }
@@ -188,7 +188,7 @@ public class Entity : MonoBehaviour
         Health = maxHealth;
         IsAlive = true;
 
-        if (dropItem != null)
+        if (dropItem)
         {
             _dropModelInstance = Instantiate(dropItem.worldModel, transform);
         }
@@ -242,7 +242,7 @@ public class Entity : MonoBehaviour
         yield return new WaitForSeconds(initialDelay);
 
         var repathWait = new WaitForSeconds(followRepathInterval);
-        while (_player != null)
+        while (_player)
         {
             _agent.SetDestination(_player.transform.position);
             yield return repathWait;
