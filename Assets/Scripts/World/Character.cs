@@ -7,18 +7,18 @@ namespace World
     /// <summary>
     /// A living inhabitant with a daily routine. Sits next to an <see cref="Entity"/> (which handles
     /// health, drops and basic movement) and takes over its behaviour to commute between home and work:
-    /// at bedtime it walks to its <see cref="home"/> and hides inside; at wake time it comes back out,
+    /// at bedtime it walks to its <see cref="home"/>'s entrance and hides inside; at wake time it comes back out,
     /// walks to its spawn spot and resumes the entity's default behaviour.
     /// </summary>
     [RequireComponent(typeof(Entity))]
     public class Character : MonoBehaviour
     {
-        // Wide enough to reach past the walls of a house (~10x6 units) from its centre.
-        private const float HomeSearchRadius = 8f;
+        // How far from the entrance marker to look for a walkable spot, in case it's slightly off the navmesh.
+        private const float EntranceSearchRadius = 2f;
 
         [Header("Schedule")]
-        [Tooltip("Housing entity this character sleeps in. Leave empty to stay out all night.")]
-        [SerializeField] private Entity home;
+        [Tooltip("House this character sleeps in. Leave empty to stay out all night.")]
+        [SerializeField] private House home;
         [Tooltip("Hour of day the character heads home.")]
         [Range(0f, 24f)]
         [SerializeField] private float bedtimeHour = 0f;
@@ -46,14 +46,6 @@ namespace World
             if (_entity)
             {
                 _entity.Respawned -= OnRespawned;
-            }
-        }
-
-        private void OnValidate()
-        {
-            if (home && home.aura != AuraType.Housing)
-            {
-                Debug.LogWarning($"{name}: home '{home.name}' does not have the Housing aura.", this);
             }
         }
 
@@ -85,9 +77,8 @@ namespace World
 
         private IEnumerator GoHome()
         {
-            // The house blocks the navmesh around itself; walk to the closest reachable point.
-            var target = home.transform.position;
-            var destination = NavMesh.SamplePosition(target, out var hit, HomeSearchRadius, NavMesh.AllAreas)
+            var target = home.EntrancePosition;
+            var destination = NavMesh.SamplePosition(target, out var hit, EntranceSearchRadius, NavMesh.AllAreas)
                 ? hit.position
                 : target;
 
