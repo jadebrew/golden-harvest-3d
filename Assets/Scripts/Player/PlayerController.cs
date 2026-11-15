@@ -445,22 +445,16 @@ public class PlayerController : MonoBehaviour
         }
         CheckAura();
         //only even show recipe when you have required aura
-        if (recipe.requiredAura == _currentAura)
-        {
-            var button = CreateButton(craftingContainer.transform, icon, label.ToString()).GetComponent<Button>();
-            button.onClick.AddListener(() => Craft(recipe));
-            button.interactable = canCraft;
-        }
+        if (recipe.requiredAura != _currentAura) return;
+        
+        var button = CreateButton(craftingContainer.transform, icon, label.ToString()).GetComponent<Button>();
+        button.onClick.AddListener(() => Craft(recipe));
+        button.interactable = canCraft;
     }
 
     private void CheckAura()
     {
-        if (_target == null)
-        {
-            _currentAura = AuraType.None;
-        } else {
-            _currentAura = _target.aura;
-        }
+        _currentAura = !_target ? AuraType.None : _target.aura;
     }
 
     private void Craft(Recipe recipe)

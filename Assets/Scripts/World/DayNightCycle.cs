@@ -21,6 +21,13 @@ public class DayNightCycle : MonoBehaviour
 
     public float timeOffset = 8;
 
+    /// <summary>When set, replaces the real-time clock with a fixed hour (0-24). Used by debug tooling.</summary>
+    public float? HourOverride { get; set; }
+
+    /// <summary>The hour of day currently being displayed, wrapped to [0, 24).</summary>
+    public float CurrentHour =>
+        Mathf.Repeat(HourOverride ?? ((float)DateTime.Now.TimeOfDay.TotalHours + timeOffset), 24f);
+
     void Start()
     {
         sun = GetComponent<Light>();
@@ -34,7 +41,7 @@ public class DayNightCycle : MonoBehaviour
 
     void Update()
     {
-        var hours = (float)DateTime.Now.TimeOfDay.TotalHours + timeOffset;
+        var hours = CurrentHour;
 
         transform.rotation = SunRotation(hours, orbitTilt, orbitYaw);
 
