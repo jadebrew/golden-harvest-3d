@@ -49,6 +49,9 @@ namespace World
 
         private const float WanderRadius = 5f;
         private const float MaxWalkDuration = 10f;
+        // Slack on top of the agent's stopping distance. Agents often settle a little short of their
+        // destination (avoidance, obstacles), and with a stopping distance of 0 they'd never "arrive".
+        private const float ArrivalTolerance = 0.25f;
 
         // ---------------------------------------------------------------- Inspector
 
@@ -377,12 +380,13 @@ namespace World
                 return false;
             }
 
-            if (_agent.pathStatus == NavMeshPathStatus.PathInvalid)
+            // Nothing to follow (no path could be built): treat as arrived rather than walking forever.
+            if (!_agent.hasPath || _agent.pathStatus == NavMeshPathStatus.PathInvalid)
             {
                 return true;
             }
 
-            return _agent.remainingDistance <= _agent.stoppingDistance;
+            return _agent.remainingDistance <= _agent.stoppingDistance + ArrivalTolerance;
         }
 
         private void StopMoving()

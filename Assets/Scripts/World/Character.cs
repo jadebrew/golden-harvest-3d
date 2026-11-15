@@ -75,10 +75,17 @@ namespace World
 
         private IEnumerator GoHome()
         {
-            var target = home.EntrancePosition;
-            var destination = NavMesh.SamplePosition(target, out var hit, EntranceSearchRadius, NavMesh.AllAreas)
-                ? hit.position
-                : target;
+            var destination = home.EntrancePosition;
+            if (NavMesh.SamplePosition(destination, out var hit, EntranceSearchRadius, NavMesh.AllAreas))
+            {
+                destination = hit.position;
+            }
+            else
+            {
+                Debug.LogWarning(
+                    $"{name}: {home.name}'s entrance is more than {EntranceSearchRadius} units from the navmesh; " +
+                    "move the Entrance marker onto walkable ground.", this);
+            }
 
             // No timeout: only go inside once actually at the entrance.
             yield return _entity.WalkTo(destination, float.PositiveInfinity);
