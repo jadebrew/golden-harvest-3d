@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Driftwood
   sprite: {fileID: 21300000, guid: ff785d7be7459d9e7bb14aad5de92c71, type: 3}
   model: {fileID: 6838037281231520895, guid: 03fc52c58b06443bf992533121ed4f0a, type: 3}
-  worldModel: {fileID: 919132149155446097, guid: 58e89267a17d13743af579e93de2f851, type: 3}
+  worldModel: {fileID: 919132149155446097, guid: 0685aa4c129f819f790da65ad3872bad, type: 3}
   itemType: 0
   damageType: 0
   animationType: 2
