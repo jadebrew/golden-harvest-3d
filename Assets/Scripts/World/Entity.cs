@@ -51,7 +51,7 @@ namespace World
         private const float MaxWalkDuration = 10f;
         // Slack on top of the agent's stopping distance. Agents often settle a little short of their
         // destination (avoidance, obstacles), and with a stopping distance of 0 they'd never "arrive".
-        private const float ArrivalTolerance = 0.25f;
+        private const float ArrivalTolerance = 1;
 
         // ---------------------------------------------------------------- Inspector
 
@@ -407,4 +407,4 @@ namespace World
             }
         }
     }
-}
+}
