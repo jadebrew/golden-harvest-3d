@@ -41,7 +41,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8702436354646541357}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
@@ -71,8 +71,9 @@ MonoBehaviour:
   race: 0
   aiType: 0
   aura: 0
+  indestructible: 0
   maxHealth: 100
-  vulnerability: 1
+  vulnerability: 0
   respawnDelay: 30
   dropItem: {fileID: 11400000, guid: 20c0d9fb83994deb9a2e0342e3eeab5f, type: 2}
   dropAmount: 5
