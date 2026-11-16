@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Workbench
   m_EditorClassIdentifier: Assembly-CSharp::Recipe
   input:
-  - key: {fileID: 11400000, guid: 98667eefc6fc0e70eb1ae72ec617fb51, type: 2}
+  - key: {fileID: 11400000, guid: 89a2df17d2db2565db2f27f3dbe63878, type: 2}
     value: 6
   output:
   - key: {fileID: 11400000, guid: b47021b6a2c2cff169ca2febcbfc1630, type: 2}

@@ -54,7 +54,7 @@ MonoBehaviour:
   vulnerability: 0
   respawnDelay: 30
   dropItem: {fileID: 11400000, guid: 98667eefc6fc0e70eb1ae72ec617fb51, type: 2}
-  dropAmount: 5
+  dropAmount: 1
   interactRange: 2
   idleDelay: 5
   followRepathInterval: 0.1

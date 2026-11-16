@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Net
   m_EditorClassIdentifier: Assembly-CSharp::Recipe
   input:
-  - key: {fileID: 11400000, guid: 98667eefc6fc0e70eb1ae72ec617fb51, type: 2}
+  - key: {fileID: 11400000, guid: 1c425754a1857af78b781b0d766320d1, type: 2}
     value: 3
   - key: {fileID: 11400000, guid: e722e478b4b869d34bd2b437bccbe2d2, type: 2}
     value: 2

@@ -49,11 +49,12 @@ MonoBehaviour:
   race: 0
   aiType: 1
   aura: 0
+  indestructible: 0
   maxHealth: 100
   vulnerability: 1
   respawnDelay: 30
   dropItem: {fileID: 11400000, guid: 4a8d8a1cd91fe4a50921e230188d0c71, type: 2}
-  dropAmount: 5
+  dropAmount: 1
   interactRange: 2
   idleDelay: 5
   followRepathInterval: 1

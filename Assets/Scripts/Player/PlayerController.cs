@@ -77,8 +77,9 @@ namespace Player
         private InputAction _useAction;
         private InputAction _jumpAction;
         private InputAction _menuAction;
-        private InputAction _nextTabAction;
-        private InputAction _previousTabAction;
+        private InputAction _scrollAction;
+        private InputAction _nextAction;
+        private InputAction _previousAction;
 
         private CharacterController _charController;
         private Animator _animator;
@@ -113,8 +114,9 @@ namespace Player
             _jumpAction = InputSystem.actions.FindAction("Jump");
             _useAction = InputSystem.actions.FindAction("Attack");
             _menuAction = InputSystem.actions.FindAction("Interact");
-            _nextTabAction = InputSystem.actions.FindAction("Next");
-            _previousTabAction = InputSystem.actions.FindAction("Previous");
+            _nextAction = InputSystem.actions.FindAction("Next");
+            _previousAction = InputSystem.actions.FindAction("Previous");
+            _scrollAction = InputSystem.actions.FindAction("Scroll");
             _charController = GetComponent<CharacterController>();
             _animator = GetComponent<Animator>();
 
@@ -141,7 +143,7 @@ namespace Player
                 RefreshMenuUI();
             }
 
-            if (_nextTabAction.WasPressedThisFrame())
+            if (_nextAction.WasPressedThisFrame())
             {
                 if (_isMenuOpen)
                 {
@@ -172,7 +174,7 @@ namespace Player
 
             }
 
-            if (_previousTabAction.WasPressedThisFrame())
+            if (_previousAction.WasPressedThisFrame())
             {
                 if (_isMenuOpen)
                 {
@@ -184,7 +186,27 @@ namespace Player
                     RefreshEquipment();
                 }
             }
+
+            _scrollAction.performed += ctx =>
+            {
+                float scrollValue = ctx.ReadValue<Vector2>().y;
+
+                if (scrollValue > 0)
+                {
+                    // Scroll up
+                    selectedItemIndex--;
+                }
+                else if (scrollValue < 0)
+                {
+                    // Scroll down
+                    selectedItemIndex++;
+                }
+
+
+            };
             RefreshHud();
+            RefreshEquipment();
+            RefreshInventoryUI();
         }
 
         private void FixedUpdate()
@@ -304,6 +326,11 @@ namespace Player
                         ChangeAmount(equippedItem,-1);
                         _animator.SetTrigger(PullParam);
                     }
+                    if(inventory[equippedItem]<=0)
+                    {
+                        selectedItemIndex--;
+                        RefreshEquipment();
+                    }
                     break;
                 case ItemType.Consumable:
                     if(inventory[equippedItem]>0)
@@ -379,8 +406,8 @@ namespace Player
         private void RefreshHud()
         {
             CheckAura();
-            var debugText = "[F] " + ItemTypeVerbs[(int)equippedItem.itemType] + " " + equippedItem.itemName + "\n[E] " + AuraStrings[(int)_currentAura];
-            hudContainer.GetComponent<TMP_Text>().text = debugText;
+            //var debugText = "[F] " + ItemTypeVerbs[(int)equippedItem.itemType] + " " + equippedItem.itemName + "\n[E] " + AuraStrings[(int)_currentAura];
+            //hudContainer.GetComponent<TMP_Text>().text = debugText;
         }
 
         private void RefreshInventoryUI()
@@ -391,9 +418,14 @@ namespace Player
             foreach (var (item, amount) in inventory)
             {
                 if (amount <= 0) continue;
+                //if (item.itemType == ItemType.Resource) continue;
             
-                var button = CreateButton(inventoryContainer.transform, item.sprite, amount.ToString()).GetComponent<Button>();
-                button.onClick.AddListener(() => SelectItem(item));
+                var button = CreateButton(inventoryContainer.transform, item.sprite, "x" + amount);
+                button.GetComponent<Button>().onClick.AddListener(() => SelectItem(item));
+                if (item == equippedItem)
+                {
+                    button.GetComponent<Image>().color = Color.gold;
+                }
                 indexedItemList.Add(item);
             }
 
@@ -412,6 +444,7 @@ namespace Player
                 index++;
             }
             RefreshEquipment();
+            RefreshInventoryUI();
         }
 
         // ---------------------------------------------------------------- Crafting

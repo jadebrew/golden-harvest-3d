@@ -220,6 +220,17 @@ namespace World
             if (dropItem)
             {
                 _dropModelInstance = Instantiate(dropItem.worldModel, transform);
+                 float rotationRange = 360f;
+                 Vector3 positionRange = new Vector3(1, 0, 1);
+
+                Vector3 offset = new Vector3(
+                    Random.Range(-positionRange.x, positionRange.x),
+                                             Random.Range(-positionRange.y, positionRange.y),
+                                             Random.Range(-positionRange.z, positionRange.z));
+                _dropModelInstance.transform.position += offset;
+
+                float randomY = Random.Range(-rotationRange, rotationRange);
+                _dropModelInstance.transform.Rotate(0f, randomY, 0f, Space.Self);
             }
 
             if (aiType == AiType.Humanoid)
