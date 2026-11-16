@@ -51,6 +51,7 @@ MonoBehaviour:
   race: 0
   aiType: 0
   aura: 2
+  indestructible: 0
   maxHealth: 100
   vulnerability: 1
   respawnDelay: 30
@@ -178,10 +179,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7745876787779789591, guid: 3b605fe9c3b62d67487c39609941cd01, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3077594f43d4e180482f1b55b5a8c22c, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 3b605fe9c3b62d67487c39609941cd01, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 17f89e2ea1f647f6db03797318b3d284, type: 2}
     - target: {fileID: 919132149155446097, guid: 3b605fe9c3b62d67487c39609941cd01, type: 3}
       propertyPath: m_Name
       value: workbench
       objectReference: {fileID: 0}
+    - target: {fileID: 3603521174291389082, guid: 3b605fe9c3b62d67487c39609941cd01, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b2c88914e48e1d695a2eae24d3969f0c, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

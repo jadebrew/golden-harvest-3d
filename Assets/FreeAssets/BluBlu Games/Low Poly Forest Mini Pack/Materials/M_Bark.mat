@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_Bark
-  m_Shader: {fileID: -6465566751694194690, guid: 42d03bcb49d1bb74c86cd85968ae7275, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: bd3cfc66251d1db41bc93e3d21170477, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -37,6 +37,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_1BAF81B:
+        m_Texture: {fileID: 2800000, guid: 5403b5af03ebf32acbe17372d2e03e41, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - Texture2D_38206155:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -111,12 +115,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - Vector1_4200F1D7: 1.61
+    - Vector1_431E0D1D: 0
     - Vector1_7722A149: 0.05
     - Vector1_AADD838F: 10
     - Vector1_C1D16DBE: 0.5
     - Vector1_C39D93FF: 0.2
     - Vector1_CE098D07: 0.1
     - Vector1_EBB5CF27: 1
+    - Vector1_F922E8F1: 0
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
