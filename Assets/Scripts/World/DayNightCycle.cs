@@ -24,6 +24,9 @@ namespace World
         /// <summary>Replaces the real-time clock with a fixed hour (0-24). Use this instead of using DateTime directly! Otherwise debug tools won't work.</summary>
         public float? ClockHours { get; set; }
 
+        /// <summary>True while a debug tool is dragging the clock; listeners should hold off on reacting to hour changes.</summary>
+        public bool IsScrubbing { get; set; }
+
         /// <summary>The hour of day currently being displayed, wrapped to [0, 24).</summary>
         public float CurrentHour =>
             Mathf.Repeat(ClockHours ?? ((float)DateTime.Now.TimeOfDay.TotalHours), 24f);

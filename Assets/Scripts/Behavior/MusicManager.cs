@@ -1,6 +1,7 @@
 using UnityEngine;
+using World;
 
-namespace World
+namespace Behavior
 {
     public class MusicManager : MonoBehaviour
     {
@@ -16,17 +17,21 @@ namespace World
         public void Update()
         {
             var cycle = DayNightCycle.Instance;
-            if (!cycle)
+            if (!cycle || cycle.IsScrubbing)
             {
                 return;
             }
 
+            SetNewSong(cycle);
+        }
+
+        private void SetNewSong(DayNightCycle cycle)
+        {
             var currentSong = songsPerHour[(int)cycle.CurrentHour];
-            if (_bgm.clip.ToString() != currentSong.ToString())
-            {
-                _bgm.clip = currentSong;
-                _bgm.Play();
-            }
+            if (_bgm.clip.ToString() == currentSong.ToString()) return;
+
+            _bgm.clip = currentSong;
+            _bgm.Play();
         }
     }
 }

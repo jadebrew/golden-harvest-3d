@@ -9,6 +9,7 @@ namespace Editor
     /// </summary>
     public class TimeOfDayDebugWindow : EditorWindow
     {
+
         [MenuItem("Tools/Debug/Time of Day")]
         private static void Open() => GetWindow<TimeOfDayDebugWindow>("Time of Day");
 
@@ -39,6 +40,11 @@ namespace Editor
 
             EditorGUI.BeginChangeCheck();
             var hour = EditorGUILayout.Slider("Hour", current, 0f, 24f);
+
+            // The slider consumes MouseDown/MouseUp, so track hotControl instead: it stays
+            // non-zero for the whole drag, even if the mouse is released outside the window.
+            cycle.IsScrubbing = GUIUtility.hotControl != 0;
+
             if (EditorGUI.EndChangeCheck())
                 cycle.ClockHours = hour;
 
