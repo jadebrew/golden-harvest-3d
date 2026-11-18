@@ -13,7 +13,7 @@ namespace Behavior
         public void Start()
         {
             _bgm = GetComponent<AudioSource>();
-            _bgm.loop = false;
+            //_bgm.loop = false;
         }
 
         public void Update()
