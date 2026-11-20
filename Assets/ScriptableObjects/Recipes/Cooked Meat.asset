@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b03b60dc4f155a9fbfc2095a4e3279c, type: 3}
+  m_Name: Cooked Meat
+  m_EditorClassIdentifier: Assembly-CSharp::Data.Recipe
+  input:
+  - key: {fileID: 11400000, guid: c134030807314fc78b201074116de794, type: 2}
+    value: 1
+  output:
+  - key: {fileID: 11400000, guid: f8688d1f1d964aa3b235652b1691327d, type: 2}
+    value: 1
+  requiredAura: 1

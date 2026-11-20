@@ -46,12 +46,21 @@ namespace World
         private static readonly int SweepParam = Animator.StringToHash("sweep");
         private static readonly int DeathParam = Animator.StringToHash("death");
         private static readonly int ReviveParam = Animator.StringToHash("revive");
+        private static readonly int PullParam = Animator.StringToHash("pull");
+        private static readonly int ConsumeParam = Animator.StringToHash("consume");
 
         private const float WanderRadius = 5f;
         private const float MaxWalkDuration = 10f;
         // Slack on top of the agent's stopping distance. Agents often settle a little short of their
         // destination (avoidance, obstacles), and with a stopping distance of 0 they'd never "arrive".
         private const float ArrivalTolerance = 1;
+        // Seconds between path updates while approaching a (possibly moving) target.
+        private const float ApproachRepathInterval = 0.25f;
+
+        private static readonly List<Entity> ActiveEntities = new();
+
+        /// <summary>Every enabled entity in the loaded scenes, e.g. for workers looking for resource nodes.</summary>
+        public static IReadOnlyList<Entity> All => ActiveEntities;
 
         // ---------------------------------------------------------------- Inspector
 
@@ -96,6 +105,9 @@ namespace World
         /// <summary>True while the entity is removed from the world, e.g. a villager inside its house.</summary>
         public bool IsHidden { get; private set; }
 
+        /// <summary>The item this entity drops when it dies, or null.</summary>
+        public Item DropItem => dropItem;
+
         /// <summary>Raised every time the entity (re)spawns, after its default behaviour has started.</summary>
         public event System.Action Respawned;
 
@@ -129,6 +141,10 @@ namespace World
                 _animator.SetBool(GroundedParam, true);
             }
         }
+
+        private void OnEnable() => ActiveEntities.Add(this);
+
+        private void OnDisable() => ActiveEntities.Remove(this);
 
         private void Start()
         {
@@ -165,7 +181,11 @@ namespace World
             return offset.sqrMagnitude < interactRange * interactRange;
         }
 
-        public void TakeDamage(float amount)
+        /// <summary>
+        /// Damages the entity. If this kills it, its drop goes into <paramref name="looter"/>,
+        /// or to the player when no looter is given.
+        /// </summary>
+        public void TakeDamage(float amount, Inventory looter = null)
         {
             if (indestructible || !IsAlive || IsHidden)
             {
@@ -175,13 +195,13 @@ namespace World
             Health -= amount;
             if (Health <= 0)
             {
-                Die();
+                Die(looter);
             }
         }
 
         // ---------------------------------------------------------------- Life cycle
 
-        private void Die()
+        private void Die(Inventory looter)
         {
             IsAlive = false;
             StopAllCoroutines();
@@ -190,7 +210,14 @@ namespace World
 
             if (dropItem)
             {
-                _player.Give(dropItem, dropAmount);
+                if (looter != null)
+                {
+                    looter.Add(dropItem, dropAmount);
+                }
+                else
+                {
+                    _player.Give(dropItem, dropAmount);
+                }
             }
 
             if (_dropModelInstance)
@@ -382,6 +409,64 @@ namespace World
             }
 
             StopMoving();
+        }
+
+        /// <summary>
+        /// Walks towards <paramref name="target"/> until within <paramref name="reach"/> of it, following it if it moves.
+        /// Gives up after <paramref name="timeout"/> seconds or when the target is destroyed.
+        /// </summary>
+        public IEnumerator Approach(Transform target, float reach, float timeout = MaxWalkDuration)
+        {
+            SetWalkingAnimation(true);
+
+            var giveUpTime = Time.time + timeout;
+            var nextRepathTime = 0f;
+            while (target && !IsWithin(target.position, reach) && Time.time < giveUpTime)
+            {
+                if (Time.time >= nextRepathTime)
+                {
+                    _agent.SetDestination(target.position);
+                    nextRepathTime = Time.time + ApproachRepathInterval;
+                }
+                yield return null;
+            }
+
+            StopMoving();
+        }
+
+        /// <summary>True if <paramref name="point"/> is within <paramref name="distance"/>, ignoring height.</summary>
+        public bool IsWithin(Vector3 point, float distance)
+        {
+            var offset = point - transform.position;
+            offset.y = 0;
+            return offset.sqrMagnitude <= distance * distance;
+        }
+
+        /// <summary>Turns to look at <paramref name="point"/> on the horizontal plane.</summary>
+        public void FaceTowards(Vector3 point)
+        {
+            var direction = point - transform.position;
+            direction.y = 0;
+            if (direction.sqrMagnitude > 0.0001f)
+            {
+                transform.rotation = Quaternion.LookRotation(direction);
+            }
+        }
+
+        /// <summary>Plays the animation for using an item (swing, pull, consume). Does nothing on non-humanoids.</summary>
+        public void PlayItemAnimation(AnimationType type)
+        {
+            if (_animator == null)
+            {
+                return;
+            }
+
+            _animator.SetTrigger(type switch
+            {
+                AnimationType.Sweep => SweepParam,
+                AnimationType.Consume => ConsumeParam,
+                _ => PullParam,
+            });
         }
 
         private bool HasArrived()

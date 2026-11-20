@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 using World;
@@ -48,15 +49,23 @@ namespace Editor
             if (EditorGUI.EndChangeCheck())
                 cycle.ClockHours = hour;
 
+            EditorGUI.BeginChangeCheck();
+            var day = (DayOfWeek)EditorGUILayout.EnumPopup("Day", cycle.CurrentDay);
+            if (EditorGUI.EndChangeCheck())
+                cycle.ClockDay = day;
+
             EditorGUILayout.Space();
 
-            var overridden = cycle.ClockHours.HasValue;
+            var overridden = cycle.ClockHours.HasValue || cycle.ClockDay.HasValue;
             EditorGUILayout.LabelField("Mode", overridden ? "Overridden" : "Real time");
 
             using (new EditorGUI.DisabledScope(!overridden))
             {
                 if (GUILayout.Button("Resume Real Time"))
+                {
                     cycle.ClockHours = null;
+                    cycle.ClockDay = null;
+                }
             }
         }
 

@@ -1,3 +1,4 @@
+using Data;
 using UnityEngine;
 
 namespace World
@@ -14,6 +15,9 @@ namespace World
 
         /// <summary>World position of the entrance, or the house itself if none is set.</summary>
         public Vector3 EntrancePosition => entrance ? entrance.position : transform.position;
+
+        /// <summary>Goods the residents brought home, e.g. a woodcutter's wood or a baker's bread.</summary>
+        public Inventory Storage { get; } = new();
 
         private void OnValidate()
         {

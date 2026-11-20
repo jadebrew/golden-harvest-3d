@@ -31,6 +31,12 @@ namespace World
         public float CurrentHour =>
             Mathf.Repeat(ClockHours ?? ((float)DateTime.Now.TimeOfDay.TotalHours), 24f);
 
+        /// <summary>Replaces the real-time day of the week. Like <see cref="ClockHours"/>, for debug tools.</summary>
+        public DayOfWeek? ClockDay { get; set; }
+
+        /// <summary>The day of the week currently being simulated.</summary>
+        public DayOfWeek CurrentDay => ClockDay ?? DateTime.Now.DayOfWeek;
+
         /// <summary>The cycle in the current scene, or null if there is none.</summary>
         public static DayNightCycle Instance { get; private set; }
 

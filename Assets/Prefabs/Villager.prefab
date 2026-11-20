@@ -2029,5 +2029,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::World.Character
   home: {fileID: 0}
-  bedtimeHour: 0
-  wakeHour: 8
+  schedule: {fileID: 0}
