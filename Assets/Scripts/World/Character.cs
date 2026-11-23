@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Data;
 using UnityEngine;
 using UnityEngine.AI;
@@ -22,6 +23,11 @@ namespace World
         [SerializeField] private House home;
         [Tooltip("Weekly timetable. Leave empty to use the village default.")]
         [SerializeField] private Schedule schedule;
+        [Tooltip("Favorite AuraType for Leisure.")]
+        [SerializeField] private AuraType favoriteAura;
+
+        [Tooltip("How far from the worker to look for targets.")]
+        [SerializeField] private float searchRadius = 50f;
 
         private Entity _entity;
         private Job _job;
@@ -36,6 +42,8 @@ namespace World
 
         /// <summary>The activity currently being carried out, or null before the first update.</summary>
         public Activity? CurrentActivity => _currentActivity;
+
+        private readonly Dictionary<Entity, float> _ignoredUntil = new();
 
         private void Awake()
         {
@@ -108,9 +116,11 @@ namespace World
                 case Activity.Shipping:
                 case Activity.Leisure:
                     return Leisure();
+                case Activity.Sleep:
+                    return Leisure();
                 default:
                     // Sleep and meals.
-                    return StayHome();
+                    return Meal();
             }
         }
 
@@ -120,11 +130,34 @@ namespace World
             _entity.SetHidden(true);
         }
 
+        private IEnumerator Congregate(AuraType aura)
+        {
+            var _funTarget = FindTargetAura(_entity,favoriteAura);
+            if (_funTarget)
+            {
+                yield return _entity.WalkTo(_funTarget.transform.position, float.PositiveInfinity);
+            }
+            else {
+                yield break;
+            }
+        }
+
+        private IEnumerator Meal()
+        {
+            yield return Congregate(AuraType.Cooking);
+            yield return _entity.DefaultBehaviour();
+        }
+
         private IEnumerator Leisure()
         {
             _entity.SetHidden(false);
-            yield return _entity.WalkTo(_spawnPosition, float.PositiveInfinity);
-            yield return _entity.DefaultBehaviour();
+            if (favoriteAura == null)
+            {
+                favoriteAura = AuraType.Cooking;
+            }
+            yield return Congregate(favoriteAura);
+
+            yield return _entity.Leisure();
         }
 
         private IEnumerator Work()
@@ -148,6 +181,35 @@ namespace World
 
             yield return _entity.DefaultBehaviour();
         }
+
+        private Entity FindTargetAura(Entity self, AuraType aura)
+        {
+            Entity nearest = null;
+            var nearestDistance = searchRadius * searchRadius;
+            var origin = self.transform.position;
+
+            foreach (var candidate in Entity.All)
+            {
+                if (candidate == self || !IsTargetableAura(candidate,aura) ||
+                    (_ignoredUntil.TryGetValue(candidate, out var until) && Time.time < until))
+                {
+                    continue;
+                }
+
+                var distance = (candidate.transform.position - origin).sqrMagnitude;
+                if (distance < nearestDistance)
+                {
+                    nearest = candidate;
+                    nearestDistance = distance;
+                }
+            }
+
+            return nearest;
+        }
+
+        private bool IsTargetableAura(Entity entity, AuraType aura) =>
+        entity && entity.IsAlive && !entity.IsHidden &&
+        entity.aura == aura;
 
         /// <summary>Walks to the house entrance and drops off everything being carried, staying outside.</summary>
         public IEnumerator WalkHome()

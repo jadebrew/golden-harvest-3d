@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 9168830853370350871}
   - component: {fileID: 5087582408091440272}
   - component: {fileID: 3866077264211294660}
+  - component: {fileID: 7752804516338141735}
+  - component: {fileID: 4876425087906226145}
   m_Layer: 0
   m_Name: CritterNode
   m_TagString: Untagged
@@ -51,7 +53,7 @@ MonoBehaviour:
   aura: 0
   indestructible: 0
   maxHealth: 100
-  vulnerability: 1
+  vulnerability: 0
   respawnDelay: 30
   dropItem: {fileID: 11400000, guid: 4a8d8a1cd91fe4a50921e230188d0c71, type: 2}
   dropAmount: 1
@@ -96,3 +98,38 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &7752804516338141735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8011123760483142881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cb5dab79123d494c9f25fd60fd47795, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::World.Character
+  home: {fileID: 0}
+  schedule: {fileID: 0}
+  favoriteAura: 0
+  searchRadius: 50
+--- !u!114 &4876425087906226145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8011123760483142881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aae3cea388509d46883dfb4d5bd9b2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::World.GathererJob
+  resource: {fileID: 11400000, guid: 2fe659973ce7c26ecb0508ecff581c25, type: 2}
+  tool: {fileID: 11400000, guid: f1236eaafa2db572197da07653baf7f8, type: 2}
+  searchRadius: 50
+  reach: 2.5
+  swingInterval: 1.5
+  approachTimeout: 20
+  idleSeconds: 5

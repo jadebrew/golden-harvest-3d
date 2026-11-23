@@ -28,6 +28,7 @@ namespace World
         None,
         Cooking,
         Crafting,
+        Fun,
         Portal,
         Housing,
     }
@@ -288,9 +289,21 @@ namespace World
                 case AiType.Critter:
                     return WanderLoop(initialDelay: 0);
                 case AiType.Humanoid:
-                    return WanderLoop(initialDelay: idleDelay);
+                    return Leisure();
                 case AiType.Follow:
                     return FollowPlayer(initialDelay: idleDelay);
+                default:
+                    return null;
+            }
+        }
+
+        public IEnumerator Leisure()
+        {
+            switch (aiType)
+            {
+                case AiType.Humanoid:
+                    _animator.SetBool(ConsumeParam, true);
+                    return null;
                 default:
                     return null;
             }
