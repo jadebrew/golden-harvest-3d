@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29fa0085f50d5e54f8144f766051a691, type: 3}
   m_Name: FilmGrain
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FilmGrain
-  active: 1
+  active: 0
   type:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 9
   intensity:
     m_OverrideState: 1
-    m_Value: 0.016
+    m_Value: 0
   response:
     m_OverrideState: 1
     m_Value: 0.311
@@ -87,10 +87,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81180773991d8724ab7f2d216912b564, type: 3}
   m_Name: ChromaticAberration
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.ChromaticAberration
-  active: 1
+  active: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.14
+    m_Value: 0.188
 --- !u!114 &-5506137419043655862
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -106,16 +106,16 @@ MonoBehaviour:
   active: 0
   mode:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   gaussianStart:
     m_OverrideState: 1
-    m_Value: 53
+    m_Value: 17.8
   gaussianEnd:
     m_OverrideState: 1
     m_Value: 500
   gaussianMaxRadius:
     m_OverrideState: 1
-    m_Value: 0.73
+    m_Value: 0.82
   highQualitySampling:
     m_OverrideState: 0
     m_Value: 0
@@ -127,7 +127,7 @@ MonoBehaviour:
     m_Value: 1.7
   focalLength:
     m_OverrideState: 1
-    m_Value: 33
+    m_Value: 1
   bladeCount:
     m_OverrideState: 1
     m_Value: 6
@@ -149,22 +149,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
   m_Name: Vignette
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   color:
     m_OverrideState: 1
     m_Value: {r: 0, g: 0, b: 0, a: 1}
   center:
-    m_OverrideState: 0
-    m_Value: {x: 0.5, y: 0.5}
+    m_OverrideState: 1
+    m_Value: {x: 0.5, y: 0.75}
   intensity:
-    m_OverrideState: 0
-    m_Value: 0.27
+    m_OverrideState: 1
+    m_Value: 0.174
   smoothness:
-    m_OverrideState: 0
-    m_Value: 0.367
+    m_OverrideState: 1
+    m_Value: 0.312
   rounded:
     m_OverrideState: 0
     m_Value: 1
+--- !u!114 &-3192965578128804210
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 221518ef91623a7438a71fef23660601, type: 3}
+  m_Name: WhiteBalance
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.WhiteBalance
+  active: 0
+  temperature:
+    m_OverrideState: 1
+    m_Value: 8
+  tint:
+    m_OverrideState: 1
+    m_Value: -8
 --- !u!114 &-458648120718923226
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -210,7 +229,7 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
   red:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value:
       <length>k__BackingField: 2
       m_Loop: 0
@@ -229,8 +248,8 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 1
-          value: 1
+          time: 0.9815951
+          value: 0.65359473
           inSlope: 1
           outSlope: 1
           tangentMode: 0
@@ -252,18 +271,18 @@ MonoBehaviour:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 1
-          inSlope: -6.1840115
-          outSlope: -6.1840115
+          value: 0
+          inSlope: 0
+          outSlope: 1
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.8609756
-          value: 0
+          time: 1
+          value: 1
           inSlope: 1
-          outSlope: 1
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -378,6 +397,7 @@ MonoBehaviour:
   - {fileID: -458648120718923226}
   - {fileID: 175488624090464520}
   - {fileID: 1187425267703042989}
+  - {fileID: -3192965578128804210}
 --- !u!114 &175488624090464520
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -519,19 +539,19 @@ MonoBehaviour:
   active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: 1.18
+    m_Value: 0.2
   contrast:
     m_OverrideState: 0
-    m_Value: 6
+    m_Value: 0
   colorFilter:
     m_OverrideState: 0
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_Value: {r: 1, g: 1, b: 0.4117647, a: 1}
   hueShift:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 35
   saturation:
     m_OverrideState: 1
-    m_Value: 50
+    m_Value: 0
 --- !u!114 &7391319092446245454
 MonoBehaviour:
   m_ObjectHideFlags: 3
