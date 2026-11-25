@@ -49,6 +49,7 @@ namespace World
         private static readonly int ReviveParam = Animator.StringToHash("revive");
         private static readonly int PullParam = Animator.StringToHash("pull");
         private static readonly int ConsumeParam = Animator.StringToHash("consume");
+        private static readonly int DancingParam = Animator.StringToHash("dance");
 
         private const float WanderRadius = 5f;
         private const float MaxWalkDuration = 10f;
@@ -114,6 +115,8 @@ namespace World
 
         private Coroutine _behaviour;
         private readonly List<Renderer> _hiddenRenderers = new();
+
+        private int currentIdle;
 
         private NavMeshAgent _agent;
         private NavMeshObstacle _obstacle;
@@ -302,10 +305,13 @@ namespace World
             switch (aiType)
             {
                 case AiType.Humanoid:
-                    _animator.SetBool(ConsumeParam, true);
+                    WanderLoop(1);
+                    return null;
+                case AiType.Critter:
+                    WanderLoop(1);
                     return null;
                 default:
-                    return null;
+                   return null;
             }
         }
 
@@ -512,6 +518,7 @@ namespace World
         {
             if (_animator != null)
             {
+                _animator.SetBool(DancingParam, false);
                 _animator.SetBool(WalkingParam, isWalking);
             }
         }

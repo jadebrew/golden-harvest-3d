@@ -49,7 +49,16 @@ namespace World
         {
             _entity = GetComponent<Entity>();
             _job = GetComponent<Job>();
-            _spawnPosition = transform.position;
+
+            //start at home
+            if(!home)
+            {
+
+            } else {
+                _spawnPosition = home.EntrancePosition;
+                transform.position = home.EntrancePosition;
+            }
+
 
             if (!schedule)
             {
@@ -113,11 +122,13 @@ namespace World
                 case Activity.Shipping when _job && ShippingPoint.Instance:
                     return Ship();
                 case Activity.Work:
+                    return Leisure();
                 case Activity.Shipping:
+                    return Leisure();
                 case Activity.Leisure:
                     return Leisure();
                 case Activity.Sleep:
-                    return Leisure();
+                    return StayHome();
                 default:
                     // Sleep and meals.
                     return Meal();
@@ -130,7 +141,7 @@ namespace World
             _entity.SetHidden(true);
         }
 
-        private IEnumerator Congregate(AuraType aura)
+        public IEnumerator Congregate(AuraType aura)
         {
             var _funTarget = FindTargetAura(_entity,favoriteAura);
             if (_funTarget)

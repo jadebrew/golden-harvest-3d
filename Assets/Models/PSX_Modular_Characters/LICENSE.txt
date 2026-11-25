@@ -1,0 +1,31 @@
+Asset License - Personal & Commercial Use
+
+Copyright (c) 2026 Cubicle Studio. All rights reserved.
+
+Cubicle Studio grants the user a non-exclusive, non-transferable license to use these assets under the following terms.
+
+PERMITTED USES
+
+- Use the assets in personal and commercial projects, including video games, applications, animations, films, videos, and other creative productions.
+- Modify, animate, recolor, optimize, and adapt the assets for use within those projects.
+- Sell, publish, and distribute completed projects that incorporate these assets.
+- Use the assets in projects developed with Unity, Unreal Engine, Godot, Blender, or other compatible software.
+- Use the assets without attribution, although credit is appreciated.
+
+PROHIBITED USES
+
+- Resell, redistribute, sublicense, share, or give away the original asset files as standalone assets or asset packs.
+- Redistribute modified or derivative versions of the assets as standalone assets, whether free or paid.
+- Upload the source files to public asset repositories, marketplaces, or file-sharing services.
+- Include the assets in products whose primary purpose is to distribute, extract, or provide reusable access to the underlying asset files.
+- Claim ownership or authorship of the original assets.
+
+ADDITIONAL TERMS
+
+- This license applies to both free and paid asset packs.
+- Commercial use is permitted without additional royalties.
+- No attribution is required.
+- Ownership of the original assets remains with Cubicle Studio.
+- The Blender scripts included with this pack may be used and modified only together with these assets, under the same terms.
+- The assets are provided "as is", without warranties of any kind, to the extent permitted by applicable law.
+- This license does not grant rights to third-party trademarks, copyrighted materials, or other intellectual property not owned by Cubicle Studio.

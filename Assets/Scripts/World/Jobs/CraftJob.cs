@@ -23,7 +23,7 @@ namespace World
         [Tooltip("Seconds one batch takes.")]
         [SerializeField] private float craftSeconds = 10f;
         [Tooltip("Seconds to wait before looking again when there are no ingredients.")]
-        [SerializeField] private float idleSeconds = 10f;
+        [SerializeField] private float idleSeconds = 500f;
 
         public override bool IsProduct(Item item) => recipe && recipe.output.ContainsKey(item);
 
@@ -44,8 +44,8 @@ namespace World
                     yield return FetchIngredients(worker);
                     if (!worker.Carried.Contains(recipe.input))
                     {
+                        yield return worker.Congregate(AuraType.Fun);
                         yield return idleWait;
-                        continue;
                     }
                 }
 

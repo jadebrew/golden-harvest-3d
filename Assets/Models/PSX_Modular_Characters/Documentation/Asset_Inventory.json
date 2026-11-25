@@ -1,0 +1,177 @@
+{
+ "pack": "PSX Modular Characters",
+ "blender_version": "5.2.2 LTS",
+ "glb": [
+  {
+   "file": "Export/Characters/01_Caio.glb",
+   "imported": true,
+   "bytes": 120716,
+   "sha256": "1c29a7a59fc61315cae83d832969e7740f669babbbc20e6113ddbce9a2550996",
+   "meshes": 6,
+   "triangles": 967,
+   "bones": 18,
+   "armatures": 1,
+   "materials": 1,
+   "textures": [
+    "128x128"
+   ],
+   "animations": [],
+   "height_m": 1.789
+  },
+  {
+   "file": "Export/Characters/02_Iara.glb",
+   "imported": true,
+   "bytes": 122984,
+   "sha256": "8fcba8fd3b183b48cac5e5fd000858bfec384e2a36fe72043186ab720daa37e5",
+   "meshes": 6,
+   "triangles": 981,
+   "bones": 18,
+   "armatures": 1,
+   "materials": 1,
+   "textures": [
+    "128x128"
+   ],
+   "animations": [],
+   "height_m": 1.774
+  },
+  {
+   "file": "Export/Characters/03_Rui.glb",
+   "imported": true,
+   "bytes": 115288,
+   "sha256": "44c88c0b8d26d2697ec6b9c656cace8c2cfb7eceed0ecfa0ff8d7eee2105017d",
+   "meshes": 6,
+   "triangles": 913,
+   "bones": 18,
+   "armatures": 1,
+   "materials": 1,
+   "textures": [
+    "128x128"
+   ],
+   "animations": [],
+   "height_m": 1.784
+  },
+  {
+   "file": "Export/Characters/04_Lia.glb",
+   "imported": true,
+   "bytes": 128396,
+   "sha256": "55f0bfec17128918b76ce4532429fae5e267488850f67c0c8b32a6551585d527",
+   "meshes": 6,
+   "triangles": 1035,
+   "bones": 18,
+   "armatures": 1,
+   "materials": 1,
+   "textures": [
+    "128x128"
+   ],
+   "animations": [],
+   "height_m": 1.794
+  },
+  {
+   "file": "Export/Characters/05_Nilo.glb",
+   "imported": true,
+   "bytes": 122220,
+   "sha256": "ce379113b548edb221ab6c0443bc97298521743cdbba0932ea8bf6536b2e4760",
+   "meshes": 6,
+   "triangles": 981,
+   "bones": 18,
+   "armatures": 1,
+   "materials": 1,
+   "textures": [
+    "128x128"
+   ],
+   "animations": [],
+   "height_m": 1.777
+  },
+  {
+   "file": "Export/Characters/06_Ines.glb",
+   "imported": true,
+   "bytes": 116644,
+   "sha256": "b60f371100084fe571021786637107a39696326e6257998af69fc814a6c93179",
+   "meshes": 6,
+   "triangles": 929,
+   "bones": 18,
+   "armatures": 1,
+   "materials": 1,
+   "textures": [
+    "128x128"
+   ],
+   "animations": [],
+   "height_m": 1.774
+  }
+ ],
+ "fbx": [
+  {
+   "file": "Export/FBX/Characters/01_Caio.fbx",
+   "imported": true,
+   "bytes": 182284,
+   "sha256": "25c929702b8f86a393078460cd0599dc7bcfcf31b71f85e916d4e5882ae98425",
+   "triangles": 967,
+   "bones": 18,
+   "animations": [],
+   "textures": [
+    "128x128"
+   ]
+  },
+  {
+   "file": "Export/FBX/Characters/02_Iara.fbx",
+   "imported": true,
+   "bytes": 182540,
+   "sha256": "fb7b2f8e4c36a611185c9b26d43ee1f3ec210c6a8e15ff5c7d906ed4a6469648",
+   "triangles": 981,
+   "bones": 18,
+   "animations": [],
+   "textures": [
+    "128x128"
+   ]
+  },
+  {
+   "file": "Export/FBX/Characters/03_Rui.fbx",
+   "imported": true,
+   "bytes": 181452,
+   "sha256": "5654a4f22771fc871ff96a4ddcb2e242eccfc0b9cdf42736f7e79546883772e4",
+   "triangles": 913,
+   "bones": 18,
+   "animations": [],
+   "textures": [
+    "128x128"
+   ]
+  },
+  {
+   "file": "Export/FBX/Characters/04_Lia.fbx",
+   "imported": true,
+   "bytes": 183468,
+   "sha256": "a13fef08d9c69ebd0ec443abbfbdbc8ae8ffe373dde319544036cc089b2d6441",
+   "triangles": 1035,
+   "bones": 18,
+   "animations": [],
+   "textures": [
+    "128x128"
+   ]
+  },
+  {
+   "file": "Export/FBX/Characters/05_Nilo.fbx",
+   "imported": true,
+   "bytes": 182508,
+   "sha256": "f14f4d8e77ab47c45ac198a0c2e58dad32b6c4fbf8f91962e1bb9dd241e2a5bb",
+   "triangles": 981,
+   "bones": 18,
+   "animations": [],
+   "textures": [
+    "128x128"
+   ]
+  },
+  {
+   "file": "Export/FBX/Characters/06_Ines.fbx",
+   "imported": true,
+   "bytes": 182332,
+   "sha256": "3a0830c85a82c2b410c4ec29a58bb52722da9e57097d53fb30ad8a6d8f448a4d",
+   "triangles": 929,
+   "bones": 18,
+   "animations": [],
+   "textures": [
+    "128x128"
+   ]
+  }
+ ],
+ "blend": []
+}
