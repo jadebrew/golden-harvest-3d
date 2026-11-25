@@ -120,7 +120,8 @@ namespace World
                 case Activity.Work when _job:
                     return Work();
                 case Activity.Shipping when _job && ShippingPoint.Instance:
-                    return Ship();
+                    //return Ship(); -- not done yet
+                    return Leisure();
                 case Activity.Work:
                     return Leisure();
                 case Activity.Shipping:
