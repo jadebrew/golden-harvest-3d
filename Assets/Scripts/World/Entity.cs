@@ -124,6 +124,8 @@ namespace World
         private PlayerController _player;
         private GameObject _dropModelInstance;
 
+        public bool Invisible;
+
         // ---------------------------------------------------------------- Unity lifecycle
 
         private void Awake()
@@ -143,6 +145,11 @@ namespace World
                 // The controller is shared with the player, whose idle drops into "fall" when not grounded.
                 // NPCs walk on the navmesh and never leave the ground, so pin this to true.
                 _animator.SetBool(GroundedParam, true);
+            }
+
+            if (Invisible)
+            {
+                SetHidden(true);
             }
         }
 
@@ -261,7 +268,10 @@ namespace World
                 _dropModelInstance.transform.position += offset;
 
                 float randomY = Random.Range(-rotationRange, rotationRange);
-                _dropModelInstance.transform.Rotate(0f, randomY, 0f, Space.Self);
+                if (aiType == AiType.None)
+                {
+                    _dropModelInstance.transform.Rotate(0f, randomY, 0f, Space.Self);
+                }
             }
 
             if (aiType == AiType.Humanoid)
@@ -417,16 +427,18 @@ namespace World
         /// <summary>Walks to <paramref name="destination"/>, giving up after <paramref name="timeout"/> seconds.</summary>
         public IEnumerator WalkTo(Vector3 destination, float timeout = MaxWalkDuration)
         {
-            _agent.SetDestination(destination);
-            SetWalkingAnimation(true);
-
-            // Give up after a while so an unreachable destination can't stall the AI forever.
-            var giveUpTime = Time.time + timeout;
-            while (!HasArrived() && Time.time < giveUpTime)
+            if (_agent.enabled)
             {
-                yield return null;
-            }
+                _agent.SetDestination(destination);
+                SetWalkingAnimation(true);
 
+                // Give up after a while so an unreachable destination can't stall the AI forever.
+                var giveUpTime = Time.time + timeout;
+                while (!HasArrived() && Time.time < giveUpTime)
+                {
+                    yield return null;
+                }
+            }
             StopMoving();
         }
 

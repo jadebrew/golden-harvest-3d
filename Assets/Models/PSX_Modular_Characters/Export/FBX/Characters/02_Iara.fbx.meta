@@ -218,13 +218,13 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: 01_Caio(Clone)
+    - name: Humanoid(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Human
-      parentName: 01_Caio(Clone)
+      parentName: Humanoid(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 1, y: 1, z: 1}
@@ -319,32 +319,32 @@ ModelImporter:
       rotation: {x: -0.58342075, y: -0.012049872, z: 0.002242436, w: 0.8120776}
       scale: {x: 1, y: 1, z: 0.99999994}
     - name: acc.3.M
-      parentName: 01_Caio(Clone)
+      parentName: Humanoid(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 1, y: 1, z: 1}
     - name: hair.0
-      parentName: 01_Caio(Clone)
+      parentName: Humanoid(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 1, y: 1, z: 1}
     - name: head.M
-      parentName: 01_Caio(Clone)
+      parentName: Humanoid(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 1, y: 1, z: 1}
     - name: lower.M.0
-      parentName: 01_Caio(Clone)
+      parentName: Humanoid(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 1, y: 1, z: 1}
     - name: shoes.0
-      parentName: 01_Caio(Clone)
+      parentName: Humanoid(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 1, y: 1, z: 1}
     - name: upper.M.1
-      parentName: 01_Caio(Clone)
+      parentName: Humanoid(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 1, y: 1, z: 1}

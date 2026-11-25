@@ -166,9 +166,8 @@ namespace World
             {
                 favoriteAura = AuraType.Cooking;
             }
-            yield return Congregate(favoriteAura);
-
-            yield return _entity.Leisure();
+            yield return Congregate(AuraType.Cooking);
+            //yield return _entity.Leisure();
         }
 
         private IEnumerator Work()

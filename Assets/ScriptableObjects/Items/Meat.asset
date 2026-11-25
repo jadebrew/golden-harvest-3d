@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Raw Meat
   sprite: {fileID: -5996679234105964147, guid: 993135d6cf36d9613b1e05e4d0cab88f, type: 3}
   model: {fileID: 4410000000000000001, guid: ceb8b214012c485a9559f70ab7424d9b, type: 3}
-  worldModel: {fileID: 4410000000000000001, guid: ceb8b214012c485a9559f70ab7424d9b, type: 3}
+  worldModel: {fileID: 7581571544276190755, guid: b44a1b0c71c2cdf07aacaaa4a355a40a, type: 3}
   itemType: 0
   damageType: 0
   animationType: 0
