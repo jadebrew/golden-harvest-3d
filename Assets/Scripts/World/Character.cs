@@ -142,12 +142,14 @@ namespace World
             _entity.SetHidden(true);
         }
 
-        public IEnumerator Congregate(AuraType aura)
+        public IEnumerator Congregate(AuraType aura, float zone)
         {
             var _congregationTarget = FindTargetAura(_entity,aura);
+            var offset = new Vector3(Random.Range(-zone,zone), 0,Random.Range(-zone,zone));
             if (_congregationTarget)
             {
-                yield return _entity.Approach(_congregationTarget.transform,2,500);
+                yield return _entity.WalkTo(_congregationTarget.transform.position+offset,25);
+                _entity.FaceTowards(_congregationTarget.transform.position);
             }
             else {
                 yield break;
@@ -158,18 +160,21 @@ namespace World
         {
             if (_entity.aiType == AiType.Humanoid)
             {
-                yield return Congregate(AuraType.Cooking);
+                yield return Congregate(AuraType.Cooking,5);
                 yield return _entity.Consume();
             } else {
                 StayHome();
             }
-
         }
+
 
         private IEnumerator Leisure()
         {
-            yield return Congregate(AuraType.Fun);
-            yield return _entity.Leisure();
+            if (_entity.aiType == AiType.Humanoid)
+            {
+                yield return Congregate(AuraType.Fun,3);
+                yield return _entity.Party();
+            }
         }
 
         private IEnumerator Work()

@@ -44,7 +44,7 @@ namespace World
                     yield return FetchIngredients(worker);
                     if (!worker.Carried.Contains(recipe.input))
                     {
-                        yield return worker.Congregate(AuraType.Fun);
+                        yield return worker.Congregate(AuraType.Fun,1);
                         yield return idleWait;
                     }
                 }
