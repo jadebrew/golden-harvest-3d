@@ -316,7 +316,10 @@ namespace World
             switch (aiType)
             {
                 case AiType.Humanoid:
-                    _animator.SetBool(DancingParam, true);
+                    if (!_animator.GetBool(DancingParam))
+                    {
+                        _animator.SetBool(DancingParam, true);
+                    }
                     return null;
                 case AiType.Critter:
                     return WanderLoop(1);
@@ -330,7 +333,10 @@ namespace World
             switch (aiType)
             {
                 case AiType.Humanoid:
-                    _animator.SetBool(ConsumeParam, true);
+                    if (!_animator.GetBool(ConsumeParam))
+                    {
+                        _animator.SetBool(ConsumeParam, true);
+                    }
                     return null;
                 case AiType.Critter:
                     return null;
@@ -545,6 +551,7 @@ namespace World
             if (_animator != null)
             {
                 _animator.SetBool(DancingParam, false);
+                _animator.SetBool(ConsumeParam, false);
                 _animator.SetBool(WalkingParam, isWalking);
             }
         }
