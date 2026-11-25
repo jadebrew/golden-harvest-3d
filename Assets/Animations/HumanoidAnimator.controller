@@ -282,7 +282,7 @@ AnimatorStateMachine:
     m_Position: {x: 580, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2758870508073919242}
-    m_Position: {x: 321.29977, y: 209.94269, z: 0}
+    m_Position: {x: 320, y: 210, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5911730894461182763}
     m_Position: {x: 287.10236, y: 374.78302, z: 0}
@@ -657,7 +657,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Hip Hop Dancing
+  m_Name: Dance
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -671,7 +671,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: ef9384c643a00b072bf7bd49fa08e13e, type: 3}
+  m_Motion: {fileID: -203655887218126122, guid: c6813bc8f8175a6bfbe13961cb95b974, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

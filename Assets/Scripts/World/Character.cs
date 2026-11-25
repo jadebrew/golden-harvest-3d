@@ -156,8 +156,14 @@ namespace World
 
         private IEnumerator Meal()
         {
-            yield return Congregate(AuraType.Cooking);
-            yield return _entity.Consume();
+            if (_entity.aiType == AiType.Humanoid)
+            {
+                yield return Congregate(AuraType.Cooking);
+                yield return _entity.Consume();
+            } else {
+                StayHome();
+            }
+
         }
 
         private IEnumerator Leisure()
