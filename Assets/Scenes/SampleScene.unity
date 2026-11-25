@@ -18889,6 +18889,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9000000, guid: eae12a27453a01c92bbc200746f978b0, type: 3}
     - target: {fileID: 3699067725883171348, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
+      propertyPath: m_UpdateMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699067725883171348, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_AnimatePhysics
       value: 1
       objectReference: {fileID: 0}
@@ -22868,6 +22872,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9000000, guid: eae12a27453a01c92bbc200746f978b0, type: 3}
     - target: {fileID: 3699067725883171348, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
+      propertyPath: m_UpdateMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699067725883171348, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_AnimatePhysics
       value: 1
       objectReference: {fileID: 0}
@@ -22976,6 +22984,10 @@ PrefabInstance:
       propertyPath: m_Avatar
       value: 
       objectReference: {fileID: 9000000, guid: eae12a27453a01c92bbc200746f978b0, type: 3}
+    - target: {fileID: 3699067725883171348, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
+      propertyPath: m_UpdateMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3699067725883171348, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_AnimatePhysics
       value: 1
@@ -23137,6 +23149,10 @@ PrefabInstance:
       propertyPath: m_Avatar
       value: 
       objectReference: {fileID: 9000000, guid: eae12a27453a01c92bbc200746f978b0, type: 3}
+    - target: {fileID: 3699067725883171348, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
+      propertyPath: m_UpdateMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3699067725883171348, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_AnimatePhysics
       value: 1

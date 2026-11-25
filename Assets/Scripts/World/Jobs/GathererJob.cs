@@ -13,7 +13,7 @@ namespace World
     public class GathererJob : Job
     {
         // Matches the player's swing: time from starting the animation to the hit landing.
-        private const float HitDelay = 0.7f;
+        private const float HitDelay = 1.5f;
         // Extra distance a target may move away mid-swing before the worker stops hitting and chases it.
         private const float ReachSlack = 0.5f;
         // How long to skip a target that couldn't be reached, so the worker tries another one.
@@ -35,7 +35,7 @@ namespace World
         [Tooltip("Seconds to spend walking to (or chasing) a target before giving up on it.")]
         [SerializeField] private float approachTimeout = 20f;
         [Tooltip("Seconds to wait before looking again when there is nothing to collect.")]
-        [SerializeField] private float idleSeconds = 5f;
+        [SerializeField] private float idleSeconds = 60f;
 
         private readonly Dictionary<Entity, float> _ignoredUntil = new();
 
@@ -61,7 +61,13 @@ namespace World
                     continue;
                 }
 
+                if (target.IsSentient())
+                {
+                    worker.Hunt(target);
+                }
                 yield return self.Approach(target.transform, reach, approachTimeout);
+
+
                 if (!IsTargetable(target))
                 {
                     // Someone else got to it first.
@@ -102,6 +108,7 @@ namespace World
                 }
                 yield return recovery;
             }
+            worker.Idle();
         }
 
         private Entity FindTarget(Entity self)

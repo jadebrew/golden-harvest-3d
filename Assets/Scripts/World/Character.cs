@@ -77,6 +77,17 @@ namespace World
             }
         }
 
+        public void Hunt(Entity target)
+        {
+            _entity.Sneak();
+            Debug.Log("start sneaking");
+        }
+
+        public void Idle()
+        {
+            _entity.Idle();
+        }
+
         private void Update()
         {
             if (!home || !_entity.IsAlive || _entity.aiType == AiType.None)

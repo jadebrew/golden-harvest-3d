@@ -50,6 +50,7 @@ namespace World
         private static readonly int PullParam = Animator.StringToHash("pull");
         private static readonly int ConsumeParam = Animator.StringToHash("consume");
         private static readonly int DancingParam = Animator.StringToHash("dance");
+        private static readonly int CrouchingParam = Animator.StringToHash("crouch");
 
         private const float WanderRadius = 5f;
         private const float MaxWalkDuration = 10f;
@@ -208,6 +209,28 @@ namespace World
             {
                 Die(looter);
             }
+        }
+
+        public void Sneak()
+        {
+            if (_animator)
+            {
+                _animator.SetBool(CrouchingParam, true);
+            }
+        }
+
+        public void Idle()
+        {
+            if (_animator)
+            {
+            _animator.SetBool(CrouchingParam, false);
+            SetWalkingAnimation(false);
+            }
+        }
+
+        public bool IsSentient()
+        {
+            return _agent.enabled;
         }
 
         // ---------------------------------------------------------------- Life cycle
@@ -555,7 +578,6 @@ namespace World
             {
                 _agent.ResetPath();
             }
-
             SetWalkingAnimation(false);
         }
 
