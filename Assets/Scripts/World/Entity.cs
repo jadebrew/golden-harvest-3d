@@ -312,16 +312,30 @@ namespace World
 
         public IEnumerator Leisure()
         {
+            _animator.SetBool(DancingParam, false);
             switch (aiType)
             {
                 case AiType.Humanoid:
-                    WanderLoop(1);
+                    _animator.SetBool(DancingParam, true);
                     return null;
                 case AiType.Critter:
-                    WanderLoop(1);
-                    return null;
+                    return WanderLoop(1);
                 default:
                    return null;
+            }
+        }
+
+        public IEnumerator Consume()
+        {
+            switch (aiType)
+            {
+                case AiType.Humanoid:
+                    _animator.SetBool(ConsumeParam, true);
+                    return null;
+                case AiType.Critter:
+                    return null;
+                default:
+                    return null;
             }
         }
 

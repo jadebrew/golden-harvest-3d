@@ -144,10 +144,10 @@ namespace World
 
         public IEnumerator Congregate(AuraType aura)
         {
-            var _funTarget = FindTargetAura(_entity,favoriteAura);
-            if (_funTarget)
+            var _congregationTarget = FindTargetAura(_entity,aura);
+            if (_congregationTarget)
             {
-                yield return _entity.WalkTo(_funTarget.transform.position, float.PositiveInfinity);
+                yield return _entity.Approach(_congregationTarget.transform,2,500);
             }
             else {
                 yield break;
@@ -157,18 +157,13 @@ namespace World
         private IEnumerator Meal()
         {
             yield return Congregate(AuraType.Cooking);
-            yield return _entity.DefaultBehaviour();
+            yield return _entity.Consume();
         }
 
         private IEnumerator Leisure()
         {
-            _entity.SetHidden(false);
-            if (favoriteAura == null)
-            {
-                favoriteAura = AuraType.Cooking;
-            }
-            yield return Congregate(AuraType.Cooking);
-            //yield return _entity.Leisure();
+            yield return Congregate(AuraType.Fun);
+            yield return _entity.Leisure();
         }
 
         private IEnumerator Work()
