@@ -65,6 +65,8 @@ namespace World
         /// <summary>Every enabled entity in the loaded scenes, e.g. for workers looking for resource nodes.</summary>
         public static IReadOnlyList<Entity> All => ActiveEntities;
 
+        public Vector3 spawnPoint;
+
         // ---------------------------------------------------------------- Inspector
 
         [Header("Identity")]
@@ -138,6 +140,8 @@ namespace World
             var isStatic = aiType == AiType.None;
             _agent.enabled = !isStatic;
             _obstacle.enabled = isStatic;
+
+            spawnPoint = transform.position;
 
             if (aiType == AiType.Humanoid)
             {
@@ -277,6 +281,8 @@ namespace World
         {
             Health = maxHealth;
             IsAlive = true;
+
+            transform.position =  spawnPoint;
 
             if (dropItem)
             {
@@ -578,7 +584,7 @@ namespace World
             {
                 _agent.ResetPath();
             }
-            SetWalkingAnimation(false);
+            Idle();
         }
 
         private void SetWalkingAnimation(bool isWalking)

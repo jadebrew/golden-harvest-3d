@@ -57,6 +57,7 @@ namespace World
             } else {
                 _spawnPosition = home.EntrancePosition;
                 transform.position = home.EntrancePosition;
+                _entity.spawnPoint =  home.EntrancePosition;
             }
 
 
