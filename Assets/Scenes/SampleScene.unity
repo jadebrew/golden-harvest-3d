@@ -14155,7 +14155,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: ea026f9693595382597009b6749c9673, type: 2}
     - target: {fileID: 3124642250308356996, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_Speed
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3124642250308356996, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_Radius
@@ -14203,7 +14203,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3699067725883171348, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3879178043700617211, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -14219,7 +14219,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 159765c3793e7a264b6ec28c38a0b5e9, type: 2}
     - target: {fileID: 4918241735691329916, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_Mass
-      value: 10
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918241735691329916, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
+      propertyPath: m_LinearDamping
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4918241735691329916, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_AngularDamping
@@ -22236,7 +22240,7 @@ PrefabInstance:
       objectReference: {fileID: 1707633808}
     - target: {fileID: 3124642250308356996, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_Speed
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3124642250308356996, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_Radius
@@ -22268,11 +22272,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3699067725883171348, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4918241735691329916, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_Mass
-      value: 10
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918241735691329916, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
+      propertyPath: m_LinearDamping
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4918241735691329916, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_AngularDamping
@@ -22362,7 +22370,7 @@ PrefabInstance:
       objectReference: {fileID: 1707633808}
     - target: {fileID: 3124642250308356996, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_Speed
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3124642250308356996, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_Radius
@@ -22394,11 +22402,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3699067725883171348, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4918241735691329916, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_Mass
-      value: 10
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918241735691329916, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
+      propertyPath: m_LinearDamping
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4918241735691329916, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_AngularDamping
@@ -22524,7 +22536,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: ea026f9693595382597009b6749c9673, type: 2}
     - target: {fileID: 3124642250308356996, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_Speed
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3124642250308356996, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_Radius
@@ -22572,7 +22584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3699067725883171348, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3879178043700617211, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -22588,7 +22600,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 159765c3793e7a264b6ec28c38a0b5e9, type: 2}
     - target: {fileID: 4918241735691329916, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_Mass
-      value: 10
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918241735691329916, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
+      propertyPath: m_LinearDamping
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4918241735691329916, guid: ee2a5e506b70275e3be8515e33486f5c, type: 3}
       propertyPath: m_AngularDamping
