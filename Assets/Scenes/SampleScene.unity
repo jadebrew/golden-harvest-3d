@@ -24236,6 +24236,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2396892555402029579}
     m_Modifications:
+    - target: {fileID: 602502467874293100, guid: 637720d7c3e69ff5d97376b74d2da7c3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9be86cf3fffc9c644973e338bac2f948, type: 2}
+    - target: {fileID: 3027593115204791168, guid: 637720d7c3e69ff5d97376b74d2da7c3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8092287467699355043, guid: 637720d7c3e69ff5d97376b74d2da7c3, type: 3}
       propertyPath: m_Name
       value: ChibiModel
