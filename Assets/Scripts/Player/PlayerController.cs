@@ -30,6 +30,8 @@ namespace Player
 
         public static PlayerController Instance { get; private set; }
 
+        [SerializeField] private Transform cameraTransform;
+
         // ---------------------------------------------------------------- Inspector
 
         [Header("Movement")]
@@ -217,29 +219,50 @@ namespace Player
 
         // ---------------------------------------------------------------- Movement
 
+
+
         private void Move()
         {
             var input = _moveAction.ReadValue<Vector2>();
+
             var isMoving = input != Vector2.zero;
             _animator.SetBool(WalkingParam, isMoving);
 
-            var move = _lookAt.transform.forward * input.y + _lookAt.transform.right * input.x;
-            move *= (moveForce * Time.deltaTime);
+            // Get camera directions
+            Vector3 forward = cameraTransform.forward;
+            Vector3 right = cameraTransform.right;
 
+            // Keep movement on the horizontal plane
+            forward.y = 0f;
+            right.y = 0f;
+
+            forward.Normalize();
+            right.Normalize();
+
+            // Calculate movement relative to camera
+            Vector3 move = forward * input.y + right * input.x;
+
+            move *= moveForce;
+
+            // Update camera target position
             _lookAt.transform.position = transform.position + _cameraHeight;
 
+            // Gravity
             verticalVelocity += _gravity * Time.deltaTime;
 
-            _charController.Move(new Vector3(move.x,verticalVelocity,move.z));
+            // Move player
+            Vector3 velocity = move + Vector3.up * verticalVelocity;
 
-            var lookInput = _lookAction.ReadValue<Vector2>();
-            _yrot += lookInput.x * rotationSpeed * Time.deltaTime;
-            //_lookAt.transform.localRotation = Quaternion.Euler(0,_yrot,0);
+            _charController.Move(velocity * Time.deltaTime);
 
-            RotateTowards(move);
-
-            _lookAt.transform.rotation = Quaternion.Lerp(_lookAt.transform.rotation,transform.rotation,Time.deltaTime);
+            // Rotate player towards movement direction
+            if (move.sqrMagnitude > 0.001f)
+            {
+                RotateTowards(move);
+            }
         }
+
+
 
         private void RotateTowards(Vector3 direction)
         {
@@ -342,7 +365,7 @@ namespace Player
             }
 
             if (!_target || !doHit) return;
-            
+
             _faceTarget = true;
             switch (equippedItem.animationType)
             {
@@ -419,7 +442,7 @@ namespace Player
             {
                 if (amount <= 0) continue;
                 //if (item.itemType == ItemType.Resource) continue;
-            
+
                 var button = CreateButton(inventoryContainer.transform, item.sprite, "x" + amount);
                 button.GetComponent<Button>().onClick.AddListener(() => SelectItem(item));
                 if (item == equippedItem)
@@ -483,7 +506,7 @@ namespace Player
             CheckAura();
             //only even show recipe when you have required aura
             if (recipe.requiredAura != _currentAura) return;
-        
+
             var button = CreateButton(craftingContainer.transform, icon, label.ToString()).GetComponent<Button>();
             button.onClick.AddListener(() => Craft(recipe));
             button.interactable = canCraft;
