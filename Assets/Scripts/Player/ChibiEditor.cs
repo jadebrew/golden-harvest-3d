@@ -3,56 +3,139 @@ using UnityEngine;
 
 public class ChibiEditor : MonoBehaviour
 {
+    [Header("Equipment")]
     public GameObject handItemPrefab;
-
     public GameObject hairPrefab;
-    public Material hairMaterial;
-    public Color hairColor;
 
+    [Header("Hair")]
+    public Material hairMaterial;
+    public Color hairColor = Color.white;
+
+    [Header("Body Materials")]
+    public Material armsMaterial;
+    public Color armsColor = Color.white;
+
+    public Material faceMaterial;
+    public Color faceColor = Color.white;
+
+    public Material feetMaterial;
+    public Color feetColor = Color.white;
+
+    public Material handsMaterial;
+    public Color handsColor = Color.white;
+
+    public Material headMaterial;
+    public Color headColor = Color.white;
+
+    public Material legsMaterial;
+    public Color legsColor = Color.white;
+
+    public Material torsoMaterial;
+    public Color torsoColor = Color.white;
+
+    // Automatically discovered references
     private Transform handSlot;
     private Transform hairSlot;
 
+    private SkinnedMeshRenderer arms;
+    private SkinnedMeshRenderer face;
+    private SkinnedMeshRenderer feet;
+    private SkinnedMeshRenderer hands;
+    private SkinnedMeshRenderer head;
+    private SkinnedMeshRenderer legs;
+    private SkinnedMeshRenderer torso;
+
     private void Awake()
     {
-        // Find slots inside children (including nested children)
+        // Find equipment slots
         handSlot = FindChildRecursive(transform, "handslot");
         hairSlot = FindChildRecursive(transform, "hairslot");
 
-        // Validate slots
-        if (handSlot == null || hairSlot == null)
+        // Find body parts
+        arms = FindRenderer("ARMS");
+        face = FindRenderer("FACE");
+        feet = FindRenderer("FEET");
+        hands = FindRenderer("HANDS");
+        head = FindRenderer("HEAD");
+        legs = FindRenderer("LEGS");
+        torso = FindRenderer("TORSO");
+
+        // Setup hand item
+        if (handSlot != null && handItemPrefab != null)
         {
-            Debug.LogError("Could not find HandSlot or HairSlot!", this);
-            return;
+            ClearSlot(handSlot);
+            Instantiate(handItemPrefab, handSlot);
         }
 
-        // Step 1: Clear hand slot and instantiate hand item
-        ClearSlot(handSlot);
-        Instantiate(handItemPrefab, handSlot);
-
-        // Step 2: Clear hair slot and instantiate hair
-        ClearSlot(hairSlot);
-        GameObject newHair = Instantiate(hairPrefab, hairSlot);
-
-        // Step 3: Create a material instance
-        if (hairMaterial != null)
+        // Setup hair
+        if (hairSlot != null && hairPrefab != null)
         {
-            Material instance = new Material(hairMaterial);
+            ClearSlot(hairSlot);
 
-            // Step 4: Set hair color on the instance
-            instance.color = hairColor;
+            GameObject newHair = Instantiate(hairPrefab, hairSlot);
 
-            // Apply material instance to all child renderers
-            Renderer[] renderers = newHair.GetComponentsInChildren<Renderer>(true);
+            ApplyMaterial(
+                newHair.GetComponentsInChildren<Renderer>(true),
+                          hairMaterial,
+                          hairColor
+            );
+        }
 
-            foreach (Renderer renderer in renderers)
+        // Apply body materials
+        ApplyMaterial(arms, armsMaterial, armsColor);
+        ApplyMaterial(face, faceMaterial, faceColor);
+        ApplyMaterial(feet, feetMaterial, feetColor);
+        ApplyMaterial(hands, handsMaterial, handsColor);
+        ApplyMaterial(head, headMaterial, headColor);
+        ApplyMaterial(legs, legsMaterial, legsColor);
+        ApplyMaterial(torso, torsoMaterial, torsoColor);
+    }
+
+    private SkinnedMeshRenderer FindRenderer(string objectName)
+    {
+        Transform found = FindChildRecursive(transform, objectName);
+
+        if (found == null)
+        {
+            Debug.LogWarning($"Could not find {objectName}!", this);
+            return null;
+        }
+
+        SkinnedMeshRenderer renderer =
+        found.GetComponent<SkinnedMeshRenderer>();
+
+        if (renderer == null)
+        {
+            Debug.LogWarning(
+                $"{objectName} does not have a SkinnedMeshRenderer!",
+                found
+            );
+        }
+
+        return renderer;
+    }
+
+    private Transform FindChildRecursive(
+        Transform parent,
+        string targetName)
+    {
+        foreach (Transform child in parent)
+        {
+            if (string.Equals(
+                child.name,
+                targetName,
+                System.StringComparison.OrdinalIgnoreCase))
             {
-                renderer.material = instance;
+                return child;
             }
+
+            Transform result = FindChildRecursive(child, targetName);
+
+            if (result != null)
+                return result;
         }
-        else
-        {
-            Debug.LogWarning("No hair material assigned!", this);
-        }
+
+        return null;
     }
 
     private void ClearSlot(Transform slot)
@@ -63,19 +146,56 @@ public class ChibiEditor : MonoBehaviour
         }
     }
 
-    private Transform FindChildRecursive(Transform parent, string targetName)
+    private void ApplyMaterial(
+        SkinnedMeshRenderer renderer,
+        Material source,
+        Color color)
     {
-        foreach (Transform child in parent)
+        if (renderer == null || source == null)
+            return;
+
+        Material instance = new Material(source);
+        instance.color = color;
+
+        renderer.material = instance;
+    }
+
+    private void ApplyMaterial(
+        Renderer[] renderers,
+        Material source,
+        Color color)
+    {
+        if (source == null)
+            return;
+
+        Material instance = new Material(source);
+        instance.color = color;
+
+        foreach (Renderer renderer in renderers)
         {
-            if (child.name.ToLower() == targetName.ToLower())
-                return child;
-
-            Transform result = FindChildRecursive(child, targetName);
-
-            if (result != null)
-                return result;
+            renderer.material = instance;
         }
+    }
 
-        return null;
+    private void OnDestroy()
+    {
+        // Clean up instantiated body material instances
+        foreach (SkinnedMeshRenderer renderer in new[]
+        {
+            arms, face, feet, hands, head, legs, torso
+        })
+        {
+            if (renderer == null)
+                continue;
+
+            foreach (Material material in renderer.sharedMaterials)
+            {
+                if (material != null &&
+                    material.name.EndsWith("(Instance)"))
+                {
+                    Destroy(material);
+                }
+            }
+        }
     }
 }

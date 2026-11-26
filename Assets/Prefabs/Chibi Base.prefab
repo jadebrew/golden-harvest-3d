@@ -1,0 +1,197 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4912359242597490679
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 780480884582719390}
+  m_Layer: 0
+  m_Name: hairslot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &780480884582719390
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4912359242597490679}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.00007344, y: -0.12375, z: -0.00101}
+  m_LocalScale: {x: 6.873844, y: 6.6209245, z: 6.6209245}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 953274460178421973}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8745627742488009404
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6620337497644643795}
+  m_Layer: 0
+  m_Name: handslot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6620337497644643795
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8745627742488009404}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.049999997, y: 0.049999997, z: 0.049999997}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 309597618077268605}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3575645834258660684
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_Name
+      value: Chibi Base
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 7f3cae965496956eeaeca2936fa12bc6, type: 2}
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 8934777400606672865, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -5344409820124756175, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6620337497644643795}
+    - targetCorrespondingSourceObject: {fileID: 4370049522877113753, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 780480884582719390}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2958938621507961573}
+  m_SourcePrefab: {fileID: 100100000, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+--- !u!4 &309597618077268605 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -5344409820124756175, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+  m_PrefabInstance: {fileID: 3575645834258660684}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &953274460178421973 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4370049522877113753, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+  m_PrefabInstance: {fileID: 3575645834258660684}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4422067683195519005 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 10e656891e5961fb1b8f32685f0805b8, type: 3}
+  m_PrefabInstance: {fileID: 3575645834258660684}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2958938621507961573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4422067683195519005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5edf410dab2c766b7094d89444979c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChibiEditor
+  handItemPrefab: {fileID: 6838037281231520895, guid: 03fc52c58b06443bf992533121ed4f0a, type: 3}
+  hairPrefab: {fileID: 6047063422126862009, guid: 439494f895b059e42abcc025b0bb7542, type: 3}
+  hairMaterial: {fileID: 2100000, guid: 30b8fe6e8d55e3a8497352dccdea043c, type: 2}
+  hairColor: {r: 0.4117647, g: 0.4117647, b: 0.4117647, a: 1}
+  armsMaterial: {fileID: 2100000, guid: 36472f383aefb958eb439c337b269ef6, type: 2}
+  armsColor: {r: 1, g: 0.85490197, b: 0.7254902, a: 1}
+  faceMaterial: {fileID: 2100000, guid: 4fc4a6f35860b83fd8c50160f5744051, type: 2}
+  faceColor: {r: 1, g: 0.85490197, b: 0.7254902, a: 1}
+  feetMaterial: {fileID: 2100000, guid: 36472f383aefb958eb439c337b269ef6, type: 2}
+  feetColor: {r: 1, g: 0.85490197, b: 0.7254902, a: 1}
+  handsMaterial: {fileID: 2100000, guid: 36472f383aefb958eb439c337b269ef6, type: 2}
+  handsColor: {r: 1, g: 0.85490197, b: 0.7254902, a: 1}
+  headMaterial: {fileID: 2100000, guid: 36472f383aefb958eb439c337b269ef6, type: 2}
+  headColor: {r: 1, g: 0.854902, b: 0.7254902, a: 1}
+  legsMaterial: {fileID: 2100000, guid: a79d731af8f014a609d031077d99c075, type: 2}
+  legsColor: {r: 0.3773585, g: 0.100426055, b: 0, a: 1}
+  torsoMaterial: {fileID: 2100000, guid: 9e799e9dd72f52b5db49a60355046cdc, type: 2}
+  torsoColor: {r: 1, g: 0, b: 1, a: 1}
