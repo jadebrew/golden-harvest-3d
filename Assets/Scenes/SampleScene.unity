@@ -752,11 +752,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2958938621507961573, guid: 42758b87f7209040893a220e9337e3d1, type: 3}
       propertyPath: hairColor.b
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2958938621507961573, guid: 42758b87f7209040893a220e9337e3d1, type: 3}
       propertyPath: hairColor.g
-      value: 0.9505662
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2958938621507961573, guid: 42758b87f7209040893a220e9337e3d1, type: 3}
       propertyPath: hairColor.r
